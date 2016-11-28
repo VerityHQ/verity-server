@@ -2,6 +2,10 @@ package io.swagger.api;
 
 import java.io.IOException;
 
+import org.baeldung.persistence.service.IFooService;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,15 +19,31 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.model.Agent;
 import io.swagger.model.Organization;
 import io.swagger.model.Person;
+import io.swagger.persistence.service.IPersonService;
+
+
 
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-11-16T05:42:22.193Z")
-
 @Controller
 public class PersonApiController implements PersonApi {
 
+	@Autowired
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    private IPersonService personService;
+
+    private Session session;
+
+	
     public ResponseEntity<Person> personGet(@ApiParam(value = "multi-hash id of person record on the blockchain", required = true) @RequestParam(value = "id", required = true) String id) {
-        Person person = this.getPerson();
+        Person person = null; // = this.getPerson();
+    	
+        session = sessionFactory.openSession();
+    	person = personService.findOne(Integer.parseInt(id));
+    	session.close();
+    	
         return new ResponseEntity<Person>(person, HttpStatus.OK);
     }
 
@@ -75,7 +95,10 @@ public class PersonApiController implements PersonApi {
 
     public ResponseEntity<String> personPost(@ApiParam(value = ""  ) @RequestBody Person body) {
         // create person and persist
-    	
+    	session = sessionFactory.openSession();
+    	//TODO: where do we validate? with what validator ? 
+    	personService.create(body);
+    	session.close();
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 

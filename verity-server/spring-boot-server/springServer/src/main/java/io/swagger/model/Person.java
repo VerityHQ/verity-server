@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -31,7 +32,7 @@ public class Person implements Serializable  {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id")
-  private int id;
+  private long id;
   
   @Column(name = "FirstName")
   @JsonProperty("FirstName")
@@ -45,10 +46,14 @@ public class Person implements Serializable  {
   @JsonProperty("NickName")
   private String nickName = null;
 
-  @Column(name="Organization")
+  
+  @Column(name="Organization", columnDefinition = "blob")
+  @Lob
   @JsonProperty("Organization")
   private Organization organization = null;
 
+  @Column(name="agent", columnDefinition = "blob")
+  @Lob
   @JsonProperty("agent")
   private Agent agent = null;
 
