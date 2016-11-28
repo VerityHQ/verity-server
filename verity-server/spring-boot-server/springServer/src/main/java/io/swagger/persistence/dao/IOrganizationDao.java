@@ -4,6 +4,6 @@ import org.baeldung.persistence.dao.common.IOperations;
 
 import io.swagger.model.Organization;
 
-public interface IOrganization extends IOperations<Organization>{
+public interface IOrganizationDao extends IOperations<Organization>{
 
 }

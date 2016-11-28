@@ -5,6 +5,9 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.NamedQuery;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -24,6 +27,11 @@ import java.io.Serializable;
 public class Person implements Serializable  {
  
   private static final long serialVersionUID = -1882222769052876342L;
+  
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id")
+  private int id;
   
   @Column(name = "FirstName")
   @JsonProperty("FirstName")

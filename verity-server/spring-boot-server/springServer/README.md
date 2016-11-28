@@ -13,22 +13,23 @@ The underlying library integrating swagger to SpringBoot is [springfox](https://
 Start your server as an simple java application (with maven) mvn spring-boot:run
 
 You can view the api documentation in swagger-ui by pointing to  
-http://localhost:8080/  
+http://localhost:8080/{API endpoint}/api-docs 
 
 Change default port value in application.properties
 
+applicaiton.properties sets the path to the API and the API docs. 
+e.g. docs are here: http://localhost:8080/verity/core/api-docs
+and API is here: http://localhost:8080/verity/core/
 
+The persistence layer architecture and details are documented here: http://www.baeldung.com/hibernate-4-spring
 
-Problems solved along the way:
+## Random issues with Eclipse STS, JRebel, Maven solved along the way
 
 objc[5489]: Class JavaLaunchHelper is implemented in both /Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/jre/bin/java and /Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/jre/lib/libinstrument.dylib. One of the two will be used. Which one is undefined.
 Fix: http://stackoverflow.com/questions/18794573/objc10012-class-javalaunchhelper-is-implemented-in-both-libinstrument-dyl
 
-agent throws java.net.MalformedURLException when host name is set to all numeric value
-http://stackoverflow.com/questions/20093854/jmx-agent-throws-java-net-malformedurlexception-when-host-name-is-set-to-all-num
+[agent throws java.net.MalformedURLException when host name is set to all numeric value](http://stackoverflow.com/questions/20093854/jmx-agent-throws-java-net-malformedurlexception-when-host-name-is-set-to-all-num)
 Fix: add machine name to host file with the ip 127.0.0.1
 
-
-spring boot fails to run - IllegalAccessError on startup
-Fix: http://stackoverflow.com/questions/20123504/spring-boot-fails-to-run-illegalaccesserror-on-startup
-make sure pom for both projects use the same spring parent pom so they get the same versions of spring-boot and spring
+[spring boot fails to run - IllegalAccessError on startup](http://stackoverflow.com/questions/20123504/spring-boot-fails-to-run-illegalaccesserror-on-startup)
+Fix: make sure pom for both projects use the same spring parent pom so they sync up to the same versions of spring-boot and spring
