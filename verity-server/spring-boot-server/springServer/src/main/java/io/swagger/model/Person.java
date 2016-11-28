@@ -1,6 +1,11 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.NamedQuery;
+import javax.persistence.Entity;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
@@ -10,21 +15,10 @@ import io.swagger.model.Organization;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-
 /**
  * Person
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-11-16T05:42:22.193Z")
-
 @Entity
 @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p")
 public class Person implements Serializable  {

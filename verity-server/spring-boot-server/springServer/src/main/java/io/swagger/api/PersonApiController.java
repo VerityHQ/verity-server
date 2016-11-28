@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.response.Web3ClientVersion;
-import org.web3j.protocol.http.HttpService;
+//import org.web3j.protocol.Web3j;
+//import org.web3j.protocol.core.methods.response.Web3ClientVersion;
+//import org.web3j.protocol.http.HttpService;
 
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Agent;
@@ -23,7 +23,7 @@ import io.swagger.model.Person;
 public class PersonApiController implements PersonApi {
 
     public ResponseEntity<Person> personGet(@ApiParam(value = "multi-hash id of person record on the blockchain", required = true) @RequestParam(value = "id", required = true) String id) {
-        Person person = getPerson();
+        Person person = this.getPerson();
         return new ResponseEntity<Person>(person, HttpStatus.OK);
     }
 
@@ -40,17 +40,17 @@ public class PersonApiController implements PersonApi {
     	// as well as the Compiler to Java 8
     	// and the Project Properties -> Project Facets
     	// start geth: geth --rpcapi personal,db,eth,net,web3 --rpc --testnet
-    	Web3j web3 = Web3j.build(new HttpService());  // defaults to http://localhost:8545/
-    	Web3ClientVersion web3ClientVersion;
-		try {
-			web3ClientVersion = web3.web3ClientVersion().send();
-	    	String clientVersion = web3ClientVersion.getWeb3ClientVersion();
-	    	person.setNickName(clientVersion);
-	    	
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//    	Web3j web3 = Web3j.build(new HttpService());  // defaults to http://localhost:8545/
+//    	Web3ClientVersion web3ClientVersion;
+//		try {
+//			web3ClientVersion = web3.web3ClientVersion().send();
+//	    	String clientVersion = web3ClientVersion.getWeb3ClientVersion();
+//	    	person.setNickName(clientVersion);
+//	    	
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
     	person.setFirstName("Vitalik");
     	person.setLastName("Buterin");
@@ -62,7 +62,7 @@ public class PersonApiController implements PersonApi {
     	person.setAgent(personAgent);
     	
     	Organization org = new Organization();
-    	org.setOrgName("carol");
+    	org.setOrgName("grant");
     	Agent orgAgent = new Agent();
     	orgAgent.setHashId("organizationHashCode123123");
     	orgAgent.setKey("someOrgKey");
