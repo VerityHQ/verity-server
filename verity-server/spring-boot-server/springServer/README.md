@@ -17,9 +17,10 @@ http://localhost:8080/{API endpoint}/api-docs
 
 Change default port value in application.properties
 
-applicaiton.properties sets the path to the API and the API docs. 
-e.g. docs are here: http://localhost:8080/verity/core/api-docs
-and API is here: http://localhost:8080/verity/core/
+applicaiton.properties sets the path to the API and the API definition. 
+e.g. swagger json api definition is here: http://localhost:8080/verity/core/api-docs
+and live API is here: http://localhost:8080/verity/core/
+and html docs are here: http://localhost:8080/verity/core/swagger-ui.html
 
 The persistence layer architecture and details are documented here: http://www.baeldung.com/hibernate-4-spring
 
@@ -33,3 +34,10 @@ Fix: add machine name to host file with the ip 127.0.0.1
 
 [spring boot fails to run - IllegalAccessError on startup](http://stackoverflow.com/questions/20123504/spring-boot-fails-to-run-illegalaccesserror-on-startup)
 Fix: make sure pom for both projects use the same spring parent pom so they sync up to the same versions of spring-boot and spring
+
+## Useful Resources
+https://www.javacodegeeks.com/2016/05/approaches-binding-spring-boot-application-service-cloud-foundry.html
+
+## Logging to Cloud Foundry logs
+
+Many frameworks write to an app log that is separate from STDOUT and STDERR. This is not supported by Loggregator. Your app must write to STDOUT or STDERR for its logs to be included in the Loggregator stream. Check the buildpack your app uses to determine whether it automatically insures that your app correctly writes logs to STDOUT and STDERR only. Some buildpacks do this, and some do not. https://docs.pivotal.io/pivotalcf/1-8/devguide/deploy-apps/streaming-logs.html

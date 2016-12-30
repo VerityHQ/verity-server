@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -7,20 +8,28 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Agent;
 
+
+
+/**
+ * Bot, smart contract, or software that has agency in the reputation ecosystem (can give and receive reputation)
+ **/
+
 /**
  * Bot, smart contract, or software that has agency in the reputation ecosystem (can give and receive reputation)
  */
 @ApiModel(description = "Bot, smart contract, or software that has agency in the reputation ecosystem (can give and receive reputation)")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-11-16T05:42:22.193Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
-public class SoftwareAgent   {
-  @JsonProperty("apiUrl")
-  private String apiUrl = null;
+public class SoftwareAgent   implements Serializable  {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2547880021996915305L;
 
-  @JsonProperty("name")
+private String apiUrl = null;
+
   private String name = null;
 
-  @JsonProperty("ownedBy")
   private Agent ownedBy = null;
 
   public SoftwareAgent apiUrl(String apiUrl) {
@@ -65,10 +74,10 @@ public class SoftwareAgent   {
   }
 
    /**
-   * entity responsible for this SoftwareAgent
+   * Get ownedBy
    * @return ownedBy
   **/
-  @ApiModelProperty(value = "entity responsible for this SoftwareAgent")
+  @ApiModelProperty(value = "")
   public Agent getOwnedBy() {
     return ownedBy;
   }

@@ -1,6 +1,8 @@
 package io.swagger.api;
 
+import io.swagger.model.InlineResponse403;
 import io.swagger.model.Transaction;
+import io.swagger.model.InlineResponse404;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +17,91 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-11-16T05:42:22.193Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-28T16:27:10.767-08:00")
 
 @Api(value = "transaction", description = "the transaction API")
 public interface TransactionApi {
 
-    @ApiOperation(value = "give reputation", notes = "", response = String.class, authorizations = {
-        @Authorization(value = "Basic Auth")
-    }, tags={ "Core Methods", })
+    @ApiOperation(value = "create transaction", notes = "", response = Transaction.class, tags={ "Transaction", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "hash - Ethereum address of the transaction. For demo / proof of concept this will be a db id or offchain hash.", response = String.class) })
+        @ApiResponse(code = 201, message = "hash - Ethereum address of the transaction. For demo / proof of concept this will be a db id or offchain hash.", response = Transaction.class),
+        @ApiResponse(code = 401, message = "", response = Transaction.class),
+        @ApiResponse(code = 403, message = "", response = Transaction.class),
+        @ApiResponse(code = 404, message = "", response = Transaction.class),
+        @ApiResponse(code = 422, message = "", response = Transaction.class),
+        @ApiResponse(code = 500, message = "", response = Transaction.class) })
     @RequestMapping(value = "/transaction",
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<String> transactionPost(@ApiParam(value = ""  ) @RequestBody Transaction body);
+    ResponseEntity<Transaction> createTransaction(
+
+@ApiParam(value = ""  ) @RequestBody Transaction body
+
+);
+
+
+    @ApiOperation(value = "get Transactions by targetAgentId", notes = "TODO:consider paginating results in similar way to reddit API https://www.reddit.com/dev/api/", response = Transaction.class, responseContainer = "List", tags={ "Transaction", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "", response = Transaction.class),
+        @ApiResponse(code = 401, message = "", response = Transaction.class),
+        @ApiResponse(code = 403, message = "", response = Transaction.class),
+        @ApiResponse(code = 404, message = "", response = Transaction.class),
+        @ApiResponse(code = 422, message = "", response = Transaction.class),
+        @ApiResponse(code = 500, message = "", response = Transaction.class) })
+    @RequestMapping(value = "/transaction/{targetAgentId}",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<Transaction>> getTransactionByTargetAgentId(
+@ApiParam(value = "",required=true ) @PathVariable("targetAgentId") String targetAgentId
+
+
+);
+
+
+    @ApiOperation(value = "get transactions by targetAgent and valueAction", notes = "", response = Void.class, tags={ "Transaction", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 401, message = "", response = Void.class),
+        @ApiResponse(code = 403, message = "", response = Void.class),
+        @ApiResponse(code = 404, message = "", response = Void.class),
+        @ApiResponse(code = 422, message = "", response = Void.class),
+        @ApiResponse(code = 500, message = "", response = Void.class) })
+    @RequestMapping(value = "/transaction/{targetAgentId}/{valueActionId}",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<Void> getTransactionByTargetAgentIdByValueActionId(
+@ApiParam(value = "",required=true ) @PathVariable("targetAgentId") String targetAgentId
+
+
+,
+@ApiParam(value = "",required=true ) @PathVariable("valueActionId") String valueActionId
+
+
+);
+
+
+    @ApiOperation(value = "get Transactions by Dates", notes = "", response = Transaction.class, responseContainer = "List", tags={ "Transaction", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "", response = Transaction.class),
+        @ApiResponse(code = 401, message = "", response = Transaction.class),
+        @ApiResponse(code = 403, message = "", response = Transaction.class),
+        @ApiResponse(code = 404, message = "", response = Transaction.class),
+        @ApiResponse(code = 422, message = "", response = Transaction.class),
+        @ApiResponse(code = 500, message = "", response = Transaction.class) })
+    @RequestMapping(value = "/transaction/{targetAgentId}/{fromdate}/{todate}",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<Transaction>> getTransactionsByDates(
+@ApiParam(value = "",required=true ) @PathVariable("targetAgentId") String targetAgentId
+
+
+,
+@ApiParam(value = "",required=true ) @PathVariable("fromdate") String fromdate
+
+
+,
+@ApiParam(value = "",required=true ) @PathVariable("todate") String todate
+
+
+);
 
 }

@@ -1,56 +1,69 @@
 package io.swagger.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.NamedQuery;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Agent;
-import io.swagger.model.Organization;
 
-import java.io.Serializable;
+
+
 
 /**
  * Person
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-11-16T05:42:22.193Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-28T16:27:10.767-08:00")
+
 @Entity
-@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p")
-public class Person implements Serializable  {
- 
-  private static final long serialVersionUID = -1882222769052876342L;
-  
+public class Person implements Serializable {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 7126747806967910530L;
+
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id")
-  private int id;
-  
-  @Column(name = "FirstName")
-  @JsonProperty("FirstName")
+  private String uuid = null;
+
   private String firstName = null;
 
-  @Column(name="LastName")
-  @JsonProperty("LastName")
   private String lastName = null;
 
-  @Column(name="NickName")
-  @JsonProperty("NickName")
   private String nickName = null;
 
-  @Column(name="Organization")
-  @JsonProperty("Organization")
-  private Organization organization = null;
+  private String organizationId = null;
 
-  @JsonProperty("agent")
+//TODO: what exactly do each of these CascadeTypes mean
+  @OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })
+  @JoinColumn(name = "agent_uuid", unique=true) //was agent_fk
   private Agent agent = null;
+
+  
+  public Person uuid(String uuid) {
+    this.uuid = uuid;
+    return this;
+  }
+
+   /**
+   * UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object
+   * @return uuid
+  **/
+  @ApiModelProperty(required = true, value = "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object")
+  public String getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
+  }
 
   public Person firstName(String firstName) {
     this.firstName = firstName;
@@ -97,7 +110,7 @@ public class Person implements Serializable  {
    * Get nickName
    * @return nickName
   **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
   public String getNickName() {
     return nickName;
   }
@@ -106,22 +119,22 @@ public class Person implements Serializable  {
     this.nickName = nickName;
   }
 
-  public Person organization(Organization organization) {
-    this.organization = organization;
+  public Person organizationId(String organizationId) {
+    this.organizationId = organizationId;
     return this;
   }
 
    /**
-   * Get organization
-   * @return organization
+   * Get organizationId
+   * @return organizationId
   **/
   @ApiModelProperty(value = "")
-  public Organization getOrganization() {
-    return organization;
+  public String getOrganizationId() {
+    return organizationId;
   }
 
-  public void setOrganization(Organization organization) {
-    this.organization = organization;
+  public void setOrganizationId(String organizationId) {
+    this.organizationId = organizationId;
   }
 
   public Person agent(Agent agent) {
@@ -152,16 +165,17 @@ public class Person implements Serializable  {
       return false;
     }
     Person person = (Person) o;
-    return Objects.equals(this.firstName, person.firstName) &&
+    return Objects.equals(this.uuid, person.uuid) &&
+        Objects.equals(this.firstName, person.firstName) &&
         Objects.equals(this.lastName, person.lastName) &&
         Objects.equals(this.nickName, person.nickName) &&
-        Objects.equals(this.organization, person.organization) &&
+        Objects.equals(this.organizationId, person.organizationId) &&
         Objects.equals(this.agent, person.agent);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(firstName, lastName, nickName, organization, agent);
+    return Objects.hash(uuid, firstName, lastName, nickName, organizationId, agent);
   }
 
   @Override
@@ -169,10 +183,11 @@ public class Person implements Serializable  {
     StringBuilder sb = new StringBuilder();
     sb.append("class Person {\n");
     
+    sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("    nickName: ").append(toIndentedString(nickName)).append("\n");
-    sb.append("    organization: ").append(toIndentedString(organization)).append("\n");
+    sb.append("    organizationId: ").append(toIndentedString(organizationId)).append("\n");
     sb.append("    agent: ").append(toIndentedString(agent)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -1,29 +1,57 @@
 package io.swagger.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+
+
+/**
+ * represents the type of action performed when giving reputation, e.g. upvote, points, rating
+ **/
+
 /**
  * represents the type of action performed when giving reputation, e.g. upvote, points, rating
  */
 @ApiModel(description = "represents the type of action performed when giving reputation, e.g. upvote, points, rating")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-11-16T05:42:22.193Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
-public class ActionType   {
-  @JsonProperty("ActionName")
+public class ActionType  implements Serializable {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6932039472963754277L;
+
+	private String uuid = null;
+
   private String actionName = null;
 
-  @JsonProperty("CommunityId")
   private String communityId = null;
 
-  @JsonProperty("DefaultPoints")
   private Integer defaultPoints = null;
 
-  @JsonProperty("id")
-  private String id = null;
+  private String content = null;
+
+  public ActionType uuid(String uuid) {
+    this.uuid = uuid;
+    return this;
+  }
+
+   /**
+   * UUID, GUID, HASH or MultiHash that represents this object
+   * @return uuid
+  **/
+  @ApiModelProperty(value = "UUID, GUID, HASH or MultiHash that represents this object")
+  public String getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
+  }
 
   public ActionType actionName(String actionName) {
     this.actionName = actionName;
@@ -52,7 +80,7 @@ public class ActionType   {
    * Community that defined this ActionType. Multi-hash or JSON-LD
    * @return communityId
   **/
-  @ApiModelProperty(value = "Community that defined this ActionType. Multi-hash or JSON-LD")
+  @ApiModelProperty(required = true, value = "Community that defined this ActionType. Multi-hash or JSON-LD")
   public String getCommunityId() {
     return communityId;
   }
@@ -79,22 +107,22 @@ public class ActionType   {
     this.defaultPoints = defaultPoints;
   }
 
-  public ActionType id(String id) {
-    this.id = id;
+  public ActionType content(String content) {
+    this.content = content;
     return this;
   }
 
    /**
-   * multi hash id
-   * @return id
+   * Describes this action in detail. Formatted as JSON or JSON:LD. Should include the ActionName along with a longer description or link to more content.
+   * @return content
   **/
-  @ApiModelProperty(required = true, value = "multi hash id")
-  public String getId() {
-    return id;
+  @ApiModelProperty(value = "Describes this action in detail. Formatted as JSON or JSON:LD. Should include the ActionName along with a longer description or link to more content.")
+  public String getContent() {
+    return content;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setContent(String content) {
+    this.content = content;
   }
 
 
@@ -107,15 +135,16 @@ public class ActionType   {
       return false;
     }
     ActionType actionType = (ActionType) o;
-    return Objects.equals(this.actionName, actionType.actionName) &&
+    return Objects.equals(this.uuid, actionType.uuid) &&
+        Objects.equals(this.actionName, actionType.actionName) &&
         Objects.equals(this.communityId, actionType.communityId) &&
         Objects.equals(this.defaultPoints, actionType.defaultPoints) &&
-        Objects.equals(this.id, actionType.id);
+        Objects.equals(this.content, actionType.content);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(actionName, communityId, defaultPoints, id);
+    return Objects.hash(uuid, actionName, communityId, defaultPoints, content);
   }
 
   @Override
@@ -123,10 +152,11 @@ public class ActionType   {
     StringBuilder sb = new StringBuilder();
     sb.append("class ActionType {\n");
     
+    sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("    actionName: ").append(toIndentedString(actionName)).append("\n");
     sb.append("    communityId: ").append(toIndentedString(communityId)).append("\n");
     sb.append("    defaultPoints: ").append(toIndentedString(defaultPoints)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("}");
     return sb.toString();
   }

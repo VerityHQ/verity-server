@@ -1,110 +1,98 @@
 package io.swagger.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.Agent;
+import org.joda.time.DateTime;
+
+
 
 /**
- * A fundamental unit of reputation transfer. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.  Similar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md  TODO: determine how Ethereum UINT value can map to multiple datatypes. One model comes from Augur -  Yes or no (binary)   no: 2**64   yes: 2*2**64   indeterminate: 3*2**63   exactly in the middle but not indeterminate: 2**63 + 1  Multiple choice (categorical)   min: 1    max: 2**64   indeterminate: 2**63 exactly in the middle but not indeterminate: 2**63 + 1  Numerical (scalar)   min: 1   max: 2**64   indeterminate: 2**63   exactly in the middle but not indeterminate: 2**63 + 1
+ * A fundamental unit of reputation transfer. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.  Similar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md
+ **/
+
+/**
+ * A fundamental unit of reputation transfer. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.  Similar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md
  */
-@ApiModel(description = "A fundamental unit of reputation transfer. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.  Similar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md  TODO: determine how Ethereum UINT value can map to multiple datatypes. One model comes from Augur -  Yes or no (binary)   no: 2**64   yes: 2*2**64   indeterminate: 3*2**63   exactly in the middle but not indeterminate: 2**63 + 1  Multiple choice (categorical)   min: 1    max: 2**64   indeterminate: 2**63 exactly in the middle but not indeterminate: 2**63 + 1  Numerical (scalar)   min: 1   max: 2**64   indeterminate: 2**63   exactly in the middle but not indeterminate: 2**63 + 1")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-11-16T05:42:22.193Z")
+@ApiModel(description = "A fundamental unit of reputation transfer. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.  Similar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
-public class Transaction   {
-  @JsonProperty("content")
-  private String content = null;
+public class Transaction   implements Serializable  {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 524431549164105537L;
 
-  @JsonProperty("context")
-  private String context = null;
+private String valueActionId = null;
 
-  @JsonProperty("source")
-  private Agent source = null;
+  private String sourceAgentId = null;
 
-  @JsonProperty("target")
-  private Agent target = null;
+  private String targetAgentId = null;
 
-  @JsonProperty("timeStamp")
-  private String timeStamp = null;
+  private DateTime timeStamp = null;
 
-  @JsonProperty("value")
   private Integer value = null;
 
-  public Transaction content(String content) {
-    this.content = content;
+  private String uuid = null;
+
+  public Transaction valueActionId(String valueActionId) {
+    this.valueActionId = valueActionId;
     return this;
   }
 
    /**
-   * Describes or defines the type of reputation being given (points, karma, score) or the action performed (ActionType) during rating, e.g. upvote, like. Could be a link or content addressable graph pointing to a richer source of description such as a set of tags.
-   * @return content
+   * link that describes the way this score was derived, or the community feature that affects the way the value will be interpreted. Could be a link or content addressable graph pointing to a richer source of description or information.
+   * @return valueActionId
   **/
-  @ApiModelProperty(value = "Describes or defines the type of reputation being given (points, karma, score) or the action performed (ActionType) during rating, e.g. upvote, like. Could be a link or content addressable graph pointing to a richer source of description such as a set of tags.")
-  public String getContent() {
-    return content;
+  @ApiModelProperty(required = true, value = "link that describes the way this score was derived, or the community feature that affects the way the value will be interpreted. Could be a link or content addressable graph pointing to a richer source of description or information.")
+  public String getValueActionId() {
+    return valueActionId;
   }
 
-  public void setContent(String content) {
-    this.content = content;
+  public void setValueActionId(String valueActionId) {
+    this.valueActionId = valueActionId;
   }
 
-  public Transaction context(String context) {
-    this.context = context;
+  public Transaction sourceAgentId(String sourceAgentId) {
+    this.sourceAgentId = sourceAgentId;
     return this;
   }
 
    /**
-   * metadata that describes the way this score was derived, or the community feature that affects the way the value will be interpreted. Could be a link or content addressable graph pointing to a richer source of description or information.
-   * @return context
+   * Get sourceAgentId
+   * @return sourceAgentId
   **/
-  @ApiModelProperty(value = "metadata that describes the way this score was derived, or the community feature that affects the way the value will be interpreted. Could be a link or content addressable graph pointing to a richer source of description or information.")
-  public String getContext() {
-    return context;
+  @ApiModelProperty(required = true, value = "")
+  public String getSourceAgentId() {
+    return sourceAgentId;
   }
 
-  public void setContext(String context) {
-    this.context = context;
+  public void setSourceAgentId(String sourceAgentId) {
+    this.sourceAgentId = sourceAgentId;
   }
 
-  public Transaction source(Agent source) {
-    this.source = source;
+  public Transaction targetAgentId(String targetAgentId) {
+    this.targetAgentId = targetAgentId;
     return this;
   }
 
    /**
-   * source / sender / giver of reputation value. Multi-hash agent key. Required.
-   * @return source
+   * Get targetAgentId
+   * @return targetAgentId
   **/
-  @ApiModelProperty(required = true, value = "source / sender / giver of reputation value. Multi-hash agent key. Required.")
-  public Agent getSource() {
-    return source;
+  @ApiModelProperty(required = true, value = "")
+  public String getTargetAgentId() {
+    return targetAgentId;
   }
 
-  public void setSource(Agent source) {
-    this.source = source;
+  public void setTargetAgentId(String targetAgentId) {
+    this.targetAgentId = targetAgentId;
   }
 
-  public Transaction target(Agent target) {
-    this.target = target;
-    return this;
-  }
-
-   /**
-   * target / recipient / receiver of reputation value. Multi-hash agent key. Required.
-   * @return target
-  **/
-  @ApiModelProperty(required = true, value = "target / recipient / receiver of reputation value. Multi-hash agent key. Required.")
-  public Agent getTarget() {
-    return target;
-  }
-
-  public void setTarget(Agent target) {
-    this.target = target;
-  }
-
-  public Transaction timeStamp(String timeStamp) {
+  public Transaction timeStamp(DateTime timeStamp) {
     this.timeStamp = timeStamp;
     return this;
   }
@@ -114,11 +102,11 @@ public class Transaction   {
    * @return timeStamp
   **/
   @ApiModelProperty(value = "timestamp or block height of blockchain at time of creation. Should be self-describing as to format and meaning.")
-  public String getTimeStamp() {
+  public DateTime getTimeStamp() {
     return timeStamp;
   }
 
-  public void setTimeStamp(String timeStamp) {
+  public void setTimeStamp(DateTime timeStamp) {
     this.timeStamp = timeStamp;
   }
 
@@ -128,16 +116,34 @@ public class Transaction   {
   }
 
    /**
-   * Reputation value or amount. optional. If empty the value of the transaction can be inferred by the content or context, e.g. it's a value tag.
+   * value (points) awarded at the time of the transaction. Immutable. Use ValueActionId to lookup the 'current' value if you want to calculate points based on the latest value as apposed to the value at time transaction was created. This allows for 'retroactive' adjustment of points.
    * @return value
   **/
-  @ApiModelProperty(value = "Reputation value or amount. optional. If empty the value of the transaction can be inferred by the content or context, e.g. it's a value tag.")
+  @ApiModelProperty(value = "value (points) awarded at the time of the transaction. Immutable. Use ValueActionId to lookup the 'current' value if you want to calculate points based on the latest value as apposed to the value at time transaction was created. This allows for 'retroactive' adjustment of points.")
   public Integer getValue() {
     return value;
   }
 
   public void setValue(Integer value) {
     this.value = value;
+  }
+
+  public Transaction uuid(String uuid) {
+    this.uuid = uuid;
+    return this;
+  }
+
+   /**
+   * UUID, GUID, HASH or MultiHash that represents this object
+   * @return uuid
+  **/
+  @ApiModelProperty(value = "UUID, GUID, HASH or MultiHash that represents this object")
+  public String getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
   }
 
 
@@ -150,17 +156,17 @@ public class Transaction   {
       return false;
     }
     Transaction transaction = (Transaction) o;
-    return Objects.equals(this.content, transaction.content) &&
-        Objects.equals(this.context, transaction.context) &&
-        Objects.equals(this.source, transaction.source) &&
-        Objects.equals(this.target, transaction.target) &&
+    return Objects.equals(this.valueActionId, transaction.valueActionId) &&
+        Objects.equals(this.sourceAgentId, transaction.sourceAgentId) &&
+        Objects.equals(this.targetAgentId, transaction.targetAgentId) &&
         Objects.equals(this.timeStamp, transaction.timeStamp) &&
-        Objects.equals(this.value, transaction.value);
+        Objects.equals(this.value, transaction.value) &&
+        Objects.equals(this.uuid, transaction.uuid);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(content, context, source, target, timeStamp, value);
+    return Objects.hash(valueActionId, sourceAgentId, targetAgentId, timeStamp, value, uuid);
   }
 
   @Override
@@ -168,12 +174,12 @@ public class Transaction   {
     StringBuilder sb = new StringBuilder();
     sb.append("class Transaction {\n");
     
-    sb.append("    content: ").append(toIndentedString(content)).append("\n");
-    sb.append("    context: ").append(toIndentedString(context)).append("\n");
-    sb.append("    source: ").append(toIndentedString(source)).append("\n");
-    sb.append("    target: ").append(toIndentedString(target)).append("\n");
+    sb.append("    valueActionId: ").append(toIndentedString(valueActionId)).append("\n");
+    sb.append("    sourceAgentId: ").append(toIndentedString(sourceAgentId)).append("\n");
+    sb.append("    targetAgentId: ").append(toIndentedString(targetAgentId)).append("\n");
     sb.append("    timeStamp: ").append(toIndentedString(timeStamp)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
+    sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
     sb.append("}");
     return sb.toString();
   }

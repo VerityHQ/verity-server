@@ -1,6 +1,8 @@
 package io.swagger.api;
 
+import io.swagger.model.InlineResponse403;
 import io.swagger.model.Transaction;
+import io.swagger.model.InlineResponse404;
 
 import io.swagger.annotations.*;
 
@@ -17,14 +19,60 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-11-16T05:42:22.193Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-28T16:27:10.767-08:00")
 
 @Controller
 public class TransactionApiController implements TransactionApi {
 
-    public ResponseEntity<String> transactionPost(@ApiParam(value = ""  ) @RequestBody Transaction body) {
+    public ResponseEntity<Transaction> createTransaction(
+
+@ApiParam(value = ""  ) @RequestBody Transaction body
+
+) {
         // do some magic!
-        return new ResponseEntity<String>(HttpStatus.OK);
+        return new ResponseEntity<Transaction>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<Transaction>> getTransactionByTargetAgentId(
+@ApiParam(value = "",required=true ) @PathVariable("targetAgentId") String targetAgentId
+
+
+) {
+        // do some magic!
+        return new ResponseEntity<List<Transaction>>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<Void> getTransactionByTargetAgentIdByValueActionId(
+@ApiParam(value = "",required=true ) @PathVariable("targetAgentId") String targetAgentId
+
+
+,
+        
+@ApiParam(value = "",required=true ) @PathVariable("valueActionId") String valueActionId
+
+
+) {
+        // do some magic!
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<Transaction>> getTransactionsByDates(
+@ApiParam(value = "",required=true ) @PathVariable("targetAgentId") String targetAgentId
+
+
+,
+        
+@ApiParam(value = "",required=true ) @PathVariable("fromdate") String fromdate
+
+
+,
+        
+@ApiParam(value = "",required=true ) @PathVariable("todate") String todate
+
+
+) {
+        // do some magic!
+        return new ResponseEntity<List<Transaction>>(HttpStatus.OK);
     }
 
 }

@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -7,20 +8,28 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.joda.time.LocalDate;
 
+
+
+/**
+ * Activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities.   Maps to https://www.w3.org/TR/prov-o/  prov:Activity
+ **/
+
 /**
  * Activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities.   Maps to https://www.w3.org/TR/prov-o/  prov:Activity
  */
 @ApiModel(description = "Activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities.   Maps to https://www.w3.org/TR/prov-o/  prov:Activity")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-11-16T05:42:22.193Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
-public class Activity   {
-  @JsonProperty("end")
-  private LocalDate end = null;
+public class Activity   implements Serializable  {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6797472896832777343L;
 
-  @JsonProperty("name")
+private LocalDate end = null;
+
   private String name = null;
 
-  @JsonProperty("start")
   private LocalDate start = null;
 
   public Activity end(LocalDate end) {

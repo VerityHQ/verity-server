@@ -36,7 +36,7 @@ public class PersistenceConfig {
 	public LocalSessionFactoryBean sessionFactory() {
 		final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(restDataSource());
-		sessionFactory.setPackagesToScan(new String[] { "org.baeldung.persistence.model" });
+		sessionFactory.setPackagesToScan(new String[] { "org.baeldung.persistence.model", "io.swagger.model" });
 		sessionFactory.setHibernateProperties(hibernateProperties());
 
 		return sessionFactory;

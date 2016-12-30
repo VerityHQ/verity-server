@@ -1,87 +1,85 @@
 package io.swagger.api;
 
-import java.io.IOException;
+import io.swagger.model.Agent;
+import io.swagger.model.InlineResponse403;
+import io.swagger.model.InlineResponse404;
+import io.swagger.model.Person;
+import io.swagger.persistence.service.IAgentService;
+import io.swagger.persistence.service.IPersonService;
+import io.swagger.annotations.*;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-//import org.web3j.protocol.Web3j;
-//import org.web3j.protocol.core.methods.response.Web3ClientVersion;
-//import org.web3j.protocol.http.HttpService;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
-import io.swagger.annotations.ApiParam;
-import io.swagger.model.Agent;
-import io.swagger.model.Organization;
-import io.swagger.model.Person;
+import java.util.List;
 
-
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-11-16T05:42:22.193Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T20:12:14.806-08:00")
 
 @Controller
 public class PersonApiController implements PersonApi {
 
-    public ResponseEntity<Person> personGet(@ApiParam(value = "multi-hash id of person record on the blockchain", required = true) @RequestParam(value = "id", required = true) String id) {
-        Person person = this.getPerson();
-        return new ResponseEntity<Person>(person, HttpStatus.OK);
-    }
+	@Autowired
+	private IPersonService personService;
+	
+//	@Autowired
+//	private SessionFactory sessionFactory;
+//
+//	@Autowired
+//	private IAgentService agentService;
+//
+//	private Session session;
 
-	private Person getPerson() {
-		// do some magic!
-    	//get person from blockchain via web3j    	
-    	Person person = new Person();
-
-    	// https://github.com/web3j/web3j
-    	// 
-    	// http://stackoverflow.com/questions/33487896/eclipse-does-not-allow-access-to-static-interface-method-in-external-jar-from-an
-    	// have to use Java 8 for this to work. 
-    	// Set your Project.Properties.BuildPath to Java 8 
-    	// as well as the Compiler to Java 8
-    	// and the Project Properties -> Project Facets
-    	// start geth: geth --rpcapi personal,db,eth,net,web3 --rpc --testnet
-//    	Web3j web3 = Web3j.build(new HttpService());  // defaults to http://localhost:8545/
-//    	Web3ClientVersion web3ClientVersion;
-//		try {
-//			web3ClientVersion = web3.web3ClientVersion().send();
-//	    	String clientVersion = web3ClientVersion.getWeb3ClientVersion();
-//	    	person.setNickName(clientVersion);
-//	    	
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-    	person.setFirstName("Vitalik");
-    	person.setLastName("Buterin");
-    	
-    	Agent personAgent = new Agent();
-    	personAgent.setHashId("theAgentHashID#12345");
-    	personAgent.setKey("415059D5FDEC734D");
-    	personAgent.setUrl("https://keybase.io/dwking");
-    	person.setAgent(personAgent);
-    	
-    	Organization org = new Organization();
-    	org.setOrgName("grant");
-    	Agent orgAgent = new Agent();
-    	orgAgent.setHashId("organizationHashCode123123");
-    	orgAgent.setKey("someOrgKey");
-    	orgAgent.setUrl("ipfs://aweozdypyqwe4t/qewtypy");
-    	org.setAgent(orgAgent);
-
-    	person.setOrganization(org);
-		return person;
+	public ResponseEntity<String> createPerson(@ApiParam(value = "") @RequestBody Person body) {
+		if(personService.findByUuid(body.getAgent().getUuid())!=null){
+			//https://stackoverflow.com/questions/3825990/http-response-code-for-post-when-resource-already-exists?rq=1
+			return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		//create the UUID if it has not been provided (our blockchain contract will do this, and we will pass it along)
+		if(body.getUuid()==null){
+			body.setUuid(java.util.UUID.randomUUID().toString());
+		}
+		personService.create(body);
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 
-    public ResponseEntity<String> personPost(@ApiParam(value = ""  ) @RequestBody Person body) {
-        // create person and persist
-    	
-        return new ResponseEntity<String>(HttpStatus.OK);
-    }
+	public ResponseEntity<Person> getPerson(
+			@ApiParam(value = "multi-hash id of person record on the blockchain", required = true) 
+			@PathVariable("uuid") String uuid) {
 
-    public ResponseEntity<Void> personPut(@ApiParam(value = ""  ) @RequestBody Person body) {
-        // update person
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
+		//session = sessionFactory.openSession();
+		//Agent agent = agentService.findByUuid(uuid);
+		
+		Person person = personService.findByUuid(uuid);
+		//session.close();
+		return new ResponseEntity<Person>(person, HttpStatus.OK);
+	}
 
+	public ResponseEntity<Void> updatePerson(@ApiParam(value = "") @RequestBody Person body) {
+		Person person = personService.findByUuid(body.getUuid());
+		if(person == null){
+			return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		// notes on dealing with db ids - we are using UUIDs now for everything, but this was 
+		// not easy to understand and figure out so leaving it here.
+		// see 3.3 Merge at
+		// http://www.baeldung.com/hibernate-save-persist-update-merge-saveorupdate
+		// body is a transient instance of person, AbstractHibernateDao.update will do a merge.
+		// Because we are using db ids in the background and our JSON from our API
+		// has no db id field, we need to fill it in before we do the update, or hibernate merge
+		// will try to create a new person
+		// body.setUuid(person.getUuid());
+		
+		personService.update(body);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT); //OK but not returning any body content
+	}
 }

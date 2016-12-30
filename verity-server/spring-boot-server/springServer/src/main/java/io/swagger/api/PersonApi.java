@@ -1,5 +1,7 @@
 package io.swagger.api;
 
+import io.swagger.model.InlineResponse403;
+import io.swagger.model.InlineResponse404;
 import io.swagger.model.Person;
 
 import io.swagger.annotations.*;
@@ -15,41 +17,57 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-11-16T05:42:22.193Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-28T16:27:10.767-08:00")
 
 @Api(value = "person", description = "the person API")
 public interface PersonApi {
 
-    @ApiOperation(value = "get a person by id", notes = "", response = Person.class, authorizations = {
-        @Authorization(value = "Basic Auth")
-    }, tags={ "Core Methods", })
+    @ApiOperation(value = "create person", notes = "", response = String.class, tags={ "Person", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Status 200", response = Person.class) })
-    @RequestMapping(value = "/person",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<Person> personGet(@ApiParam(value = "multi-hash id of person record on the blockchain", required = true) @RequestParam(value = "id", required = true) String id);
-
-
-    @ApiOperation(value = "create person", notes = "", response = String.class, authorizations = {
-        @Authorization(value = "Basic Auth")
-    }, tags={ "Core Methods", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "muilti-hash blockchain id for the newly created person account", response = String.class) })
+        @ApiResponse(code = 201, message = "muilti-hash blockchain id for the newly created person account", response = String.class),
+        @ApiResponse(code = 401, message = "", response = String.class),
+        @ApiResponse(code = 403, message = "", response = String.class),
+        @ApiResponse(code = 404, message = "", response = String.class),
+        @ApiResponse(code = 422, message = "", response = String.class),
+        @ApiResponse(code = 500, message = "", response = String.class) })
     @RequestMapping(value = "/person",
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<String> personPost(@ApiParam(value = ""  ) @RequestBody Person body);
+    ResponseEntity<String> createPerson(
+
+@ApiParam(value = ""  ) @RequestBody Person body
+
+);
 
 
-    @ApiOperation(value = "update person", notes = "", response = Void.class, authorizations = {
-        @Authorization(value = "Basic Auth")
-    }, tags={ "Core Methods", })
+    @ApiOperation(value = "get Person", notes = "", response = Person.class, tags={ "Person", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Status 200", response = Void.class) })
+        @ApiResponse(code = 200, message = "Status 200", response = Person.class) })
+    @RequestMapping(value = "/person/{uuid}",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<Person> getPerson(
+@ApiParam(value = "multi-hash id of person record on the blockchain",required=true ) @PathVariable("uuid") String uuid
+
+
+);
+
+
+    @ApiOperation(value = "update person", notes = "", response = Void.class, tags={ "Person", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Status 200", response = Void.class),
+        @ApiResponse(code = 401, message = "", response = Void.class),
+        @ApiResponse(code = 403, message = "", response = Void.class),
+        @ApiResponse(code = 404, message = "", response = Void.class),
+        @ApiResponse(code = 422, message = "", response = Void.class),
+        @ApiResponse(code = 500, message = "", response = Void.class) })
     @RequestMapping(value = "/person",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> personPut(@ApiParam(value = ""  ) @RequestBody Person body);
+    ResponseEntity<Void> updatePerson(
+
+@ApiParam(value = ""  ) @RequestBody Person body
+
+);
 
 }
