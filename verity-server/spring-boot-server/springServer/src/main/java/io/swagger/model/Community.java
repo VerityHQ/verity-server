@@ -1,9 +1,15 @@
 package io.swagger.model;
 
 import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Agent;
 import io.swagger.model.Community;
@@ -17,41 +23,40 @@ import java.util.List;
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
+@Entity
 public class Community implements Serializable {
 
 	private static final long serialVersionUID = -3185192700794511303L;
 
-	private List<Agent> agents = new ArrayList<Agent>();
+	private Agent agent = null;
 
 	private String communityName = null;
 
+	@Id
 	private String uuid = null;
 
+	@Column(name = "sub_community")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ElementCollection(targetClass = Community.class)
 	private List<Community> subCommunities = new ArrayList<Community>();
 
-	public Community agents(List<Agent> agents) {
-		this.agents = agents;
-		return this;
-	}
-
-	public Community addAgentsItem(Agent agentsItem) {
-		this.agents.add(agentsItem);
+	public Community agent(Agent agent) {
+		this.agent = agent;
 		return this;
 	}
 
 	/**
-	 * Community agents. List of agents that may operate on behalf of the
-	 * community.
+	 * Get agent
 	 * 
-	 * @return agents
+	 * @return agent
 	 **/
-	@ApiModelProperty(required = true, value = "Community agents. List of agents that may operate on behalf of the community.")
-	public List<Agent> getAgents() {
-		return agents;
+	@ApiModelProperty(required = true, value = "")
+	public Agent getAgent() {
+		return agent;
 	}
 
-	public void setAgents(List<Agent> agents) {
-		this.agents = agents;
+	public void setAgent(Agent agent) {
+		this.agent = agent;
 	}
 
 	public Community communityName(String communityName) {
@@ -125,15 +130,14 @@ public class Community implements Serializable {
 			return false;
 		}
 		Community community = (Community) o;
-		return Objects.equals(this.agents, community.agents)
-				&& Objects.equals(this.communityName, community.communityName)
-				&& Objects.equals(this.uuid, community.uuid)
-				&& Objects.equals(this.subCommunities, community.subCommunities);
+		return Objects.equals(this.uuid, community.uuid) && Objects.equals(this.communityName, community.communityName)
+				&& Objects.equals(this.subCommunities, community.subCommunities)
+				&& Objects.equals(this.agent, community.agent);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(agents, communityName, uuid, subCommunities);
+		return Objects.hash(uuid, communityName, subCommunities, agent);
 	}
 
 	@Override
@@ -141,10 +145,10 @@ public class Community implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Community {\n");
 
-		sb.append("    agents: ").append(toIndentedString(agents)).append("\n");
-		sb.append("    communityName: ").append(toIndentedString(communityName)).append("\n");
 		sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
+		sb.append("    communityName: ").append(toIndentedString(communityName)).append("\n");
 		sb.append("    subCommunities: ").append(toIndentedString(subCommunities)).append("\n");
+		sb.append("    agent: ").append(toIndentedString(agent)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

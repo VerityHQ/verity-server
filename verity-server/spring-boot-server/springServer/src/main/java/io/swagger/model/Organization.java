@@ -2,151 +2,181 @@ package io.swagger.model;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Agent;
 import io.swagger.model.Community;
 import io.swagger.model.Content;
 
-
-
-
 /**
  * Organization
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-30T13:26:20.711-08:00")
 
-public class Organization   implements Serializable  {
-  /**
+@Entity
+public class Organization implements Serializable {
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4506791080326601476L;
+	private static final long serialVersionUID = 1616396014713721397L;
 
-private String orgName = null;
+	@Id
+	private String uuid = null;
 
-  private Agent agent = null;
+	private String orgName = null;
+	
+	@OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
+			CascadeType.DETACH })
+	@JoinColumn(name = "agent_uuid", unique = true) // was agent_fk
+	private Agent agent = null;
 
-  private Content content = null;
+	private Content content = null;
 
-  private Community community = null;
+	private Community community = null;
 
-  public Organization orgName(String orgName) {
-    this.orgName = orgName;
-    return this;
-  }
+	public Organization uuid(String uuid) {
+		this.uuid = uuid;
+		return this;
+	}
 
-   /**
-   * Get orgName
-   * @return orgName
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public String getOrgName() {
-    return orgName;
-  }
+	/**
+	 * UUID, GUID, HASH, MultiHash or ProxyContract Address that represents this
+	 * object
+	 * 
+	 * @return uuid
+	 **/
+	@ApiModelProperty(required = true, value = "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object")
+	public String getUuid() {
+		return uuid;
+	}
 
-  public void setOrgName(String orgName) {
-    this.orgName = orgName;
-  }
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
-  public Organization agent(Agent agent) {
-    this.agent = agent;
-    return this;
-  }
+	public Organization orgName(String orgName) {
+		this.orgName = orgName;
+		return this;
+	}
 
-   /**
-   * Get agent
-   * @return agent
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public Agent getAgent() {
-    return agent;
-  }
+	/**
+	 * Get orgName
+	 * 
+	 * @return orgName
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	public String getOrgName() {
+		return orgName;
+	}
 
-  public void setAgent(Agent agent) {
-    this.agent = agent;
-  }
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
 
-  public Organization content(Content content) {
-    this.content = content;
-    return this;
-  }
+	public Organization agent(Agent agent) {
+		this.agent = agent;
+		return this;
+	}
 
-   /**
-   * Get content
-   * @return content
-  **/
-  @ApiModelProperty(value = "")
-  public Content getContent() {
-    return content;
-  }
+	/**
+	 * Get agent
+	 * 
+	 * @return agent
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	public Agent getAgent() {
+		return agent;
+	}
 
-  public void setContent(Content content) {
-    this.content = content;
-  }
+	public void setAgent(Agent agent) {
+		this.agent = agent;
+	}
 
-  public Organization community(Community community) {
-    this.community = community;
-    return this;
-  }
+	public Organization content(Content content) {
+		this.content = content;
+		return this;
+	}
 
-   /**
-   * Get community
-   * @return community
-  **/
-  @ApiModelProperty(value = "")
-  public Community getCommunity() {
-    return community;
-  }
+	/**
+	 * Get content
+	 * 
+	 * @return content
+	 **/
+	@ApiModelProperty(value = "")
+	public Content getContent() {
+		return content;
+	}
 
-  public void setCommunity(Community community) {
-    this.community = community;
-  }
+	public void setContent(Content content) {
+		this.content = content;
+	}
 
+	public Organization community(Community community) {
+		this.community = community;
+		return this;
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Organization organization = (Organization) o;
-    return Objects.equals(this.orgName, organization.orgName) &&
-        Objects.equals(this.agent, organization.agent) &&
-        Objects.equals(this.content, organization.content) &&
-        Objects.equals(this.community, organization.community);
-  }
+	/**
+	 * Get community
+	 * 
+	 * @return community
+	 **/
+	@ApiModelProperty(value = "")
+	public Community getCommunity() {
+		return community;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(orgName, agent, content, community);
-  }
+	public void setCommunity(Community community) {
+		this.community = community;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Organization {\n");
-    
-    sb.append("    orgName: ").append(toIndentedString(orgName)).append("\n");
-    sb.append("    agent: ").append(toIndentedString(agent)).append("\n");
-    sb.append("    content: ").append(toIndentedString(content)).append("\n");
-    sb.append("    community: ").append(toIndentedString(community)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Organization organization = (Organization) o;
+		return Objects.equals(this.uuid, organization.uuid) && Objects.equals(this.orgName, organization.orgName)
+				&& Objects.equals(this.agent, organization.agent) && Objects.equals(this.content, organization.content)
+				&& Objects.equals(this.community, organization.community);
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	@Override
+	public int hashCode() {
+		return Objects.hash(uuid, orgName, agent, content, community);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class Organization {\n");
+
+		sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
+		sb.append("    orgName: ").append(toIndentedString(orgName)).append("\n");
+		sb.append("    agent: ").append(toIndentedString(agent)).append("\n");
+		sb.append("    content: ").append(toIndentedString(content)).append("\n");
+		sb.append("    community: ").append(toIndentedString(community)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
-

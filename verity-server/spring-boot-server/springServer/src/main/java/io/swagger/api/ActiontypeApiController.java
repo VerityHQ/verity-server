@@ -1,54 +1,56 @@
 package io.swagger.api;
 
-import io.swagger.model.InlineResponse403;
-import io.swagger.model.InlineResponse404;
+import io.swagger.persistence.service.IActionTypeService;
 import io.swagger.model.ActionType;
 
 import io.swagger.annotations.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-28T16:27:10.767-08:00")
 
 @Controller
 public class ActiontypeApiController implements ActiontypeApi {
 
-    public ResponseEntity<Void> createActiontype(
+	@Autowired
+	private IActionTypeService actionTypeService;
+	
+	
+	public ResponseEntity<ActionType> createActiontype(@ApiParam(value = "") @RequestBody ActionType body) {
+		
+		if(actionTypeService.findByUuid(body.getUuid())!=null){
+			return new ResponseEntity<ActionType>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		//create the UUID if it has not been provided (our blockchain contract will do this, and we will pass it along)
+		if(body.getUuid()==null){
+			body.setUuid(java.util.UUID.randomUUID().toString());
+		}
+		actionTypeService.create(body);
+		//return ActionType with newly generated UUID.
+		return new ResponseEntity<ActionType>(body, HttpStatus.OK);
+	}
 
-@ApiParam(value = ""  ) @RequestBody ActionType body
+	public ResponseEntity<ActionType> getActiontype(@ApiParam(value = "", required = true) @PathVariable("uuid") String uuid) {
+		ActionType actionType = actionTypeService.findByUuid(uuid);
+		return new ResponseEntity<ActionType>(actionType, HttpStatus.OK);
+	}
 
-) {
-        // do some magic!
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
+	public ResponseEntity<Void> updateActiontype(
 
-    public ResponseEntity<ActionType> getActiontype(
-@ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid
+			@ApiParam(value = "") @RequestBody ActionType body
 
-
-) {
-        // do some magic!
-        return new ResponseEntity<ActionType>(HttpStatus.OK);
-    }
-
-    public ResponseEntity<Void> updateActiontype(
-
-@ApiParam(value = ""  ) @RequestBody ActionType body
-
-) {
-        // do some magic!
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
+	) {
+		if(actionTypeService.findByUuid(body.getUuid())==null){
+			return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		//TODO: is it appropriate to modify actionType after is has been in use?
+		actionTypeService.update(body); 
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
 
 }

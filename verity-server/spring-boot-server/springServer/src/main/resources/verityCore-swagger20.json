@@ -1,0 +1,1724 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.1",
+        "title": "VerityReputation",
+        "description": "This is a simple Verity reputation API. You can find out more about Verity at <a href='http://getcrystal.net'>http://getcrystal.net</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md This is a simple Verity reputation API. You can find out more about Verity at <a href='http://getcrystal.net'>http://getcrystal.net</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md"
+    },
+    "host": "springserver.cfapps.io",
+    "basePath": "/verity/core",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "securityDefinitions": {
+        "verity_auth_token": {
+            "name": "verity_auth_token",
+            "type": "apiKey",
+            "in": "query"
+        },
+        "Basic Auth": {
+            "type": "basic",
+            "description": "Basic Authentication for now while we build and test the api"
+        }
+    },
+    "paths": {
+        "/community": {
+            "post": {
+                "operationId": "createCommunity",
+                "summary": "create a Community",
+                "tags": [
+                    "Community"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Community"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Community"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "createCommunity",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            },
+            "put": {
+                "operationId": "updateCommunity",
+                "summary": "update a community",
+                "tags": [
+                    "Community"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Community"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "updateCommunity",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            }
+        },
+        "/community/{uuid}": {
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getCommunity",
+                "summary": "get community",
+                "tags": [
+                    "Community"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Community"
+                        }
+                    }
+                },
+                "x-stoplight": {
+                    "id": "getCommunity",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            }
+        },
+        "/valueaction": {
+            "post": {
+                "operationId": "createValueAction",
+                "summary": "create ValueAction",
+                "tags": [
+                    "ValueAction"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/valueaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/valueaction"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "createValueAction",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            },
+            "put": {
+                "operationId": "updateValueAction",
+                "summary": "update ValueAction",
+                "tags": [
+                    "ValueAction"
+                ],
+                "description": "Updating the value of the ValueAction will cause any calculations in the future to use this new value, changing the rewards retroactivly. If you want to prohibit these types of retroactive changes, set the archived bit to true and create a new ValueAction and use it going forward.",
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/valueaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "updateValueAction",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            }
+        },
+        "/valueaction/{uuid}": {
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getValueAction",
+                "summary": "get ValueAction",
+                "tags": [
+                    "ValueAction"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/valueaction"
+                        }
+                    }
+                },
+                "x-stoplight": {
+                    "id": "getValueAction",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "archiveValueAction",
+                "summary": "archive ValueAction",
+                "tags": [
+                    "ValueAction"
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "archiveValueAction",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            }
+        },
+        "/actiontype": {
+            "post": {
+                "operationId": "createActiontype",
+                "summary": "create ActionType",
+                "tags": [
+                    "ActionType"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ActionType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Status 200",
+                        "schema": {
+                            "$ref": "#/definitions/ActionType"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "createActiontype",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            },
+            "put": {
+                "operationId": "updateActiontype",
+                "summary": "update ActionType",
+                "tags": [
+                    "ActionType"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ActionType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status 200"
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "updateActiontype",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "/actiontype/{uuid}": {
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getActiontype",
+                "summary": "get ActionType",
+                "tags": [
+                    "ActionType"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status 200",
+                        "schema": {
+                            "$ref": "#/definitions/ActionType"
+                        }
+                    }
+                },
+                "x-stoplight": {
+                    "id": "getActiontype",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "/organization": {
+            "post": {
+                "operationId": "createOrganization",
+                "summary": "create an Organization",
+                "tags": [
+                    "Organization"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Organization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Organization"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "description": "Status 500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "createOrganization",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            },
+            "put": {
+                "operationId": "updateOrganization",
+                "summary": "update Organization",
+                "tags": [
+                    "Organization"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Organization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "updateOrganization",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            }
+        },
+        "/organization/{uuid}": {
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getOrganization",
+                "summary": "get organization",
+                "tags": [
+                    "Organization"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status 200",
+                        "schema": {
+                            "$ref": "#/definitions/Organization"
+                        }
+                    }
+                },
+                "x-stoplight": {
+                    "id": "getOrganization",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "/person": {
+            "post": {
+                "operationId": "createPerson",
+                "summary": "create person",
+                "tags": [
+                    "Person"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "muilti-hash blockchain id for the newly created person account",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "createPerson",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            },
+            "put": {
+                "operationId": "updatePerson",
+                "summary": "update person",
+                "tags": [
+                    "Person"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status 200"
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "updatePerson",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "/person/{uuid}": {
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "description": "multi-hash id of person record on the blockchain",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getPerson",
+                "summary": "get Person",
+                "tags": [
+                    "Person"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status 200",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    }
+                },
+                "x-stoplight": {
+                    "id": "getPerson",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "/transaction": {
+            "post": {
+                "operationId": "createTransaction",
+                "summary": "create transaction",
+                "tags": [
+                    "Transaction"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Transaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "hash - Ethereum address of the transaction. For demo / proof of concept this will be a db id or offchain hash.",
+                        "schema": {
+                            "$ref": "#/definitions/Transaction"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "createTransaction",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "/transaction/{targetAgentId}": {
+            "parameters": [
+                {
+                    "name": "targetAgentId",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getTransactionByTargetAgentId",
+                "summary": "get Transactions by targetAgentId",
+                "tags": [
+                    "Transaction"
+                ],
+                "description": "TODO:consider paginating results in similar way to reddit API https://www.reddit.com/dev/api/",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Transaction"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "getTransactionByTargetAgentId",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            }
+        },
+        "/transaction/{targetAgentId}/{fromdate}/{todate}": {
+            "parameters": [
+                {
+                    "name": "targetAgentId",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "fromdate",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "todate",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getTransactionsByDates",
+                "summary": "get Transactions by Dates",
+                "tags": [
+                    "Transaction"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Transaction"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "getTransactionsByDates",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            }
+        },
+        "/transaction/{targetAgentId}/{valueActionId}": {
+            "parameters": [
+                {
+                    "name": "targetAgentId",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "valueActionId",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getTransactionByTargetAgentIdByValueActionId",
+                "summary": "get transactions by targetAgent and valueAction",
+                "tags": [
+                    "Transaction"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "getTransactionByTargetAgentIdByValueActionId",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            }
+        }
+    },
+    "parameters": {
+        "trait:checkGas:checkGas": {
+            "name": "checkGas",
+            "in": "header",
+            "type": "string"
+        }
+    },
+    "responses": {
+        "trait:standardErrors:401": {
+            "description": "",
+            "schema": {
+                "type": "object"
+            }
+        },
+        "trait:standardErrors:403": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "message"
+                ]
+            }
+        },
+        "trait:standardErrors:404": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "error": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "status",
+                    "error"
+                ]
+            }
+        },
+        "trait:standardErrors:409": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "description": "409 Conflict. https://tools.ietf.org/html/rfc7231#section-6.5.8"
+            }
+        },
+        "trait:standardErrors:422": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "description": "422 Unprocessable Entity. http://tools.ietf.org/html/rfc4918#section-11.2"
+            }
+        },
+        "trait:standardErrors:500": {
+            "description": "",
+            "schema": {
+                "type": "object"
+            }
+        }
+    },
+    "definitions": {
+        "ActionType": {
+            "type": "object",
+            "description": "represents the type of action performed when giving reputation, e.g. upvote, points, rating",
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
+                },
+                "actionName": {
+                    "type": "string",
+                    "description": "Can represent any type of reputation as a verb. Use verb to describe act of giving or rating, e.g. upvote, give points, tagged, rate."
+                },
+                "communityId": {
+                    "type": "string",
+                    "description": "Community that defined this ActionType. Multi-hash or JSON-LD"
+                },
+                "defaultPoints": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "points to award in default case"
+                },
+                "content": {
+                    "type": "string",
+                    "description": "Describes this action in detail. Formatted as JSON or JSON:LD. Should include the ActionName along with a longer description or link to more content."
+                }
+            },
+            "required": [
+                "actionName",
+                "communityId"
+            ],
+            "x-stoplight": {
+                "id": "ActionType",
+                "name": "ActionType",
+                "public": true
+            }
+        },
+        "Community": {
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
+                },
+                "communityName": {
+                    "type": "string"
+                },
+                "subCommunities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Community"
+                    }
+                },
+                "agent": {
+                    "$ref": "#/definitions/Agent"
+                }
+            },
+            "required": [
+                "communityName",
+                "agent"
+            ],
+            "x-stoplight": {
+                "id": "Community",
+                "name": "Community",
+                "public": true
+            }
+        },
+        "Person": {
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "nickName": {
+                    "type": "string"
+                },
+                "organizationId": {
+                    "type": "string"
+                },
+                "agent": {
+                    "$ref": "#/definitions/Agent"
+                }
+            },
+            "required": [
+                "uuid",
+                "nickName",
+                "agent"
+            ],
+            "x-stoplight": {
+                "id": "Person",
+                "name": "Person",
+                "public": true
+            }
+        },
+        "Activity": {
+            "type": "object",
+            "required": [
+                "end",
+                "name",
+                "start"
+            ],
+            "properties": {
+                "end": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Could correspond to a block number in the blockchain"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "start": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Could correspond to a block number in the blockchain"
+                }
+            },
+            "description": "Activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities. \n\nMaps to https://www.w3.org/TR/prov-o/  prov:Activity",
+            "x-stoplight": {
+                "id": "Activity",
+                "name": "Activity",
+                "public": true
+            }
+        },
+        "SoftwareAgent": {
+            "type": "object",
+            "description": "Bot, smart contract, or software that has agency in the reputation ecosystem (can give and receive reputation) and like other agents has a public key that can sign attestations. One such use would be for a crawler that pulls in attestations (ratings) from sites such as IMDB and as an agent of a well known organization, signs the attestations and moves them into the Verity system, vouching for their authenticity.",
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
+                },
+                "apiUrl": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "ownedBy": {
+                    "$ref": "#/definitions/Agent"
+                }
+            },
+            "required": [
+                "uuid",
+                "apiUrl",
+                "name"
+            ],
+            "x-stoplight": {
+                "id": "SoftwareAgent",
+                "name": "SoftwareAgent",
+                "public": true
+            }
+        },
+        "Transaction": {
+            "type": "object",
+            "description": "A fundamental unit of reputation value transfer, attestation or claim. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.\n\nSimilar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md",
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
+                },
+                "valueActionId": {
+                    "type": "string",
+                    "description": "link that describes the way this score was derived, or the community feature that affects the way the value will be interpreted. Could be a link or content addressable graph pointing to a richer source of description or information.",
+                    "format": "uuid"
+                },
+                "sourceAgentId": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "targetAgentId": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "timeStamp": {
+                    "type": "string",
+                    "description": "timestamp or block height of blockchain at time of creation. Should be self-describing as to format and meaning.",
+                    "format": "date-time"
+                },
+                "value": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "value (points) awarded at the time of the transaction. Immutable. Use ValueActionId to lookup the 'current' value if you want to calculate points based on the latest value as apposed to the value at time transaction was created. This allows for 'retroactive' adjustment of points."
+                }
+            },
+            "required": [
+                "uuid",
+                "valueActionId",
+                "sourceAgentId",
+                "targetAgentId"
+            ],
+            "x-stoplight": {
+                "id": "Transaction",
+                "name": "Transaction",
+                "public": true
+            }
+        },
+        "Content": {
+            "type": "object",
+            "description": "Self describing content (document object model, JSON-LD) A physical, digital, conceptual, or other kind of thing with some fixed aspects; entities may be real or imaginary.\n\nMaps to https://www.w3.org/TR/prov-o/  prov:Entity",
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH or MultiHash that represents this object"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "name or tag"
+                },
+                "body": {
+                    "type": "string",
+                    "description": "content as text or JSON"
+                },
+                "nodes": {
+                    "type": "array",
+                    "description": "child nodes",
+                    "items": {
+                        "$ref": "#/definitions/Content"
+                    }
+                }
+            },
+            "required": [
+                "uuid",
+                "name"
+            ],
+            "x-stoplight": {
+                "id": "Content",
+                "name": "Content",
+                "public": true
+            }
+        },
+        "Agent": {
+            "type": "object",
+            "description": "Agent is something that bears some form of responsibility for changing state in the Verity system. An Agent could be a smart contract, person, organization, device, or anything the owns the Private Key half of the publicKey of the Agent and controlls the accounts used for attestationURLs.\n\nMaps to  https://www.w3.org/TR/prov-o/#Agent  prov:Agent",
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
+                },
+                "publicKey": {
+                    "type": "string"
+                },
+                "attestationUrls": {
+                    "description": "zero or more attestation URLs (twitter, FB, blog) links to proof of account ownership, a post with public key id of owner.  Signing the attribute with the\nVerity signing key creates a claim that the Verity identity controls the account.\nExamples at: https://keybase.io/\nHow to use Oracalize to create attestations: http://docs.oraclize.it/#datasources-url",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "uuid",
+                "publicKey"
+            ],
+            "x-stoplight": {
+                "id": "Agent",
+                "name": "Agent",
+                "public": true
+            }
+        },
+        "Organization": {
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
+                },
+                "orgName": {
+                    "type": "string"
+                },
+                "agent": {
+                    "$ref": "#/definitions/Agent"
+                },
+                "content": {
+                    "$ref": "#/definitions/Content"
+                },
+                "community": {
+                    "$ref": "#/definitions/Community"
+                }
+            },
+            "required": [
+                "uuid",
+                "orgName",
+                "agent"
+            ],
+            "x-stoplight": {
+                "id": "Organization",
+                "name": "Organization",
+                "public": true
+            }
+        },
+        "valueaction": {
+            "type": "object",
+            "description": "ValueAction describes the action taken and the associated value (points) awarded. Value can be retroactivly changed to adjust point distribution after the transaction has been recorded.",
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Describes this action. Formatted as JSON or JSON:LD. Should include a short 'tag' and optionally a longer description or link to more content."
+                },
+                "value": {
+                    "type": "integer",
+                    "description": "the value awarded. Can be changed at any time. Changes to value will affect all transactions to date that have been created with this ValueAction."
+                },
+                "actionTypeId": {
+                    "type": "string",
+                    "description": "the  UUID of the actionType"
+                },
+                "archived": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "indicates this ValueAction is frozen and read-only. No further changes to 'value' or any other fields can be made."
+                }
+            },
+            "required": [
+                "uuid",
+                "description",
+                "actionTypeId",
+                "archived"
+            ],
+            "x-stoplight": {
+                "id": "valueaction",
+                "name": "ValueAction",
+                "public": true
+            }
+        },
+        "uuid": {
+            "type": "string",
+            "description": "UUID",
+            "minLength": 20,
+            "maxLength": 200,
+            "x-stoplight": {
+                "id": "uuid",
+                "name": "UUID",
+                "public": true
+            }
+        }
+    },
+    "x-stoplight": {
+        "beforeScript": "",
+        "afterScript": "",
+        "version": {
+            "groups": {
+                "utilFuncs": [],
+                "docs": [
+                    {
+                        "name": "Model Primatives",
+                        "items": [],
+                        "divider": true
+                    },
+                    {
+                        "name": "Community",
+                        "items": [
+                            {
+                                "type": "endpoints",
+                                "_id": "createCommunity"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "getCommunity"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "updateCommunity"
+                            }
+                        ],
+                        "divider": false
+                    },
+                    {
+                        "name": "ValueAction",
+                        "items": [
+                            {
+                                "type": "endpoints",
+                                "_id": "createValueAction"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "getValueAction"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "updateValueAction"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "archiveValueAction"
+                            }
+                        ],
+                        "divider": false
+                    },
+                    {
+                        "divider": false,
+                        "name": "ActionType",
+                        "items": [
+                            {
+                                "_id": "createActiontype",
+                                "type": "endpoints"
+                            },
+                            {
+                                "_id": "getActiontype",
+                                "type": "endpoints"
+                            },
+                            {
+                                "_id": "updateActiontype",
+                                "type": "endpoints"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Organization",
+                        "items": [
+                            {
+                                "_id": "createOrganization",
+                                "type": "endpoints"
+                            },
+                            {
+                                "_id": "getOrganization",
+                                "type": "endpoints"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "updateOrganization"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Person",
+                        "items": [
+                            {
+                                "_id": "createPerson",
+                                "type": "endpoints"
+                            },
+                            {
+                                "_id": "getPerson",
+                                "type": "endpoints"
+                            },
+                            {
+                                "_id": "updatePerson",
+                                "type": "endpoints"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Transaction",
+                        "items": [
+                            {
+                                "_id": "createTransaction",
+                                "type": "endpoints"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "getTransaction"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "getTransactionsByDates"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "getTransactionByTargetAgentId"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "getTransactionByTargetAgentIdByValueActionId"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Models",
+                        "description": "Models make up the core input and ouput structures in this API. They are used in endpoint request and response bodies.",
+                        "items": [
+                            {
+                                "type": "schemas",
+                                "_id": "uuid"
+                            },
+                            {
+                                "_id": "Organization",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "Community",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "Person",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "SoftwareAgent",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "Agent",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "ActionType",
+                                "type": "schemas"
+                            },
+                            {
+                                "type": "schemas",
+                                "_id": "valueaction"
+                            },
+                            {
+                                "_id": "Transaction",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "Content",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "Activity",
+                                "type": "schemas"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Traits",
+                        "items": [
+                            {
+                                "type": "traits",
+                                "_id": "checkGas"
+                            },
+                            {
+                                "type": "traits",
+                                "_id": "standardErrors"
+                            }
+                        ],
+                        "divider": false
+                    }
+                ],
+                "savedEntries": []
+            }
+        },
+        "functions": {},
+        "textSections": {},
+        "mock": {
+            "enabled": false,
+            "dynamic": false
+        }
+    },
+    "x-tests": {
+        "sqPtB4EEFK2WL6ijd": {
+            "id": "sqPtB4EEFK2WL6ijd",
+            "name": "getPersonReturnsPerson",
+            "initialVariables": {
+                "host": "http://localhost:8080",
+                "basePath": "/verity/core",
+                "personA_uuid": "1u91uj-qrj10934581581-32589-1349058"
+            },
+            "steps": [
+                {
+                    "id": "h3tR4cp433vpSh2R2",
+                    "name": "get Person",
+                    "capture": {
+                        "body": [],
+                        "headers": []
+                    },
+                    "request": {
+                        "valid": 2,
+                        "transformed": false,
+                        "method": "get",
+                        "url": "<<host>>/person/<<personA_uuid>>",
+                        "pathParams": [],
+                        "headers": [],
+                        "queryString": [],
+                        "cookies": [],
+                        "postData": {},
+                        "authentication": {},
+                        "headersSize": -1,
+                        "bodySize": -1
+                    },
+                    "assertions": [
+                        {
+                            "location": "response.code",
+                            "op": "eq",
+                            "expected": 200
+                        },
+                        {
+                            "location": "response.body",
+                            "op": "validate.pass",
+                            "match": 200
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

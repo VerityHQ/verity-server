@@ -2,8 +2,10 @@ package io.swagger.model;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -19,12 +21,14 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "represents the type of action performed when giving reputation, e.g. upvote, points, rating")
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
+@Entity
 public class ActionType  implements Serializable {
   /**
 	 * 
 	 */
 	private static final long serialVersionUID = 6932039472963754277L;
 
+	@Id
 	private String uuid = null;
 
   private String actionName = null;
@@ -35,6 +39,7 @@ public class ActionType  implements Serializable {
 
   private String content = null;
 
+  
   public ActionType uuid(String uuid) {
     this.uuid = uuid;
     return this;
