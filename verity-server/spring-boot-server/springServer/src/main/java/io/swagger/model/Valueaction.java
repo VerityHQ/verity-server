@@ -2,6 +2,11 @@ package io.swagger.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
@@ -19,12 +24,15 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "ValueAction describes the action taken and the associated value (points) awarded. Value can be retroactivly changed to adjust point distribution after the transaction has been recorded.")
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
+@Entity
 public class Valueaction  implements Serializable   {
   /**
 	 * 
 	 */
 	private static final long serialVersionUID = -6806102713677972879L;
-
+	
+	@Id
+	@Column(name="uuid",unique=true, nullable=false )
 private String uuid = null;
 
   private String description = null;
@@ -34,7 +42,7 @@ private String uuid = null;
   private String actionTypeId = null;
 
   private Boolean archived = false;
-
+  
   public Valueaction uuid(String uuid) {
     this.uuid = uuid;
     return this;
