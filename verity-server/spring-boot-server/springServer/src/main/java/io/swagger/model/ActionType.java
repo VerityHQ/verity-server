@@ -3,6 +3,7 @@ package io.swagger.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -29,6 +30,7 @@ public class ActionType  implements Serializable {
 	private static final long serialVersionUID = 6932039472963754277L;
 
 	@Id
+	@Column(name="uuid",unique=true, nullable=false )
 	private String uuid = null;
 
   private String actionName = null;

@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-30T18:38:33.176-08:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-01T16:45:12.037-08:00")
 
 @Api(value = "community", description = "the community API")
 public interface CommunityApi {
@@ -32,6 +32,7 @@ public interface CommunityApi {
         @ApiResponse(code = 422, message = "", response = Community.class),
         @ApiResponse(code = 500, message = "", response = Community.class) })
     @RequestMapping(value = "/community",
+        produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<Community> createCommunity(

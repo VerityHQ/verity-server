@@ -23,13 +23,13 @@ public class ActiontypeApiController implements ActiontypeApi {
 	
 	public ResponseEntity<ActionType> createActiontype(@ApiParam(value = "") @RequestBody ActionType body) {
 		
-		if(actionTypeService.findByUuid(body.getUuid())!=null){
+		if (body.getUuid().isEmpty()) {
+			//create the UUID if it has not been provided (our blockchain contract will do this, and we will pass it along)
+			body.setUuid(java.util.UUID.randomUUID().toString());
+		}else if(actionTypeService.findByUuid(body.getUuid())!=null){
 			return new ResponseEntity<ActionType>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-		//create the UUID if it has not been provided (our blockchain contract will do this, and we will pass it along)
-		if(body.getUuid()==null){
-			body.setUuid(java.util.UUID.randomUUID().toString());
-		}
+		
 		actionTypeService.create(body);
 		//return ActionType with newly generated UUID.
 		return new ResponseEntity<ActionType>(body, HttpStatus.OK);

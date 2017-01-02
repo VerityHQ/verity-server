@@ -2,10 +2,13 @@ package io.swagger.model;
 
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -28,6 +31,9 @@ public class Community implements Serializable {
 
 	private static final long serialVersionUID = -3185192700794511303L;
 
+	@OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
+			CascadeType.DETACH })
+	@JoinColumn(name = "agent_uuid", unique = true) // was agent_fk
 	private Agent agent = null;
 
 	private String communityName = null;
