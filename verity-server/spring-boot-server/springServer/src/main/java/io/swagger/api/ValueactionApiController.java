@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.model.ActionType;
 import io.swagger.model.Valueaction;
 import io.swagger.persistence.service.IValueActionService;
+import site.verity.web.util.RestPreconditions;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +23,12 @@ public class ValueactionApiController implements ValueactionApi {
 	private IValueActionService valueActionService;
 
 	public ResponseEntity<Valueaction> createValueAction(@ApiParam(value = "") @RequestBody Valueaction body) {
-		Assert.notNull(valueActionService);
-		Assert.notNull(body.getUuid(),
-				"uuid is required. It can be empty if no uuid is supplied, but it cannot be null.");
-		Assert.notNull(body.getActionTypeId(), "actionTypeId is required and cannot be null");
+		RestPreconditions.checkRequestElementNotNull(body.getUuid(), body.getClass().getSimpleName()
+				+ "UUID is required. Either set the UUID or send an empty string to create a new uuid.");
+		RestPreconditions.checkRequestElementNotNull(body.getActionTypeId(), body.getClass().getSimpleName()
+				+ "actionTypeId is required and cannot be null");
+
+		
 		if (body.getUuid().isEmpty()) {
 			// create the UUID if it has not been provided (our blockchain
 			// contract will do this, and we will pass it along)
@@ -39,6 +43,7 @@ public class ValueactionApiController implements ValueactionApi {
 
 	public ResponseEntity<Valueaction> getValueAction( @ApiParam(value = "", required = true) @PathVariable("uuid") String uuid ) {
 		Valueaction valueAction = valueActionService.findByUuid(uuid);
+		RestPreconditions.checkResourceFound(valueAction != null);
 		return new ResponseEntity<Valueaction>(valueAction, HttpStatus.OK);
 	}
 

@@ -4,6 +4,7 @@ import io.swagger.model.Community;
 import io.swagger.persistence.service.IAgentService;
 import io.swagger.persistence.service.ICommunityService;
 import site.verity.web.exception.UnprocessableEntityException;
+import site.verity.web.util.RestPreconditions;
 import io.swagger.annotations.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,7 @@ public class CommunityApiController implements CommunityApi {
 
 	public ResponseEntity<Community> getCommunity(@ApiParam(value = "", required = true) @PathVariable("uuid") String uuid) {
 		Community community = communityService.findByUuid(uuid);
+		RestPreconditions.checkResourceFound(community != null);
 		return new ResponseEntity<Community>(community, HttpStatus.OK);
 
 	}

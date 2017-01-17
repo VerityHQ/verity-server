@@ -1,6 +1,5 @@
 package io.swagger.api;
 
-import io.swagger.model.Agent;
 import io.swagger.model.Person;
 import io.swagger.persistence.service.IAgentService;
 import io.swagger.persistence.service.IPersonService;
@@ -35,7 +34,6 @@ public class PersonApiController implements PersonApi {
 	 * 
 	 * @see io.swagger.api.PersonApi#createPerson(io.swagger.model.Person)
 	 */
-
 
 	public ResponseEntity<Person> createPerson(@ApiParam(value = "") @RequestBody Person body) {
 
