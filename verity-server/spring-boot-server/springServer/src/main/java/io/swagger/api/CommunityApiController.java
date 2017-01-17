@@ -3,6 +3,7 @@ package io.swagger.api;
 import io.swagger.model.Community;
 import io.swagger.persistence.service.IAgentService;
 import io.swagger.persistence.service.ICommunityService;
+import site.verity.web.exception.UnprocessableEntityException;
 import io.swagger.annotations.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,13 @@ public class CommunityApiController implements CommunityApi {
 	private IAgentService agentService;
 
 	public ResponseEntity<Community> createCommunity(@ApiParam(value = "") @RequestBody Community body) {
-		// create the UUID if it has not been provided (our blockchain contract
-		// will do this, and we will pass it along)
-		if (body.getUuid().isEmpty()) {
+		if (body.getUuid() == null || body.getUuid().isEmpty()) {
+			// create the UUID if it has not been provided (simulate blockchain contract)
 			body.setUuid(java.util.UUID.randomUUID().toString());
 		}else{ 
-			//use UUID provided
+			//allow caller to generate UUIDs and use UUID provided
 			if (communityService.findByUuid(body.getUuid()) != null) {
-				return new ResponseEntity<Community>(HttpStatus.UNPROCESSABLE_ENTITY);
+				throw new UnprocessableEntityException("Cannot create - uuid is not unique, this community allready exists.");
 			}
 		}
 		
@@ -40,7 +40,8 @@ public class CommunityApiController implements CommunityApi {
 		}else{ 
 			//use UUID provided
 			if (agentService.findByUuid(body.getAgent().getUuid()) != null) {
-				return new ResponseEntity<Community>(HttpStatus.UNPROCESSABLE_ENTITY);
+				//return new ResponseEntity<Community>(HttpStatus.UNPROCESSABLE_ENTITY);
+				throw new UnprocessableEntityException("Cannot find agent by uuid provided");
 			}
 		}
 		

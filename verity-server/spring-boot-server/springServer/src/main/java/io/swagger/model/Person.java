@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import javax.persistence.Entity;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -28,6 +29,7 @@ public class Person implements Serializable {
   private static final long serialVersionUID = 7126747806967910530L;
 
   @Id
+  @NotNull
   private String uuid = null;
 
   private String firstName = null;
@@ -38,7 +40,6 @@ public class Person implements Serializable {
 
   private String organizationId = null;
 
-//TODO: what exactly do each of these CascadeTypes mean
   @OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })
   @JoinColumn(name = "agent_uuid", unique=true) //was agent_fk
   private Agent agent = null;
