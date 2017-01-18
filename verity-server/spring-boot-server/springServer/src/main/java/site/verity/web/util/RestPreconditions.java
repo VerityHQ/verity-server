@@ -20,73 +20,46 @@ public final class RestPreconditions {
     // API
 
     /**
-     * Check if some condition is false, otherwise throw exception.
-     *
+     * boolean Assert semantics of operation are valid, 
+     * otherwise throw UnprocessableEntityException.
+     * 
+     * UnprocessableEntityException means the request entity is well formed but the
+     * meaning of some elements are semantically incorrect.
+     * 
      * @param expression
-     *            has value true if semantically erroneous request, otherwise false
+     *            has value true if semantically correct request, otherwise false
      *
      * @throws UnprocessableEntityException
-     *             if expression is false, means operation not allowed.
+     *             if expression is false, means operation not possible.
      */
-    public static void checkSemantics(final boolean expression) {
-        checkAllowed(expression, null);
+    public static void assertSemanticsValid(final boolean expression) {
+        assertAllowed(expression, null);
     }
 
     /**
-     * Check if some condition is false, otherwise throw exception.
-     *
+     * boolean Assert semantics of operation are valid, 
+     * otherwise throw UnprocessableEntityException.
+     * 
+     * UnprocessableEntityException means the request entity is well formed but the
+     * meaning of some elements are semantically incorrect.
+     * 
      * @param expression
-     *            has value true if semantically erroneous request, otherwise false
+     *            has value true if semantically correct request, otherwise false
      * @param message
      *            the message of the exception if the check fails
      *
      * @throws UnprocessableEntityException
-     *             if expression is false, means operation not allowed.
+     *             if expression is false, means operation not possible.
      */
-    public static void checkSemantics(final boolean expression, final String message) {
+    public static void assertSemanticsValid(final boolean expression, final String message) {
         if (!expression) {
             throw new UnprocessableEntityException(message);
         }
     }
     
-    /**
-     * Ensures that an object reference passed as a parameter to the calling method is not null.
-     *
-     * @param reference
-     *            an object reference
-     *
-     * @return the non-null reference that was validated
-     *
-     * @throws ResourceNotFoundException
-     *             if {@code reference} is null
-     */
-    public static <T> T checkNotNull(final T reference) {
-        return checkNotNull(reference, null);
-    }
 
     /**
-     * Ensures that an object reference passed as a parameter to the calling method is not null.
-     *
-     * @param reference
-     *            an object reference
-     * @param message
-     *            the message of the exception if the check fails
-     *
-     * @return the non-null reference that was validated
-     *
-     * @throws ResourceNotFoundException
-     *             if {@code reference} is null
-     */
-    public static <T> T checkNotNull(final T reference, final String message) {
-        if (reference == null) {
-            throw new ResourceNotFoundException(message);
-        }
-        return reference;
-    }
-
-    /**
-     * Ensures that an object reference passed as a parameter to the calling
-     * method is not null.
+     * Assert object not null, else throw BadRequestException.
      *
      * @param reference
      *            an object reference
@@ -95,12 +68,12 @@ public final class RestPreconditions {
      * @throws BadRequestException
      *             if {@code reference} is null
      */
-    public static <T> T checkRequestElementNotNull(final T reference) {
-        return checkRequestElementNotNull(reference, null);
+    public static <T> T assertRequestElementNotNull(final T reference) {
+        return assertRequestElementNotNull(reference, null);
     }
 
     /**
-     * Ensures that an object reference passed as a parameter to the calling method is not null.
+     * Assert object not null, else throw BadRequestException.
      *
      * @param reference
      *            an object reference
@@ -112,7 +85,7 @@ public final class RestPreconditions {
      * @throws BadRequestException
      *             if {@code reference} is null
      */
-    public static <T> T checkRequestElementNotNull(final T reference, final String message) {
+    public static <T> T assertRequestElementNotNull(final T reference, final String message) {
         if (reference == null) {
             throw new BadRequestException(message);
         }
@@ -120,37 +93,43 @@ public final class RestPreconditions {
     }
 
     /**
-     * Ensures the truth of an expression
-     *
+     * boolean Assert no conflict, else throw ConflictException.
+     * Use in situations where the user might be able to resolve 
+     * the conflict and resubmit the request.
+     * 
      * @param expression
-     *            a boolean expression
+     *            a boolean expression - true if the is a conflict
      *
      * @throws ConflictException
      *             if {@code expression} is false
      */
-    public static void checkRequestState(final boolean expression) {
-        checkRequestState(expression, null);
+    public static void assertNoConflict(final boolean expression) {
+        assertNoConflict(expression, null);
     }
 
     /**
-     * Ensures the truth of an expression
+     * boolean Assert no conflict, else throw ConflictException.
+     * Use in situations where the user might be able to resolve 
+     * the conflict and resubmit the request. You should provide a message to
+     * assist user in resolving conflict.
      *
      * @param expression
-     *            a boolean expression
+     *            a boolean expression - false if there is a conflict
      * @param message
      *            the message of the exception if the check fails
      *
      * @throws ConflictException
      *             if {@code expression} is false
      */
-    public static void checkRequestState(final boolean expression, final String message) {
+    public static void assertNoConflict(final boolean expression, final String message) {
         if (!expression) {
             throw new ConflictException(message);
         }
     }
 
     /**
-     * Ensures the truth of an expression related to the validity of the request
+     * Assert boolean expression about the validity of the request
+     * throw BadRequestException if false 
      *
      * @param expression
      *            a boolean expression
@@ -158,13 +137,14 @@ public final class RestPreconditions {
      * @throws BadRequestException
      *             if {@code expression} is false
      */
-    public static void checkIfBadRequest(final boolean expression) {
-        checkIfBadRequest(expression, null);
+    public static void assertValidRequest(final boolean expression) {
+        assertValidRequest(expression, null);
     }
 
     /**
-     * Ensures the truth of an expression related to the validity of the request
-     *
+     * Assert boolean expression about the validity of the request
+     * throw BadRequestException if false 
+     * 
      * @param expression
      *            a boolean expression
      * @param message
@@ -173,14 +153,14 @@ public final class RestPreconditions {
      * @throws BadRequestException
      *             if {@code expression} is false
      */
-    public static void checkIfBadRequest(final boolean expression, final String message) {
+    public static void assertValidRequest(final boolean expression, final String message) {
         if (!expression) {
             throw new BadRequestException(message);
         }
     }
 
     /**
-     * Check if some value was found, otherwise throw exception.
+     * boolean Asset some resource was found, otherwise throw ResourceNotFoundException.
      *
      * @param expression
      *            has value true if found, otherwise false
@@ -188,12 +168,12 @@ public final class RestPreconditions {
      * @throws 404 ResourceNotFoundException
      *             if expression is false, means value not found.
      */
-    public static void checkResourceFound(final boolean expression) {
-        checkResourceFound(expression, null);
+    public static void assertResourceFound(final boolean expression) {
+        assertResourceFound(expression, null);
     }
 
     /**
-     * Check if some value was found, otherwise throw exception.
+     * boolean Assert some resource was found, otherwise throw ResourceNotFoundException.
      *
      * @param expression
      *            has value true if found, otherwise false
@@ -203,27 +183,27 @@ public final class RestPreconditions {
      * @throws 404 ResourceNotFoundException
      *             if expression is false, means value not found.
      */
-    public static void checkResourceFound(final boolean expression, final String message) {
+    public static void assertResourceFound(final boolean expression, final String message) {
         if (!expression) {
             throw new ResourceNotFoundException(message);
         }
     }
 
     /**
-     * Check if some value was found, otherwise throw exception.
+     * Assert some resource is not null, otherwise throw ResourceNotFoundException.
      *
      * @param expression
      *            has value true if found, otherwise false
      *
      * @throws 404 ResourceNotFoundException
-     *             if expression is false, means value not found.
+     *             if expression is null, means value not found.
      */
-    public static <T> T checkResourceFound(final T resource) {
-        return checkResourceFound(resource, null);
+    public static <T> T assertResourceFound(final T resource) {
+        return assertResourceFound(resource, null);
     }
 
     /**
-     * Check if some value was found, otherwise throw exception.
+     * Assert some resource is not null, otherwise throw ResourceNotFoundException.
      *
      * @param expression
      *            has value true if found, otherwise false
@@ -231,9 +211,9 @@ public final class RestPreconditions {
      *            the message of the exception if the check fails
      *
      * @throws 404 ResourceNotFoundException
-     *             if expression is false, means value not found.
+     *             if expression is null, means value not found.
      */
-    public static <T> T checkResourceFound(final T resource, final String message) {
+    public static <T> T assertResourceFound(final T resource, final String message) {
         if (resource == null) {
             throw new ResourceNotFoundException(message);
         }
@@ -242,7 +222,7 @@ public final class RestPreconditions {
     }
 
     /**
-     * Check if some value was found, otherwise throw exception.
+     * boolean Assert operation is allowed, otherwise throw ForbiddenException.
      *
      * @param expression
      *            has value true if found, otherwise false
@@ -250,12 +230,12 @@ public final class RestPreconditions {
      * @throws 403 ForbiddenException
      *             if expression is false, means operation not allowed.
      */
-    public static void checkAllowed(final boolean expression) {
-        checkAllowed(expression, null);
+    public static void assertAllowed(final boolean expression) {
+        assertAllowed(expression, null);
     }
 
     /**
-     * Check if some value was found, otherwise throw exception.
+     * boolean Assert operation is allowed, otherwise throw ForbiddenException.
      *
      * @param expression
      *            has value true if found, otherwise false
@@ -265,7 +245,7 @@ public final class RestPreconditions {
      * @throws 403 ForbiddenException
      *             if expression is false, means operation not allowed.
      */
-    public static void checkAllowed(final boolean expression, final String message) {
+    public static void assertAllowed(final boolean expression, final String message) {
         if (!expression) {
             throw new ForbiddenException(message);
         }

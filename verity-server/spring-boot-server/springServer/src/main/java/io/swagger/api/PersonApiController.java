@@ -37,20 +37,21 @@ public class PersonApiController implements PersonApi {
 
 	public ResponseEntity<Person> createPerson(@ApiParam(value = "") @RequestBody Person body) {
 
-		RestPreconditions.checkRequestElementNotNull(body.getUuid(), body.getClass().getSimpleName()
+		RestPreconditions.assertRequestElementNotNull(body.getUuid(), body.getClass().getSimpleName()
 				+ "UUID is required. Either set the UUID or send an empty string to create a new uuid.");
-		RestPreconditions.checkRequestElementNotNull(body.getNickName(),
+		RestPreconditions.assertRequestElementNotNull(body.getNickName(),
 				"Nickname or screen name is required and must be unique");
-		RestPreconditions.checkRequestElementNotNull(body.getAgent());
-		RestPreconditions.checkSemantics(personService.findByUuid(body.getUuid())==null,
+		RestPreconditions.assertRequestElementNotNull(body.getAgent());
+		RestPreconditions.assertSemanticsValid(personService.findByUuid(body.getUuid())==null,
 				"Connot create. uuid not unique / exists allready.");
-		RestPreconditions.checkRequestElementNotNull(body.getAgent().getUuid(),
+		RestPreconditions.assertRequestElementNotNull(body.getAgent().getUuid(),
 				"Person-Agent UUID is required. Either set the UUID or send an empty string to create a new uuid.");
 		
 		// TODO: need to decide if same agent can have multiple 'personas' (1:Many)
 		// or one-to-one relationship.
 		// for now person-agent is 1:1 relation so agent must be not exists on create
-		RestPreconditions.checkSemantics(agentService.findByUuid(body.getAgent().getUuid())==null, "Person-Agent allready exists. At this time multiple personas per agent are not allowed.");
+		RestPreconditions.assertSemanticsValid(agentService.findByUuid(body.getAgent().getUuid())==null, 
+				"Person-Agent allready exists. At this time multiple personas per agent are not allowed.");
 		
 		// simulate blockchain contract and create new UUID
 		body.getAgent().setUuid(java.util.UUID.randomUUID().toString());
@@ -70,14 +71,14 @@ public class PersonApiController implements PersonApi {
 			@PathVariable("uuid") String uuid) {
 		
 		Person person = personService.findByUuid(uuid);
-		RestPreconditions.checkResourceFound(person != null);
+		RestPreconditions.assertResourceFound(person);
 		return new ResponseEntity<Person>(person, HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> updatePerson(@ApiParam(value = "") @RequestBody Person body) {
 		
 		Person person = personService.findByUuid(body.getUuid());
-		RestPreconditions.checkResourceFound(person != null);
+		RestPreconditions.assertResourceFound(person);
 
 		// notes on dealing with db ids - we are using UUIDs now for everything,
 		// but this was not easy to understand and figure out so leaving it here.

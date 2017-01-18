@@ -23,31 +23,36 @@ public class ValueactionApiController implements ValueactionApi {
 	private IValueActionService valueActionService;
 
 	public ResponseEntity<Valueaction> createValueAction(@ApiParam(value = "") @RequestBody Valueaction body) {
-		RestPreconditions.checkRequestElementNotNull(body.getUuid(), body.getClass().getSimpleName()
+		RestPreconditions.assertRequestElementNotNull(body.getUuid(), body.getClass().getSimpleName()
 				+ "UUID is required. Either set the UUID or send an empty string to create a new uuid.");
-		RestPreconditions.checkRequestElementNotNull(body.getActionTypeId(), body.getClass().getSimpleName()
+		RestPreconditions.assertRequestElementNotNull(body.getActionTypeId(), body.getClass().getSimpleName()
 				+ "actionTypeId is required and cannot be null");
 
-		
 		if (body.getUuid().isEmpty()) {
 			// create the UUID if it has not been provided (our blockchain
 			// contract will do this, and we will pass it along)
 			body.setUuid(java.util.UUID.randomUUID().toString());
-		} else if (valueActionService.findByUuid(body.getUuid()) != null) {
-			return new ResponseEntity<Valueaction>(HttpStatus.UNPROCESSABLE_ENTITY);
+		} else {
+			RestPreconditions.assertSemanticsValid(valueActionService.findByUuid(body.getUuid())==null, 
+					"Cannot create " + body.getClass().getSimpleName() + " - UUID not unique / allready exists.");
 		}
 		valueActionService.create(body);
-		// return ActionType with newly generated UUID.
 		return new ResponseEntity<Valueaction>(body, HttpStatus.OK);
 	}
 
 	public ResponseEntity<Valueaction> getValueAction( @ApiParam(value = "", required = true) @PathVariable("uuid") String uuid ) {
 		Valueaction valueAction = valueActionService.findByUuid(uuid);
-		RestPreconditions.checkResourceFound(valueAction != null);
+		RestPreconditions.assertResourceFound(valueAction != null);
 		return new ResponseEntity<Valueaction>(valueAction, HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> updateValueAction( @ApiParam(value = "") @RequestBody Valueaction body ) {
+		
+		RestPreconditions.assertRequestElementNotNull(body.getUuid(), body.getClass().getSimpleName()
+				+ "UUID is required");
+
+		RestPreconditions.assertResourceFound(valueActionService.findByUuid(body.getUuid())==null);
+		
 		Valueaction valueAction = valueActionService.findByUuid(body.getUuid());
 
 		if (valueAction == null) {
@@ -64,6 +69,7 @@ public class ValueactionApiController implements ValueactionApi {
 
 	public ResponseEntity<Void> archiveValueAction( @ApiParam(value = "", required = true) @PathVariable("uuid") String uuid ) {
 		Valueaction valueAction = valueActionService.findByUuid(uuid);
+		RestPreconditions.assertResourceFound(valueAction != null);
 
 		if (valueAction == null) {
 			return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);

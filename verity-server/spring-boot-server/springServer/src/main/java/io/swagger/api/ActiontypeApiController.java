@@ -22,9 +22,9 @@ public class ActiontypeApiController implements ActiontypeApi {
 	private IActionTypeService actionTypeService;
 
 	public ResponseEntity<ActionType> createActiontype(@ApiParam(value = "") @RequestBody ActionType body) {
-		RestPreconditions.checkRequestElementNotNull(body.getUuid(), body.getClass().getSimpleName()
+		RestPreconditions.assertRequestElementNotNull(body.getUuid(), body.getClass().getSimpleName()
 				+ "UUID is required. Either set the UUID or send an empty string to create a new uuid.");
-		RestPreconditions.checkSemantics(actionTypeService.findByUuid(body.getUuid())==null,
+		RestPreconditions.assertSemanticsValid(actionTypeService.findByUuid(body.getUuid())==null,
 				"Connot create. uuid not unique / exists allready.");
 		
 		if (body.getUuid().isEmpty()) {
@@ -38,7 +38,7 @@ public class ActiontypeApiController implements ActiontypeApi {
 	public ResponseEntity<ActionType> getActiontype(
 			@ApiParam(value = "", required = true) @PathVariable("uuid") String uuid) {
 		ActionType actionType = actionTypeService.findByUuid(uuid);
-		RestPreconditions.checkResourceFound(actionType != null);
+		RestPreconditions.assertResourceFound(actionType != null);
 		return new ResponseEntity<ActionType>(actionType, HttpStatus.OK);
 	}
 

@@ -52,7 +52,7 @@ public class CommunityApiController implements CommunityApi {
 
 	public ResponseEntity<Community> getCommunity(@ApiParam(value = "", required = true) @PathVariable("uuid") String uuid) {
 		Community community = communityService.findByUuid(uuid);
-		RestPreconditions.checkResourceFound(community != null);
+		RestPreconditions.assertResourceFound(community != null);
 		return new ResponseEntity<Community>(community, HttpStatus.OK);
 
 	}
