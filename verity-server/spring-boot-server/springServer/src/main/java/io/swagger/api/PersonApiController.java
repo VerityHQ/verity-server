@@ -8,6 +8,8 @@ import site.verity.web.exception.UnprocessableEntityException;
 import site.verity.web.util.RestPreconditions;
 import io.swagger.annotations.*;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,39 +31,40 @@ public class PersonApiController implements PersonApi {
 	/*
 	 * UUIDs - allow caller to create UUIDs or let Verity generate them. If UUID
 	 * is passed on creation, look up existing, if found throw error else create
-	 * new object using caller UUID If no UUID is passed, generate a new one
+	 * new object using caller UUID. If no UUID is passed, generate a new one
 	 * (simulate blockchain of IPFS, etc.)
 	 * 
 	 * @see io.swagger.api.PersonApi#createPerson(io.swagger.model.Person)
 	 */
-
+	
 	public ResponseEntity<Person> createPerson(@ApiParam(value = "") @RequestBody Person body) {
 
-		RestPreconditions.assertRequestElementNotNull(body.getUuid(), body.getClass().getSimpleName()
+		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
 				+ "UUID is required. Either set the UUID or send an empty string to create a new uuid.");
-		RestPreconditions.assertRequestElementNotNull(body.getNickName(),
+		RestPreconditions.assertRequestElementProvided(body.getNickName(),
 				"Nickname or screen name is required and must be unique");
-		RestPreconditions.assertRequestElementNotNull(body.getAgent());
-		RestPreconditions.assertSemanticsValid(personService.findByUuid(body.getUuid())==null,
-				"Connot create. uuid not unique / exists allready.");
-		RestPreconditions.assertRequestElementNotNull(body.getAgent().getUuid(),
-				"Person-Agent UUID is required. Either set the UUID or send an empty string to create a new uuid.");
+		RestPreconditions.assertRequestElementProvided(body.getAgent());
+		RestPreconditions.assertRequestElementProvided(body.getAgent().getUuid(),
+				body.getClass().getSimpleName() + "-Agent UUID is required. Either set the UUID or send an empty string to create a new uuid.");		
 		
-		// TODO: need to decide if same agent can have multiple 'personas' (1:Many)
-		// or one-to-one relationship.
-		// for now person-agent is 1:1 relation so agent must be not exists on create
-		RestPreconditions.assertSemanticsValid(agentService.findByUuid(body.getAgent().getUuid())==null, 
-				"Person-Agent allready exists. At this time multiple personas per agent are not allowed.");
-		
-		// simulate blockchain contract and create new UUID
-		body.getAgent().setUuid(java.util.UUID.randomUUID().toString());
-
 		if (body.getUuid().isEmpty()) {
+			// if caller did not provide UUID
 			// simulate blockchain contract and create new UUID
 			body.setUuid(java.util.UUID.randomUUID().toString());
-		} else {
-			// do nothing, let caller manage creation of UUID
+		}else{ 
+			//check UUID provided		
+			RestPreconditions.assertNoConflict(personService.findByUuid(body.getUuid()),
+					"Connot create " + body.getClass().getSimpleName() + ": uuid exists allready.");
 		}
+		
+		if (body.getAgent().getUuid().isEmpty()) {
+			body.getAgent().setUuid(java.util.UUID.randomUUID().toString());
+		}else{ 
+			//check UUID provided (note: we may later allow for multiple agent-personas)
+			RestPreconditions.assertNoConflict(agentService.findByUuid(body.getAgent().getUuid()),
+			"Connot create " + body.getClass().getSimpleName() + "-Agent: uuid exists allready.");
+		}
+		
 		personService.create(body);
 		return new ResponseEntity<Person>(body, HttpStatus.OK);
 	}
@@ -76,7 +79,8 @@ public class PersonApiController implements PersonApi {
 	}
 
 	public ResponseEntity<Void> updatePerson(@ApiParam(value = "") @RequestBody Person body) {
-		
+		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
+				+ "UUID is required.");
 		Person person = personService.findByUuid(body.getUuid());
 		RestPreconditions.assertResourceFound(person);
 

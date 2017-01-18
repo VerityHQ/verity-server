@@ -34,22 +34,31 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
 
     // 400
-
+    //TODO: handlers that catch exceptions that we don't explicitly throw
+    // should not fire if we are doing our job.
+    // We should be explicitly handling expected exceptions and validating in such a way 
+    // that we don't end up handling lower level (Hibernate / SQL) exception.
+    // If we do, we should alert the API user / developer to report the exception
+    // or we need to have logging in place that makes us aware of these types.
+    // For now we will ignore above advice and deal with it as technical debt later.
     @ExceptionHandler({ ConstraintViolationException.class })
     public ResponseEntity<Object> handleBadRequest(final ConstraintViolationException ex, final WebRequest request) {
-        final String bodyOfResponse = "";//This should be application specific";
+        log.warn("Unexpected exception - we should be explicitly handling for this case.  Bad Request: {}", ex.getLocalizedMessage());
+        final ApiError bodyOfResponse = message(HttpStatus.BAD_REQUEST, ex);//This should be application specific";
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler({ DataIntegrityViolationException.class })
     public ResponseEntity<Object> handleBadRequest(final DataIntegrityViolationException ex, final WebRequest request) {
-        final String bodyOfResponse = ""; //This should be application specific";
+        log.warn("Unexpected exception - we should be explicitly handling for this case.  Bad Request: {}", ex.getLocalizedMessage());
+        final ApiError bodyOfResponse = message(HttpStatus.BAD_REQUEST, ex); //This should be application specific";
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(final HttpMessageNotReadableException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
-        final String bodyOfResponse = ""; //This should be application specific";
+        log.warn("Unexpected exception - we should be explicitly handling for this case.  Bad Request: {}", ex.getLocalizedMessage());
+    	final String bodyOfResponse = ""; //This should be application specific";
         // ex.getCause() instanceof JsonMappingException, JsonParseException // for additional information later on
         return handleExceptionInternal(ex, bodyOfResponse, headers, HttpStatus.BAD_REQUEST, request);
     }

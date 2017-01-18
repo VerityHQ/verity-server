@@ -1,11 +1,13 @@
 package site.verity.web.util;
 
 import org.springframework.http.HttpStatus;
+
 import site.verity.web.exception.BadRequestException;
 import site.verity.web.exception.ConflictException;
 import site.verity.web.exception.ForbiddenException;
 import site.verity.web.exception.ResourceNotFoundException;
 import site.verity.web.exception.UnprocessableEntityException;
+
 /**
  * Simple static methods to be called at the start of your own methods to verify
  * correct arguments and state. If the Precondition fails, an {@link HttpStatus}
@@ -59,7 +61,7 @@ public final class RestPreconditions {
     
 
     /**
-     * Assert object not null, else throw BadRequestException.
+     * Assert request element exists, else throw BadRequestException.
      *
      * @param reference
      *            an object reference
@@ -68,12 +70,12 @@ public final class RestPreconditions {
      * @throws BadRequestException
      *             if {@code reference} is null
      */
-    public static <T> T assertRequestElementNotNull(final T reference) {
-        return assertRequestElementNotNull(reference, null);
+    public static <T> T assertRequestElementProvided(final T reference) {
+        return assertRequestElementProvided(reference, null);
     }
 
     /**
-     * Assert object not null, else throw BadRequestException.
+     * Assert request element exist, else throw BadRequestException.
      *
      * @param reference
      *            an object reference
@@ -85,7 +87,7 @@ public final class RestPreconditions {
      * @throws BadRequestException
      *             if {@code reference} is null
      */
-    public static <T> T assertRequestElementNotNull(final T reference, final String message) {
+    public static <T> T assertRequestElementProvided(final T reference, final String message) {
         if (reference == null) {
             throw new BadRequestException(message);
         }
@@ -108,7 +110,7 @@ public final class RestPreconditions {
     }
 
     /**
-     * boolean Assert no conflict, else throw ConflictException.
+     * Assert object is null, else throw ConflictException.
      * Use in situations where the user might be able to resolve 
      * the conflict and resubmit the request. You should provide a message to
      * assist user in resolving conflict.
@@ -125,6 +127,44 @@ public final class RestPreconditions {
         if (!expression) {
             throw new ConflictException(message);
         }
+    }
+    
+    /**
+     * Assert object is null, else throw ConflictException.
+     * Use in situations where the user might be able to resolve 
+     * the conflict and resubmit the request. You should provide a message to
+     * assist user in resolving conflict.
+     *
+     * @param expression
+     *            not null if found
+     *            
+     * @param message
+     *            the message of the exception if the check fails
+     *
+     * @throws ConflictException
+     *             if {@code expression} is false
+     */
+    public static <T> T assertNoConflict(final T resource) {
+        return assertResourceFound(resource, null);
+    }
+
+    /**
+     * Assert some resource is not null, otherwise throw ConflictException.
+     *
+     * @param expression
+     *            not null if found
+     * @param message
+     *            the message of the exception if the check fails
+     *
+     * @throws ConflictException
+     *             if expression is null, means value not found.
+     */
+    public static <T> T assertNoConflict(final T resource, final String message) {
+        if (resource != null) {
+            throw new ConflictException(message);
+        }
+
+        return resource;
     }
 
     /**
@@ -193,7 +233,7 @@ public final class RestPreconditions {
      * Assert some resource is not null, otherwise throw ResourceNotFoundException.
      *
      * @param expression
-     *            has value true if found, otherwise false
+     *            not null if found
      *
      * @throws 404 ResourceNotFoundException
      *             if expression is null, means value not found.
@@ -206,7 +246,7 @@ public final class RestPreconditions {
      * Assert some resource is not null, otherwise throw ResourceNotFoundException.
      *
      * @param expression
-     *            has value true if found, otherwise false
+     *            not null if found
      * @param message
      *            the message of the exception if the check fails
      *

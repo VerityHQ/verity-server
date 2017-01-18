@@ -2,7 +2,12 @@ package site.verity.web.exception;
 
 public final class PreconditionFailedException extends RuntimeException {
 
-    public PreconditionFailedException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2128460598941449024L;
+
+	public PreconditionFailedException() {
         super();
     }
 

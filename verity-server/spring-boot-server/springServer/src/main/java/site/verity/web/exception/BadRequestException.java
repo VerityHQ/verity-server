@@ -2,7 +2,12 @@ package site.verity.web.exception;
 
 public final class BadRequestException extends RuntimeException {
 
-    public BadRequestException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4803990456194722516L;
+
+	public BadRequestException() {
         super();
     }
 

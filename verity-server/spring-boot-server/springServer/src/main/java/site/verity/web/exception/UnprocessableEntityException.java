@@ -2,6 +2,13 @@ package site.verity.web.exception;
 
 public class UnprocessableEntityException extends RuntimeException {
 
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -893576662843388986L;
+
 	public UnprocessableEntityException() {
 		super();
 	}

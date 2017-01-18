@@ -2,7 +2,12 @@ package site.verity.web.exception;
 
 public final class ConflictException extends RuntimeException {
 
-    public ConflictException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6207376968123873729L;
+
+	public ConflictException() {
         super();
     }
 

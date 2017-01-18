@@ -2,7 +2,9 @@ package site.verity.web.exception;
 
 public final class ResourceNotFoundException extends RuntimeException {
 
-    public ResourceNotFoundException() {
+	private static final long serialVersionUID = -2483848188836994578L;
+
+	public ResourceNotFoundException() {
         super();
     }
 

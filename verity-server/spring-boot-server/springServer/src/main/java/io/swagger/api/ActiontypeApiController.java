@@ -1,10 +1,10 @@
 package io.swagger.api;
 
-import io.swagger.persistence.service.IActionTypeService;
 import site.verity.web.util.RestPreconditions;
-import io.swagger.model.ActionType;
 
 import io.swagger.annotations.*;
+import io.swagger.model.ActionType;
+import io.swagger.persistence.service.IActionTypeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,14 +22,15 @@ public class ActiontypeApiController implements ActiontypeApi {
 	private IActionTypeService actionTypeService;
 
 	public ResponseEntity<ActionType> createActiontype(@ApiParam(value = "") @RequestBody ActionType body) {
-		RestPreconditions.assertRequestElementNotNull(body.getUuid(), body.getClass().getSimpleName()
+		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
 				+ "UUID is required. Either set the UUID or send an empty string to create a new uuid.");
-		RestPreconditions.assertSemanticsValid(actionTypeService.findByUuid(body.getUuid())==null,
-				"Connot create. uuid not unique / exists allready.");
 		
 		if (body.getUuid().isEmpty()) {
 			//if they don't provide the UUID we create one for them
 			body.setUuid(java.util.UUID.randomUUID().toString());
+		}else{
+			RestPreconditions.assertNoConflict(actionTypeService.findByUuid(body.getUuid()),
+					"Connot create " + body.getClass().getSimpleName() + ": uuid exists allready.");
 		}
 		actionTypeService.create(body);
 		return new ResponseEntity<ActionType>(body, HttpStatus.OK);
@@ -38,18 +39,17 @@ public class ActiontypeApiController implements ActiontypeApi {
 	public ResponseEntity<ActionType> getActiontype(
 			@ApiParam(value = "", required = true) @PathVariable("uuid") String uuid) {
 		ActionType actionType = actionTypeService.findByUuid(uuid);
-		RestPreconditions.assertResourceFound(actionType != null);
+		RestPreconditions.assertResourceFound(actionType);
 		return new ResponseEntity<ActionType>(actionType, HttpStatus.OK);
 	}
 
 	public ResponseEntity<Void> updateActiontype(@ApiParam(value = "") @RequestBody ActionType body) {
-		if (actionTypeService.findByUuid(body.getUuid()) == null) {
-			return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
+				+ "UUID is required. Either set the UUID or send an empty string to create a new uuid.");
+		RestPreconditions.assertResourceFound(actionTypeService.findByUuid(body.getUuid()));
 		// TODO: is it appropriate to modify actionType after is has been in
 		// use?
 		actionTypeService.update(body);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-
 }
