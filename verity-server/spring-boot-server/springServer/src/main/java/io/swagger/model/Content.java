@@ -39,7 +39,8 @@ public class Content implements Serializable {
 	 */
 	private static final long serialVersionUID = -7851449562084883370L;
 
-	@Id
+    @Id
+    @Column(name = "uuid")
 	private String uuid = null;
 
 	private String name = null;
@@ -47,7 +48,7 @@ public class Content implements Serializable {
 	private String body = null;
 	
 	@OneToMany
-    @JoinColumn(name="uuid")
+    @JoinColumn(name="parent_uuid")
 	private List<Content> nodes = new ArrayList<Content>();
 
 	public Content uuid(String uuid) {
