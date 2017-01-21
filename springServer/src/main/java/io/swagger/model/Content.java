@@ -35,19 +35,20 @@ import java.util.List;
 @Entity
 public class Content implements Serializable {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -7851449562084883370L;
 
 	@Id
+	@Column(name="uuid")
 	private String uuid = null;
 
 	private String name = null;
 
 	private String body = null;
-	
+
 	@OneToMany
-    @JoinColumn(name="uuid")
+	@JoinColumn(name="parent_uuid")
 	private List<Content> nodes = new ArrayList<Content>();
 
 	public Content uuid(String uuid) {
@@ -57,7 +58,7 @@ public class Content implements Serializable {
 
 	/**
 	 * UUID, GUID, HASH or MultiHash that represents this object
-	 * 
+	 *
 	 * @return uuid
 	 **/
 	@ApiModelProperty(required = true, value = "UUID, GUID, HASH or MultiHash that represents this object")
@@ -76,7 +77,7 @@ public class Content implements Serializable {
 
 	/**
 	 * name or tag
-	 * 
+	 *
 	 * @return name
 	 **/
 	@ApiModelProperty(required = true, value = "name or tag")
@@ -95,7 +96,7 @@ public class Content implements Serializable {
 
 	/**
 	 * content as text or JSON
-	 * 
+	 *
 	 * @return body
 	 **/
 	@ApiModelProperty(value = "content as text or JSON")
@@ -119,7 +120,7 @@ public class Content implements Serializable {
 
 	/**
 	 * child nodes
-	 * 
+	 *
 	 * @return nodes
 	 **/
 	@ApiModelProperty(value = "child nodes")
