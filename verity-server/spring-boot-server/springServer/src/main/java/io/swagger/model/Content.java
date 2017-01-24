@@ -1,11 +1,11 @@
 package io.swagger.model;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -13,20 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.Content;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Self describing content (document object model, JSON-LD) A physical, digital, conceptual, or other kind of thing with some fixed aspects; entities may be real or imaginary.  Maps to https://www.w3.org/TR/prov-o/  prov:Entity
- **/
 
 /**
  * Self describing content (document object model, JSON-LD) A physical, digital,
@@ -51,27 +39,31 @@ public class Content implements Serializable {
 	@Column(name="NAME")
 	private String name = null;
 
+	@Column(name="BODY")
 	private String body = null;
 	
-	//====================
     @Column(name = "PARENT_UUID")
     private String parentUuid;
      
     //mappedBy must not define database mappings like @JoinTable or @JoinColumn
     //Mapped by means that Hibernate should look/track the other side of the relation
-    @OneToMany(mappedBy="PARENT_NODE")
+    @OneToMany(mappedBy="parent_node")
     private List<Content> child_nodes;
+    
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="PARENT_NODE_UUID", insertable = false, updatable = false)
+    private Content parent_node;
+    
 
+	//====================
+    
+    
     public List<Content> getChildContent() {
         return child_nodes;
     }
     public void setChildContent(List<Content> children) {
         this.child_nodes = children;
     }
-    
-//    @ManyToOne(cascade={CascadeType.ALL})
-//    @JoinColumn(name="parent_node_uuid", insertable = false, updatable = false)
-    private Content parent_node;
      
      
     public Content getParentNode() {
@@ -80,27 +72,6 @@ public class Content implements Serializable {
     public void setParentNode(Content content) {
         this.parent_node = content;
     }
-	//============================
-	
-	
-//	@OneToMany
-//    @JoinColumn(name="id")
-//	private List<Content> nodes = new ArrayList<Content>();
-
-	
-//	/**
-//	 * child nodes
-//	 * 
-//	 * @return nodes
-//	 **/
-//	@ApiModelProperty(value = "child nodes")
-//	public List<Content> getNodes() {
-//		return nodes;
-//	}
-//
-//	public void setNodes(List<Content> nodes) {
-//		this.nodes = nodes;
-//	}
 
 	public Content uuid(String uuid) {
 		this.id = uuid;
