@@ -3,8 +3,10 @@ package io.swagger.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,24 +29,30 @@ import org.joda.time.DateTime;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
 @Entity
+@Table(name="transaction")
 public class Transaction implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 524431549164105537L;
-
+	@Column(name="VALUE_ACTION_UUID")
 	private String valueActionId = null;
-
+	
+	@Column(name="SOURCE_AGENT_UUID")
 	private String sourceAgentId = null;
-
+	
+	@Column(name="TARGET_AGENT_UUID")
 	private String targetAgentId = null;
-
+	
+	@Column(name="TIME_STAMP")
 	private DateTime timeStamp = null;
-
+	
+	@Column(name="VALUE")
 	private Integer value = null;
 
 	@Id
-	private String uuid = null;
+	@Column(name="UUID",unique=true, nullable=false )
+	private String id = null;
 
 	public Transaction valueActionId(String valueActionId) {
 		this.valueActionId = valueActionId;
@@ -150,22 +158,22 @@ public class Transaction implements Serializable {
 	}
 
 	public Transaction uuid(String uuid) {
-		this.uuid = uuid;
+		this.id = uuid;
 		return this;
 	}
 
 	/**
 	 * UUID, GUID, HASH or MultiHash that represents this object
 	 * 
-	 * @return uuid
+	 * @return id
 	 **/
 	@ApiModelProperty(value = "UUID, GUID, HASH or MultiHash that represents this object")
 	public String getUuid() {
-		return uuid;
+		return id;
 	}
 
 	public void setUuid(String uuid) {
-		this.uuid = uuid;
+		this.id = uuid;
 	}
 
 	@Override
@@ -181,12 +189,12 @@ public class Transaction implements Serializable {
 				&& Objects.equals(this.sourceAgentId, transaction.sourceAgentId)
 				&& Objects.equals(this.targetAgentId, transaction.targetAgentId)
 				&& Objects.equals(this.timeStamp, transaction.timeStamp)
-				&& Objects.equals(this.value, transaction.value) && Objects.equals(this.uuid, transaction.uuid);
+				&& Objects.equals(this.value, transaction.value) && Objects.equals(this.id, transaction.id);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(valueActionId, sourceAgentId, targetAgentId, timeStamp, value, uuid);
+		return Objects.hash(valueActionId, sourceAgentId, targetAgentId, timeStamp, value, id);
 	}
 
 	@Override
@@ -199,7 +207,7 @@ public class Transaction implements Serializable {
 		sb.append("    targetAgentId: ").append(toIndentedString(targetAgentId)).append("\n");
 		sb.append("    timeStamp: ").append(toIndentedString(timeStamp)).append("\n");
 		sb.append("    value: ").append(toIndentedString(value)).append("\n");
-		sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
+		sb.append("    id: ").append(toIndentedString(id)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

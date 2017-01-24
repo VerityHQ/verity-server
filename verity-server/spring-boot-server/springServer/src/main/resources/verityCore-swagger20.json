@@ -33,6 +33,9 @@
                 "consumes": [
                     "application/json"
                 ],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                         "name": "body",
@@ -66,17 +69,6 @@
                     },
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
-                    }
-                },
-                "x-stoplight": {
-                    "id": "createCommunity",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "enabled": false,
-                        "dynamic": false,
-                        "statusCode": 200
                     }
                 }
             },
@@ -120,17 +112,6 @@
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
                     }
-                },
-                "x-stoplight": {
-                    "id": "updateCommunity",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "enabled": false,
-                        "dynamic": false,
-                        "statusCode": 200
-                    }
                 }
             }
         },
@@ -159,17 +140,6 @@
                             "$ref": "#/definitions/Community"
                         }
                     }
-                },
-                "x-stoplight": {
-                    "id": "getCommunity",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "enabled": false,
-                        "dynamic": false,
-                        "statusCode": 200
-                    }
                 }
             }
         },
@@ -183,12 +153,15 @@
                 "consumes": [
                     "application/json"
                 ],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                         "name": "body",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/valueaction"
+                            "$ref": "#/definitions/ValueAction"
                         }
                     }
                 ],
@@ -196,7 +169,7 @@
                     "201": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/valueaction"
+                            "$ref": "#/definitions/ValueAction"
                         }
                     },
                     "401": {
@@ -217,17 +190,6 @@
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
                     }
-                },
-                "x-stoplight": {
-                    "id": "createValueAction",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "enabled": false,
-                        "dynamic": false,
-                        "statusCode": 200
-                    }
                 }
             },
             "put": {
@@ -245,7 +207,7 @@
                         "name": "body",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/valueaction"
+                            "$ref": "#/definitions/ValueAction"
                         }
                     }
                 ],
@@ -270,17 +232,6 @@
                     },
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
-                    }
-                },
-                "x-stoplight": {
-                    "id": "updateValueAction",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "enabled": false,
-                        "dynamic": false,
-                        "statusCode": 200
                     }
                 }
             }
@@ -307,19 +258,8 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/valueaction"
+                            "$ref": "#/definitions/ValueAction"
                         }
-                    }
-                },
-                "x-stoplight": {
-                    "id": "getValueAction",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "enabled": false,
-                        "dynamic": false,
-                        "statusCode": 200
                     }
                 }
             },
@@ -351,17 +291,6 @@
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
                     }
-                },
-                "x-stoplight": {
-                    "id": "archiveValueAction",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "enabled": false,
-                        "dynamic": false,
-                        "statusCode": 200
-                    }
                 }
             }
         },
@@ -373,6 +302,9 @@
                     "ActionType"
                 ],
                 "consumes": [
+                    "application/json"
+                ],
+                "produces": [
                     "application/json"
                 ],
                 "parameters": [
@@ -408,16 +340,6 @@
                     },
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
-                    }
-                },
-                "x-stoplight": {
-                    "id": "createActiontype",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "statusCode": 200,
-                        "enabled": false
                     }
                 }
             },
@@ -461,16 +383,6 @@
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
                     }
-                },
-                "x-stoplight": {
-                    "id": "updateActiontype",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "statusCode": 200,
-                        "enabled": false
-                    }
                 }
             }
         },
@@ -499,16 +411,6 @@
                             "$ref": "#/definitions/ActionType"
                         }
                     }
-                },
-                "x-stoplight": {
-                    "id": "getActiontype",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "statusCode": 200,
-                        "enabled": false
-                    }
                 }
             }
         },
@@ -520,6 +422,9 @@
                     "Organization"
                 ],
                 "consumes": [
+                    "application/json"
+                ],
+                "produces": [
                     "application/json"
                 ],
                 "parameters": [
@@ -555,16 +460,6 @@
                     },
                     "500": {
                         "description": "Status 500"
-                    }
-                },
-                "x-stoplight": {
-                    "id": "createOrganization",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "statusCode": 200,
-                        "enabled": false
                     }
                 }
             },
@@ -608,17 +503,6 @@
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
                     }
-                },
-                "x-stoplight": {
-                    "id": "updateOrganization",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "enabled": false,
-                        "dynamic": false,
-                        "statusCode": 200
-                    }
                 }
             }
         },
@@ -647,16 +531,6 @@
                             "$ref": "#/definitions/Organization"
                         }
                     }
-                },
-                "x-stoplight": {
-                    "id": "getOrganization",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "statusCode": 200,
-                        "enabled": false
-                    }
                 }
             }
         },
@@ -668,6 +542,9 @@
                     "Person"
                 ],
                 "consumes": [
+                    "application/json"
+                ],
+                "produces": [
                     "application/json"
                 ],
                 "parameters": [
@@ -703,16 +580,6 @@
                     },
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
-                    }
-                },
-                "x-stoplight": {
-                    "id": "createPerson",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "statusCode": 200,
-                        "enabled": false
                     }
                 }
             },
@@ -756,16 +623,6 @@
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
                     }
-                },
-                "x-stoplight": {
-                    "id": "updatePerson",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "statusCode": 200,
-                        "enabled": false
-                    }
                 }
             }
         },
@@ -795,16 +652,6 @@
                             "$ref": "#/definitions/Person"
                         }
                     }
-                },
-                "x-stoplight": {
-                    "id": "getPerson",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "statusCode": 200,
-                        "enabled": false
-                    }
                 }
             }
         },
@@ -816,6 +663,9 @@
                     "Transaction"
                 ],
                 "consumes": [
+                    "application/json"
+                ],
+                "produces": [
                     "application/json"
                 ],
                 "parameters": [
@@ -851,16 +701,6 @@
                     },
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
-                    }
-                },
-                "x-stoplight": {
-                    "id": "createTransaction",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "statusCode": 200,
-                        "enabled": false
                     }
                 }
             }
@@ -911,17 +751,6 @@
                     },
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
-                    }
-                },
-                "x-stoplight": {
-                    "id": "getTransactionByTargetAgentId",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "enabled": false,
-                        "dynamic": false,
-                        "statusCode": 200
                     }
                 }
             }
@@ -984,17 +813,6 @@
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
                     }
-                },
-                "x-stoplight": {
-                    "id": "getTransactionsByDates",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "enabled": false,
-                        "dynamic": false,
-                        "statusCode": 200
-                    }
                 }
             }
         },
@@ -1040,17 +858,6 @@
                     },
                     "500": {
                         "$ref": "#/responses/trait:standardErrors:500"
-                    }
-                },
-                "x-stoplight": {
-                    "id": "getTransactionByTargetAgentIdByValueActionId",
-                    "beforeScript": null,
-                    "afterScript": null,
-                    "public": true,
-                    "mock": {
-                        "enabled": false,
-                        "dynamic": false,
-                        "statusCode": 200
                     }
                 }
             }
@@ -1125,6 +932,7 @@
     },
     "definitions": {
         "ActionType": {
+            "title": "ActionType",
             "type": "object",
             "description": "represents the type of action performed when giving reputation, e.g. upvote, points, rating",
             "properties": {
@@ -1151,16 +959,13 @@
                 }
             },
             "required": [
+                "uuid",
                 "actionName",
                 "communityId"
-            ],
-            "x-stoplight": {
-                "id": "ActionType",
-                "name": "ActionType",
-                "public": true
-            }
+            ]
         },
         "Community": {
+            "title": "Community",
             "type": "object",
             "properties": {
                 "uuid": {
@@ -1183,16 +988,15 @@
             "required": [
                 "communityName",
                 "agent"
-            ],
-            "x-stoplight": {
-                "id": "Community",
-                "name": "Community",
-                "public": true
-            }
+            ]
         },
         "Person": {
+            "title": "Person",
             "type": "object",
             "properties": {
+                "agent": {
+                    "$ref": "#/definitions/Agent"
+                },
                 "uuid": {
                     "type": "string",
                     "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
@@ -1209,22 +1013,18 @@
                 "organizationId": {
                     "type": "string"
                 },
-                "agent": {
-                    "$ref": "#/definitions/Agent"
+                "description": {
+                    "$ref": "#/definitions/Content"
                 }
             },
             "required": [
+                "agent",
                 "uuid",
-                "nickName",
-                "agent"
-            ],
-            "x-stoplight": {
-                "id": "Person",
-                "name": "Person",
-                "public": true
-            }
+                "nickName"
+            ]
         },
         "Activity": {
+            "title": "Activity",
             "type": "object",
             "required": [
                 "end",
@@ -1246,14 +1046,10 @@
                     "description": "Could correspond to a block number in the blockchain"
                 }
             },
-            "description": "Activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities. \n\nMaps to https://www.w3.org/TR/prov-o/  prov:Activity",
-            "x-stoplight": {
-                "id": "Activity",
-                "name": "Activity",
-                "public": true
-            }
+            "description": "Activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities. \n\nMaps to https://www.w3.org/TR/prov-o/  prov:Activity"
         },
         "SoftwareAgent": {
+            "title": "SoftwareAgent",
             "type": "object",
             "description": "Bot, smart contract, or software that has agency in the reputation ecosystem (can give and receive reputation) and like other agents has a public key that can sign attestations. One such use would be for a crawler that pulls in attestations (ratings) from sites such as IMDB and as an agent of a well known organization, signs the attestations and moves them into the Verity system, vouching for their authenticity.",
             "properties": {
@@ -1275,14 +1071,10 @@
                 "uuid",
                 "apiUrl",
                 "name"
-            ],
-            "x-stoplight": {
-                "id": "SoftwareAgent",
-                "name": "SoftwareAgent",
-                "public": true
-            }
+            ]
         },
         "Transaction": {
+            "title": "Transaction",
             "type": "object",
             "description": "A fundamental unit of reputation value transfer, attestation or claim. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.\n\nSimilar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md",
             "properties": {
@@ -1319,14 +1111,10 @@
                 "valueActionId",
                 "sourceAgentId",
                 "targetAgentId"
-            ],
-            "x-stoplight": {
-                "id": "Transaction",
-                "name": "Transaction",
-                "public": true
-            }
+            ]
         },
         "Content": {
+            "title": "Content",
             "type": "object",
             "description": "Self describing content (document object model, JSON-LD) A physical, digital, conceptual, or other kind of thing with some fixed aspects; entities may be real or imaginary.\n\nMaps to https://www.w3.org/TR/prov-o/  prov:Entity",
             "properties": {
@@ -1353,14 +1141,10 @@
             "required": [
                 "uuid",
                 "name"
-            ],
-            "x-stoplight": {
-                "id": "Content",
-                "name": "Content",
-                "public": true
-            }
+            ]
         },
         "Agent": {
+            "title": "Agent",
             "type": "object",
             "description": "Agent is something that bears some form of responsibility for changing state in the Verity system. An Agent could be a smart contract, person, organization, device, or anything the owns the Private Key half of the publicKey of the Agent and controlls the accounts used for attestationURLs.\n\nMaps to  https://www.w3.org/TR/prov-o/#Agent  prov:Agent",
             "properties": {
@@ -1372,7 +1156,7 @@
                     "type": "string"
                 },
                 "attestationUrls": {
-                    "description": "zero or more attestation URLs (twitter, FB, blog) links to proof of account ownership, a post with public key id of owner.  Signing the attribute with the\nVerity signing key creates a claim that the Verity identity controls the account.\nExamples at: https://keybase.io/\nHow to use Oracalize to create attestations: http://docs.oraclize.it/#datasources-url",
+                    "description": "zero or more attestation URLs (twitter, FB, blog) links to proof of account ownership, a post with public key id of owner. Signing the attribute with the\nVerity signing key creates a claim that the Verity system has created this attestation. \n\nExamples at: \nhttps://keybase.io/\nhttps://keybase.io/docs/kbfs/understanding_kbfs\n\nHow to use Oracalize to create attestations: http://docs.oraclize.it/#datasources-url.\nAlignment with W3C Verifiable Claims spec is encouraged. https://opencreds.github.io/vc-data-model/",
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -1382,15 +1166,12 @@
             "required": [
                 "uuid",
                 "publicKey"
-            ],
-            "x-stoplight": {
-                "id": "Agent",
-                "name": "Agent",
-                "public": true
-            }
+            ]
         },
         "Organization": {
+            "title": "Organization",
             "type": "object",
+            "description": "Organization is at the top level of the ecosystem. An organization has one community that is the root of the community ecosystem (tree). A community can have sub communities so the hirearchy is Organization->Community->Sub Communities",
             "properties": {
                 "uuid": {
                     "type": "string",
@@ -1402,9 +1183,6 @@
                 "agent": {
                     "$ref": "#/definitions/Agent"
                 },
-                "content": {
-                    "$ref": "#/definitions/Content"
-                },
                 "community": {
                     "$ref": "#/definitions/Community"
                 }
@@ -1412,15 +1190,12 @@
             "required": [
                 "uuid",
                 "orgName",
-                "agent"
-            ],
-            "x-stoplight": {
-                "id": "Organization",
-                "name": "Organization",
-                "public": true
-            }
+                "agent",
+                "community"
+            ]
         },
-        "valueaction": {
+        "ValueAction": {
+            "title": "ValueAction",
             "type": "object",
             "description": "ValueAction describes the action taken and the associated value (points) awarded. Value can be retroactivly changed to adjust point distribution after the transaction has been recorded.",
             "properties": {
@@ -1451,274 +1226,14 @@
                 "description",
                 "actionTypeId",
                 "archived"
-            ],
-            "x-stoplight": {
-                "id": "valueaction",
-                "name": "ValueAction",
-                "public": true
-            }
+            ]
         },
         "uuid": {
+            "title": "UUID",
             "type": "string",
             "description": "UUID",
             "minLength": 20,
-            "maxLength": 200,
-            "x-stoplight": {
-                "id": "uuid",
-                "name": "UUID",
-                "public": true
-            }
-        }
-    },
-    "x-stoplight": {
-        "beforeScript": "",
-        "afterScript": "",
-        "version": {
-            "groups": {
-                "utilFuncs": [],
-                "docs": [
-                    {
-                        "name": "Model Primatives",
-                        "items": [],
-                        "divider": true
-                    },
-                    {
-                        "name": "Community",
-                        "items": [
-                            {
-                                "type": "endpoints",
-                                "_id": "createCommunity"
-                            },
-                            {
-                                "type": "endpoints",
-                                "_id": "getCommunity"
-                            },
-                            {
-                                "type": "endpoints",
-                                "_id": "updateCommunity"
-                            }
-                        ],
-                        "divider": false
-                    },
-                    {
-                        "name": "ValueAction",
-                        "items": [
-                            {
-                                "type": "endpoints",
-                                "_id": "createValueAction"
-                            },
-                            {
-                                "type": "endpoints",
-                                "_id": "getValueAction"
-                            },
-                            {
-                                "type": "endpoints",
-                                "_id": "updateValueAction"
-                            },
-                            {
-                                "type": "endpoints",
-                                "_id": "archiveValueAction"
-                            }
-                        ],
-                        "divider": false
-                    },
-                    {
-                        "divider": false,
-                        "name": "ActionType",
-                        "items": [
-                            {
-                                "_id": "createActiontype",
-                                "type": "endpoints"
-                            },
-                            {
-                                "_id": "getActiontype",
-                                "type": "endpoints"
-                            },
-                            {
-                                "_id": "updateActiontype",
-                                "type": "endpoints"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Organization",
-                        "items": [
-                            {
-                                "_id": "createOrganization",
-                                "type": "endpoints"
-                            },
-                            {
-                                "_id": "getOrganization",
-                                "type": "endpoints"
-                            },
-                            {
-                                "type": "endpoints",
-                                "_id": "updateOrganization"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Person",
-                        "items": [
-                            {
-                                "_id": "createPerson",
-                                "type": "endpoints"
-                            },
-                            {
-                                "_id": "getPerson",
-                                "type": "endpoints"
-                            },
-                            {
-                                "_id": "updatePerson",
-                                "type": "endpoints"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Transaction",
-                        "items": [
-                            {
-                                "_id": "createTransaction",
-                                "type": "endpoints"
-                            },
-                            {
-                                "type": "endpoints",
-                                "_id": "getTransaction"
-                            },
-                            {
-                                "type": "endpoints",
-                                "_id": "getTransactionsByDates"
-                            },
-                            {
-                                "type": "endpoints",
-                                "_id": "getTransactionByTargetAgentId"
-                            },
-                            {
-                                "type": "endpoints",
-                                "_id": "getTransactionByTargetAgentIdByValueActionId"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Models",
-                        "description": "Models make up the core input and ouput structures in this API. They are used in endpoint request and response bodies.",
-                        "items": [
-                            {
-                                "type": "schemas",
-                                "_id": "uuid"
-                            },
-                            {
-                                "_id": "Organization",
-                                "type": "schemas"
-                            },
-                            {
-                                "_id": "Community",
-                                "type": "schemas"
-                            },
-                            {
-                                "_id": "Person",
-                                "type": "schemas"
-                            },
-                            {
-                                "_id": "SoftwareAgent",
-                                "type": "schemas"
-                            },
-                            {
-                                "_id": "Agent",
-                                "type": "schemas"
-                            },
-                            {
-                                "_id": "ActionType",
-                                "type": "schemas"
-                            },
-                            {
-                                "type": "schemas",
-                                "_id": "valueaction"
-                            },
-                            {
-                                "_id": "Transaction",
-                                "type": "schemas"
-                            },
-                            {
-                                "_id": "Content",
-                                "type": "schemas"
-                            },
-                            {
-                                "_id": "Activity",
-                                "type": "schemas"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Traits",
-                        "items": [
-                            {
-                                "type": "traits",
-                                "_id": "checkGas"
-                            },
-                            {
-                                "type": "traits",
-                                "_id": "standardErrors"
-                            }
-                        ],
-                        "divider": false
-                    }
-                ],
-                "savedEntries": []
-            }
-        },
-        "functions": {},
-        "textSections": {},
-        "mock": {
-            "enabled": false,
-            "dynamic": false
-        }
-    },
-    "x-tests": {
-        "sqPtB4EEFK2WL6ijd": {
-            "id": "sqPtB4EEFK2WL6ijd",
-            "name": "getPersonReturnsPerson",
-            "initialVariables": {
-                "host": "http://localhost:8080",
-                "basePath": "/verity/core",
-                "personA_uuid": "1u91uj-qrj10934581581-32589-1349058"
-            },
-            "steps": [
-                {
-                    "id": "h3tR4cp433vpSh2R2",
-                    "name": "get Person",
-                    "capture": {
-                        "body": [],
-                        "headers": []
-                    },
-                    "request": {
-                        "valid": 2,
-                        "transformed": false,
-                        "method": "get",
-                        "url": "<<host>>/person/<<personA_uuid>>",
-                        "pathParams": [],
-                        "headers": [],
-                        "queryString": [],
-                        "cookies": [],
-                        "postData": {},
-                        "authentication": {},
-                        "headersSize": -1,
-                        "bodySize": -1
-                    },
-                    "assertions": [
-                        {
-                            "location": "response.code",
-                            "op": "eq",
-                            "expected": 200
-                        },
-                        {
-                            "location": "response.body",
-                            "op": "validate.pass",
-                            "match": 200
-                        }
-                    ]
-                }
-            ]
+            "maxLength": 200
         }
     }
 }

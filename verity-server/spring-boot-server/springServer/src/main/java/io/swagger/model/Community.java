@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -27,25 +28,32 @@ import java.util.List;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
 @Entity
+@Table(name="community")
 public class Community implements Serializable {
 
 	private static final long serialVersionUID = -3185192700794511303L;
 
-	@OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
-			CascadeType.DETACH })
-	@JoinColumn(name = "agent_uuid", unique = true) // was agent_fk
+//	@OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
+//			CascadeType.DETACH })
+//	@JoinColumn(name = "agent_uuid") // was agent_fk
+	
+	@OneToOne
+	@JoinColumn(name = "AGENT_UUID")
 	private Agent agent = null;
 
 	private String communityName = null;
 
 	@Id
-	private String uuid = null;
+	@Column(name="UUID",unique=true, nullable=false )
+	private String id = null;
 
-	@Column(name = "sub_community")
+	@Column(name = "SUB_COMMUNITY")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ElementCollection(targetClass = Community.class)
 	private List<Community> subCommunities = new ArrayList<Community>();
 
+	
+	
 	public Community agent(Agent agent) {
 		this.agent = agent;
 		return this;
@@ -85,22 +93,22 @@ public class Community implements Serializable {
 	}
 
 	public Community uuid(String uuid) {
-		this.uuid = uuid;
+		this.id = uuid;
 		return this;
 	}
 
 	/**
 	 * UUID, GUID, HASH or MultiHash that represents this object.
 	 * 
-	 * @return uuid
+	 * @return id
 	 **/
 	@ApiModelProperty(required = true, value = "UUID, GUID, HASH or MultiHash that represents this object.")
 	public String getUuid() {
-		return uuid;
+		return id;
 	}
 
 	public void setUuid(String uuid) {
-		this.uuid = uuid;
+		this.id = uuid;
 	}
 
 	public Community subCommunities(List<Community> subCommunities) {
@@ -136,14 +144,14 @@ public class Community implements Serializable {
 			return false;
 		}
 		Community community = (Community) o;
-		return Objects.equals(this.uuid, community.uuid) && Objects.equals(this.communityName, community.communityName)
+		return Objects.equals(this.id, community.id) && Objects.equals(this.communityName, community.communityName)
 				&& Objects.equals(this.subCommunities, community.subCommunities)
 				&& Objects.equals(this.agent, community.agent);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(uuid, communityName, subCommunities, agent);
+		return Objects.hash(id, communityName, subCommunities, agent);
 	}
 
 	@Override
@@ -151,7 +159,7 @@ public class Community implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Community {\n");
 
-		sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
+		sb.append("    id: ").append(toIndentedString(id)).append("\n");
 		sb.append("    communityName: ").append(toIndentedString(communityName)).append("\n");
 		sb.append("    subCommunities: ").append(toIndentedString(subCommunities)).append("\n");
 		sb.append("    agent: ").append(toIndentedString(agent)).append("\n");

@@ -1,13 +1,17 @@
 package io.swagger.model;
 
 import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -33,41 +37,88 @@ import java.util.List;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
 @Entity
+@Table(name="content")
 public class Content implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7851449562084883370L;
 
-    @Id
-    @Column(name = "uuid")
-	private String uuid = null;
-
+	@Id
+	@Column(name="UUID",unique=true, nullable=false )
+	private String id = null;
+	
+	@Column(name="NAME")
 	private String name = null;
 
 	private String body = null;
 	
-	@OneToMany
-    @JoinColumn(name="parent_uuid")
-	private List<Content> nodes = new ArrayList<Content>();
+	//====================
+    @Column(name = "PARENT_UUID")
+    private String parentUuid;
+     
+    //mappedBy must not define database mappings like @JoinTable or @JoinColumn
+    //Mapped by means that Hibernate should look/track the other side of the relation
+    @OneToMany(mappedBy="PARENT_NODE")
+    private List<Content> child_nodes;
+
+    public List<Content> getChildContent() {
+        return child_nodes;
+    }
+    public void setChildContent(List<Content> children) {
+        this.child_nodes = children;
+    }
+    
+//    @ManyToOne(cascade={CascadeType.ALL})
+//    @JoinColumn(name="parent_node_uuid", insertable = false, updatable = false)
+    private Content parent_node;
+     
+     
+    public Content getParentNode() {
+        return parent_node;
+    }
+    public void setParentNode(Content content) {
+        this.parent_node = content;
+    }
+	//============================
+	
+	
+//	@OneToMany
+//    @JoinColumn(name="id")
+//	private List<Content> nodes = new ArrayList<Content>();
+
+	
+//	/**
+//	 * child nodes
+//	 * 
+//	 * @return nodes
+//	 **/
+//	@ApiModelProperty(value = "child nodes")
+//	public List<Content> getNodes() {
+//		return nodes;
+//	}
+//
+//	public void setNodes(List<Content> nodes) {
+//		this.nodes = nodes;
+//	}
 
 	public Content uuid(String uuid) {
-		this.uuid = uuid;
+		this.id = uuid;
 		return this;
 	}
 
 	/**
 	 * UUID, GUID, HASH or MultiHash that represents this object
 	 * 
-	 * @return uuid
+	 * @return id
 	 **/
 	@ApiModelProperty(required = true, value = "UUID, GUID, HASH or MultiHash that represents this object")
 	public String getUuid() {
-		return uuid;
+		return id;
 	}
 
 	public void setUuid(String uuid) {
-		this.uuid = uuid;
+		this.id = uuid;
 	}
 
 	public Content name(String name) {
@@ -108,29 +159,16 @@ public class Content implements Serializable {
 		this.body = body;
 	}
 
-	public Content nodes(List<Content> nodes) {
-		this.nodes = nodes;
-		return this;
-	}
+//	public Content nodes(List<Content> nodes) {
+//		this.nodes = nodes;
+//		return this;
+//	}
+//
+//	public Content addNodesItem(Content nodesItem) {
+//		this.nodes.add(nodesItem);
+//		return this;
+//	}
 
-	public Content addNodesItem(Content nodesItem) {
-		this.nodes.add(nodesItem);
-		return this;
-	}
-
-	/**
-	 * child nodes
-	 * 
-	 * @return nodes
-	 **/
-	@ApiModelProperty(value = "child nodes")
-	public List<Content> getNodes() {
-		return nodes;
-	}
-
-	public void setNodes(List<Content> nodes) {
-		this.nodes = nodes;
-	}
 
 	@Override
 	public boolean equals(java.lang.Object o) {
@@ -141,13 +179,13 @@ public class Content implements Serializable {
 			return false;
 		}
 		Content content = (Content) o;
-		return Objects.equals(this.uuid, content.uuid) && Objects.equals(this.name, content.name)
-				&& Objects.equals(this.body, content.body) && Objects.equals(this.nodes, content.nodes);
+		return Objects.equals(this.id, content.id) && Objects.equals(this.name, content.name)
+				&& Objects.equals(this.body, content.body) && Objects.equals(this.child_nodes, content.child_nodes);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(uuid, name, body, nodes);
+		return Objects.hash(id, name, body, child_nodes);
 	}
 
 	@Override
@@ -155,10 +193,10 @@ public class Content implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Content {\n");
 
-		sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
+		sb.append("    id: ").append(toIndentedString(id)).append("\n");
 		sb.append("    name: ").append(toIndentedString(name)).append("\n");
 		sb.append("    body: ").append(toIndentedString(body)).append("\n");
-		sb.append("    nodes: ").append(toIndentedString(nodes)).append("\n");
+		sb.append("    nodes: ").append(toIndentedString(child_nodes)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

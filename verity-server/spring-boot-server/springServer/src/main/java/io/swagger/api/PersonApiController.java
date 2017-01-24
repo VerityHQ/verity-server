@@ -2,6 +2,7 @@ package io.swagger.api;
 
 import io.swagger.model.Person;
 import io.swagger.persistence.service.IAgentService;
+import io.swagger.persistence.service.IOrganizationService;
 import io.swagger.persistence.service.IPersonService;
 import site.verity.web.exception.ResourceNotFoundException;
 import site.verity.web.exception.UnprocessableEntityException;
@@ -10,10 +11,13 @@ import io.swagger.annotations.*;
 
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -27,18 +31,22 @@ public class PersonApiController implements PersonApi {
 
 	@Autowired
 	private IAgentService agentService;
+	
+	@Autowired
+	private IOrganizationService organizationService;
 
 	/*
 	 * UUIDs - allow caller to create UUIDs or let Verity generate them. If UUID
 	 * is passed on creation, look up existing, if found throw error else create
 	 * new object using caller UUID. If no UUID is passed, generate a new one
-	 * (simulate blockchain of IPFS, etc.)
+	 * (simulate blockchain or IPFS, etc.)
 	 * 
 	 * @see io.swagger.api.PersonApi#createPerson(io.swagger.model.Person)
 	 */
 	
-	public ResponseEntity<Person> createPerson(@ApiParam(value = "") @RequestBody Person body) {
-
+	//TODO: fill out person dto with validation annotations
+	public ResponseEntity<Person> createPerson(@ApiParam(value = "") @RequestBody @Valid Person body) {
+		Assert.notNull(body);
 		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
 				+ "UUID is required. Either set the UUID or send an empty string to create a new uuid.");
 		RestPreconditions.assertRequestElementProvided(body.getNickName(),
@@ -46,7 +54,12 @@ public class PersonApiController implements PersonApi {
 		RestPreconditions.assertRequestElementProvided(body.getAgent());
 		RestPreconditions.assertRequestElementProvided(body.getAgent().getUuid(),
 				body.getClass().getSimpleName() + "-Agent UUID is required. Either set the UUID or send an empty string to create a new uuid.");		
-		
+
+		//ensure we have an existing organization
+		RestPreconditions.assertRequestElementProvided(body.getOrganizationId());
+		RestPreconditions.assertSemanticsValid(organizationService.findByUuid(body.getOrganizationId())!=null,
+				"Could not find an existing Organization using the organizationId provided");
+
 		if (body.getUuid().isEmpty()) {
 			// if caller did not provide UUID
 			// simulate blockchain contract and create new UUID
@@ -60,11 +73,12 @@ public class PersonApiController implements PersonApi {
 		if (body.getAgent().getUuid().isEmpty()) {
 			body.getAgent().setUuid(java.util.UUID.randomUUID().toString());
 		}else{ 
-			//check UUID provided (note: we may later allow for multiple agent-personas)
+			//check UUID provided is unique (TODO: we may later allow for multiple agent-personas)
 			RestPreconditions.assertNoConflict(agentService.findByUuid(body.getAgent().getUuid()),
 			"Connot create " + body.getClass().getSimpleName() + "-Agent: uuid exists allready.");
 		}
 		
+		agentService.create(body.getAgent());
 		personService.create(body);
 		return new ResponseEntity<Person>(body, HttpStatus.OK);
 	}

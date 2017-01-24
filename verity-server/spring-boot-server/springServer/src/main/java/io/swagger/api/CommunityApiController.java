@@ -51,6 +51,7 @@ public class CommunityApiController implements CommunityApi {
 			"Connot create " + body.getClass().getSimpleName() + "-Agent: uuid exists allready.");
 		}
 		
+		agentService.create(body.getAgent());
 		communityService.create(body);
 		return new ResponseEntity<Community>(body, HttpStatus.CREATED);
 	}

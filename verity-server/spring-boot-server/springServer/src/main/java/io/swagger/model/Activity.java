@@ -3,8 +3,10 @@ package io.swagger.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,22 +26,25 @@ import org.joda.time.LocalDate;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
 @Entity
+@Table(name="activity")
 public class Activity implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6797472896832777343L;
 
-	//TODO: added to make hibernate happy. Need to update the API def and regen, adding a UUID filed
+
 	@Id
-	private String uuid = null;
-
+	@Column(name="UUID",unique=true, nullable=false )
+	private String id = null;
+	@Column(name="NAME")
 	private LocalDate end = null;
-
+	@Column(name="END")
 	private String name = null;
-
+	@Column(name="START")
 	private LocalDate start = null;
 
+	
 	public Activity end(LocalDate end) {
 		this.end = end;
 		return this;

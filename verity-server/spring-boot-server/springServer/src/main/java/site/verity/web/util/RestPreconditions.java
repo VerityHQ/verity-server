@@ -9,9 +9,11 @@ import site.verity.web.exception.ResourceNotFoundException;
 import site.verity.web.exception.UnprocessableEntityException;
 
 /**
- * Simple static methods to be called at the start of your own methods to verify
- * correct arguments and state. If the Precondition fails, an {@link HttpStatus}
- * code is thrown
+ * Simple static methods that verify correct arguments and state of request. 
+ * If the Precondition fails, one of our custom exceptions are thrown.
+ * The thrown exception is expected to be caught and mapped in
+ * {@link RestResponseEntityExceptionHandler} where it will be converted
+ * to a response code.
  */
 public final class RestPreconditions {
 

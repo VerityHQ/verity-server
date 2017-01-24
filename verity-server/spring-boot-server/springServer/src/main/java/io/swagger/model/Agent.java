@@ -5,8 +5,13 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -31,54 +36,42 @@ import java.util.List;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
 
 @Entity
+@Table(name="agent")
 public class Agent implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5193173655266389886L;
 	
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
-    //@Column(name = "id")
-    //private long id;
-
-	//we expect the UUID to come from the caller, allready generated on chain by the 
-	//agent account
-    @Id
-    @Column(name = "uuid")
-	private String uuid = null;
+	@Id
+	@Column(name="UUID", unique=true, nullable=false )
+	private String id = null;
     
+	//there is also a generator for system-guid which is more like an blockchain address
 //    @Id
 //    @GeneratedValue(generator="system-uuid")
 //    @GenericGenerator(name="system-uuid", strategy = "uuid")
-//    @Column(name = "uuid2", unique = true)
-//    private String uuid2;
-    
-/*
- * Persisting or merging a transient entity from a controller:
+//    @Column(name = "uuid", unique = true)
+//    private String uuid;
 
-session.persist(new UUID2Identifier());
-session.flush();
-session.merge(new UUID2Identifier());
-session.flush();
-
- */
     
-    
-    @Column(name = "public_key")
+    @Column(name = "PUBLIC_KEY")
 	private String publicKey = null;
 
-    //following shows how to use collections with hibernate
+    //following shows how to use collections of simple types with hibernate
     //The collection will be created as a table of string values with keys back to parent
     //The @LazyCollection attribute is needed. See SO  //http://stackoverflow.com/questions/30465748/jackson-confused-with-bidirectional-one-to-many-relationship-failed-to-lazily
-    @Column(name = "attestation_urls")
+    @Column(name = "ATTESTATION_URLS")
     @LazyCollection(LazyCollectionOption.FALSE) 
     @ElementCollection(targetClass=String.class)
 	private List<String> attestationUrls = new ArrayList<String>();
-	
 
+    
+    
+    //constructors
+    //
 	public Agent uuid(String uuid) {
-		this.uuid = uuid;
+		this.id = uuid;
 		return this;
 	}
 
@@ -97,6 +90,8 @@ session.flush();
 		return this;
 	}
 	
+	
+	
 	/**
 	 * UUID, GUID, HASH, MultiHash or ProxyContract Address that represents this
 	 * object
@@ -105,11 +100,11 @@ session.flush();
 	 **/
 	@ApiModelProperty(required = true, value = "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object")
 	public String getUuid() {
-		return uuid;
+		return id;
 	}
 
 	public void setUuid(String uuid) {
-		this.uuid = uuid;
+		this.id = uuid;
 	}
 
 	/**
@@ -157,13 +152,13 @@ session.flush();
 			return false;
 		}
 		Agent agent = (Agent) o;
-		return Objects.equals(this.uuid, agent.uuid) && Objects.equals(this.publicKey, agent.publicKey)
+		return Objects.equals(this.id, agent.id) && Objects.equals(this.publicKey, agent.publicKey)
 				&& Objects.equals(this.attestationUrls, agent.attestationUrls);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(uuid, publicKey, attestationUrls);
+		return Objects.hash(id, publicKey, attestationUrls);
 	}
 
 	@Override
@@ -171,7 +166,7 @@ session.flush();
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Agent {\n");
 
-		sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
+		sb.append("    uuid: ").append(toIndentedString(id)).append("\n");
 		sb.append("    publicKey: ").append(toIndentedString(publicKey)).append("\n");
 		sb.append("    attestationUrls: ").append(toIndentedString(attestationUrls)).append("\n");
 		sb.append("}");

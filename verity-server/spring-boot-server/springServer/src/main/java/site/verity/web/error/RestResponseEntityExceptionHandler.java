@@ -1,7 +1,10 @@
 package site.verity.web.error;
 
+import java.sql.SQLException;
+
 import javax.persistence.EntityNotFoundException;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +25,13 @@ import site.verity.web.exception.ApiError;
 import site.verity.web.exception.ConflictException;
 import site.verity.web.exception.ResourceNotFoundException;
 import site.verity.web.exception.UnprocessableEntityException;
-
+/**
+ * 
+ * @author kingdo
+ *
+ * Methods to handle exceptions and map them to response codes.
+ *  
+ */
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -44,28 +53,29 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({ ConstraintViolationException.class })
     public ResponseEntity<Object> handleBadRequest(final ConstraintViolationException ex, final WebRequest request) {
         log.warn("Unexpected exception - we should be explicitly handling for this case.  Bad Request: {}", ex.getLocalizedMessage());
-        final ApiError bodyOfResponse = message(HttpStatus.BAD_REQUEST, ex);//This should be application specific";
+        final ApiError bodyOfResponse = message(HttpStatus.BAD_REQUEST, ex);
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler({ DataIntegrityViolationException.class })
     public ResponseEntity<Object> handleBadRequest(final DataIntegrityViolationException ex, final WebRequest request) {
         log.warn("Unexpected exception - we should be explicitly handling for this case.  Bad Request: {}", ex.getLocalizedMessage());
-        final ApiError bodyOfResponse = message(HttpStatus.BAD_REQUEST, ex); //This should be application specific";
+        final ApiError bodyOfResponse = message(HttpStatus.BAD_REQUEST, ex); 
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(final HttpMessageNotReadableException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
         log.warn("Unexpected exception - we should be explicitly handling for this case.  Bad Request: {}", ex.getLocalizedMessage());
-    	final String bodyOfResponse = ""; //This should be application specific";
+        final ApiError bodyOfResponse = message(HttpStatus.BAD_REQUEST, ex); 
         // ex.getCause() instanceof JsonMappingException, JsonParseException // for additional information later on
         return handleExceptionInternal(ex, bodyOfResponse, headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
-        final String bodyOfResponse = ""; //This should be application specific";
+        log.warn("Unexpected exception - we should be explicitly handling for this case.  Bad Request: {}", ex.getLocalizedMessage());
+        final ApiError bodyOfResponse = message(HttpStatus.BAD_REQUEST, ex); 
         return handleExceptionInternal(ex, bodyOfResponse, headers, HttpStatus.BAD_REQUEST, request);
     }
 
@@ -110,12 +120,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
     
     private ApiError message(final HttpStatus httpStatus, final Exception ex) {
-        final String message = ex.getMessage() == null ? ex.getClass().getSimpleName() : ex.getMessage();
-        final String devMessage = ex.getClass().getSimpleName();
-        
+        final String message = ex.getMessage() == null ? ex.getClass().getSimpleName() : ex.getMessage();        
         // TODO: configure dev instance to return stack trace via API
-        // devMessage = ExceptionUtils.getStackTrace(ex);
-
+        final String devMessage = ExceptionUtils.getRootCauseMessage(ex);
         return new ApiError(httpStatus.value(), message, devMessage);
     }
 }

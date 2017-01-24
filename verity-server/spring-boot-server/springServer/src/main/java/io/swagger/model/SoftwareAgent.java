@@ -5,8 +5,11 @@ import java.util.Objects;
 
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,6 +34,7 @@ import io.swagger.model.Agent;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-30T13:41:55.542-08:00")
 
 @Entity
+@Table(name="software_agent")
 public class SoftwareAgent implements Serializable {
 
 	/**
@@ -39,19 +43,20 @@ public class SoftwareAgent implements Serializable {
 	private static final long serialVersionUID = -5895593878806837584L;
 
 	@Id
-	private String uuid = null;
-
+	@Column(name="UUID",unique=true, nullable=false )
+	private String id = null;
+	@Column(name="API_URL")
 	private String apiUrl = null;
-
+	@Column(name="NAME")
 	private String name = null;
 
-	@OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
-			CascadeType.DETACH })
-	@JoinColumn(name = "agent_uuid", unique = true)
+//	@ManyToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
+//			CascadeType.DETACH })
+//	@JoinColumn(name = "owned_by_agent_uuid")
 	private Agent ownedBy = null;
 
 	public SoftwareAgent uuid(String uuid) {
-		this.uuid = uuid;
+		this.id = uuid;
 		return this;
 	}
 
@@ -59,15 +64,15 @@ public class SoftwareAgent implements Serializable {
 	 * UUID, GUID, HASH, MultiHash or ProxyContract Address that represents this
 	 * object
 	 * 
-	 * @return uuid
+	 * @return id
 	 **/
 	@ApiModelProperty(required = true, value = "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object")
 	public String getUuid() {
-		return uuid;
+		return id;
 	}
 
 	public void setUuid(String uuid) {
-		this.uuid = uuid;
+		this.id = uuid;
 	}
 
 	public SoftwareAgent apiUrl(String apiUrl) {
@@ -136,13 +141,13 @@ public class SoftwareAgent implements Serializable {
 			return false;
 		}
 		SoftwareAgent softwareAgent = (SoftwareAgent) o;
-		return Objects.equals(this.uuid, softwareAgent.uuid) && Objects.equals(this.apiUrl, softwareAgent.apiUrl)
+		return Objects.equals(this.id, softwareAgent.id) && Objects.equals(this.apiUrl, softwareAgent.apiUrl)
 				&& Objects.equals(this.name, softwareAgent.name) && Objects.equals(this.ownedBy, softwareAgent.ownedBy);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(uuid, apiUrl, name, ownedBy);
+		return Objects.hash(id, apiUrl, name, ownedBy);
 	}
 
 	@Override
@@ -150,7 +155,7 @@ public class SoftwareAgent implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class SoftwareAgent {\n");
 
-		sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
+		sb.append("    id: ").append(toIndentedString(id)).append("\n");
 		sb.append("    apiUrl: ").append(toIndentedString(apiUrl)).append("\n");
 		sb.append("    name: ").append(toIndentedString(name)).append("\n");
 		sb.append("    ownedBy: ").append(toIndentedString(ownedBy)).append("\n");

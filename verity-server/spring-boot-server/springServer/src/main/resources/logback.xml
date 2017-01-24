@@ -6,6 +6,7 @@
       <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
     </layout>
   </appender>
+  
 
   <!-- ### log just the SQL ### -->
   <logger name="org.hibernate.SQL" level="DEBUG"/>
@@ -15,7 +16,7 @@
 
   <logger name="org.hibernate.tool.hbm2ddl" level="DEBUG"/>
 
-  <root level="ERROR">
+  <root level="DEBUG">
     <appender-ref ref="STDOUT"/>
   </root>
 </configuration>

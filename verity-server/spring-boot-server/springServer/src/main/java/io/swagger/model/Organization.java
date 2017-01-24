@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Agent;
@@ -20,6 +23,7 @@ import io.swagger.model.Content;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-30T13:26:20.711-08:00")
 
 @Entity
+@Table(name="organization")
 public class Organization implements Serializable {
 	/**
 	 * 
@@ -27,37 +31,38 @@ public class Organization implements Serializable {
 	private static final long serialVersionUID = 1616396014713721397L;
 
 	@Id
-	private String uuid = null;
+	@Column(name="UUID",unique=true, nullable=false )
+	private String id = null;
 
+	@Column(name="NAME")
 	private String orgName = null;
 	
-	@OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
-			CascadeType.DETACH })
-	@JoinColumn(name = "agent_uuid", unique = true) // was agent_fk
+	@OneToOne   //(mappedBy="id") //the table (Agent class)
+	@JoinColumn(name = "AGENT_UUID")
 	private Agent agent = null;
 
+	@Column(name="CONTENT")
 	private Content content = null;
 
+	//the root community for the organization
+	@OneToOne
+	@JoinColumn(name = "COMMUNITY_UUID")
 	private Community community = null;
 
-	public Organization uuid(String uuid) {
-		this.uuid = uuid;
-		return this;
-	}
-
+	
 	/**
 	 * UUID, GUID, HASH, MultiHash or ProxyContract Address that represents this
 	 * object
 	 * 
-	 * @return uuid
+	 * @return id
 	 **/
 	@ApiModelProperty(required = true, value = "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object")
 	public String getUuid() {
-		return uuid;
+		return id;
 	}
 
 	public void setUuid(String uuid) {
-		this.uuid = uuid;
+		this.id = uuid;
 	}
 
 	public Organization orgName(String orgName) {
@@ -145,14 +150,14 @@ public class Organization implements Serializable {
 			return false;
 		}
 		Organization organization = (Organization) o;
-		return Objects.equals(this.uuid, organization.uuid) && Objects.equals(this.orgName, organization.orgName)
+		return Objects.equals(this.id, organization.id) && Objects.equals(this.orgName, organization.orgName)
 				&& Objects.equals(this.agent, organization.agent) && Objects.equals(this.content, organization.content)
 				&& Objects.equals(this.community, organization.community);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(uuid, orgName, agent, content, community);
+		return Objects.hash(id, orgName, agent, content, community);
 	}
 
 	@Override
@@ -160,7 +165,7 @@ public class Organization implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Organization {\n");
 
-		sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
+		sb.append("    id: ").append(toIndentedString(id)).append("\n");
 		sb.append("    orgName: ").append(toIndentedString(orgName)).append("\n");
 		sb.append("    agent: ").append(toIndentedString(agent)).append("\n");
 		sb.append("    content: ").append(toIndentedString(content)).append("\n");

@@ -22,9 +22,9 @@ public class ValueactionApiController implements ValueactionApi {
 
 	public ResponseEntity<Valueaction> createValueAction(@ApiParam(value = "") @RequestBody Valueaction body) {
 		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
-				+ "UUID is required. Either set the UUID or send an empty string to create a new uuid.");
+				+ " UUID is required. Either set the UUID or send an empty string to create a new uuid.");
 		RestPreconditions.assertRequestElementProvided(body.getActionTypeId(), body.getClass().getSimpleName()
-				+ "actionTypeId is required and cannot be null");
+				+ " actionTypeId is required and cannot be null");
 
 		if (body.getUuid().isEmpty()) {
 			// create the UUID if it has not been provided (our blockchain
@@ -46,7 +46,7 @@ public class ValueactionApiController implements ValueactionApi {
 
 	public ResponseEntity<Void> updateValueAction( @ApiParam(value = "") @RequestBody Valueaction body ) {
 		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
-				+ "UUID is required");
+				+ " UUID is required");
 		Valueaction valueAction = valueActionService.findByUuid(body.getUuid());
 		RestPreconditions.assertResourceFound(valueAction);
 		RestPreconditions.assertSemanticsValid(valueAction.getArchived() == false, 

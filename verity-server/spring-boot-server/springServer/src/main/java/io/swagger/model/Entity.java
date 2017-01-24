@@ -1,6 +1,9 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,7 +19,7 @@ import java.util.List;
 @ApiModel(description = "Self describing content (document object model, JSON-LD) A physical, digital, conceptual, or other kind of thing with some fixed aspects; entities may be real or imaginary.  Maps to https://www.w3.org/TR/prov-o/  prov:Entity")
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-22T21:40:22.727Z")
 
-
+//TODO: we are not persisting this yet, could be redundant with Content object. Still we need to follow the prov:Entity spec if possible
 public class Entity  implements Serializable  {
   /**
 	 * 
