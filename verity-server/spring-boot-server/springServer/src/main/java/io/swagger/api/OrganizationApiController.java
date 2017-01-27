@@ -71,6 +71,9 @@ public class OrganizationApiController implements OrganizationApi {
 		}
 
 		Agent communityAgent = body.getCommunity().getAgent();		
+		RestPreconditions.assertRequestElementProvided(communityAgent.getUuid(), communityAgent.getClass().getSimpleName()
+				+ "UUID is required for communityAgent. Either set the UUID or send an empty string to create a new uuid.");
+
 		if (communityAgent.getUuid().isEmpty()) {
 			communityAgent.setUuid(java.util.UUID.randomUUID().toString());
 		}else{ 
@@ -97,15 +100,13 @@ public class OrganizationApiController implements OrganizationApi {
 	public ResponseEntity<Void> updateOrganization(
 			@ApiParam(value = "") 
 			@RequestBody Organization body) {
+
+		RestPreconditions.assertResourceFound(organizationService.findByUuid(body.getUuid()));
 		
-		if (organizationService.findByUuid(body.getUuid()) != null) {
-			return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
-		}
 		// TODO: is it appropriate to modify organization after is has been in
 		// use? What fields should we not allow changes on? 
 		// How to do that (with annotations? e.g. @ReadOnly)
 		organizationService.update(body);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-
 }

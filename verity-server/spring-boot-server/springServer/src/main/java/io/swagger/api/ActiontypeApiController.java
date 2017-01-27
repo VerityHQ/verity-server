@@ -20,10 +20,14 @@ public class ActiontypeApiController implements ActiontypeApi {
 
 	@Autowired
 	private IActionTypeService actionTypeService;
+	@Autowired
+	private IActionTypeService communityService;
 
 	public ResponseEntity<ActionType> createActiontype(@ApiParam(value = "") @RequestBody ActionType body) {
 		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
 				+ "UUID is required. Either set the UUID or send an empty string to create a new uuid.");
+		RestPreconditions.assertRequestElementProvided(body.getCommunityId(), body.getClass().getSimpleName()
+				+ "Community UUID is required.");
 		
 		if (body.getUuid().isEmpty()) {
 			//if they don't provide the UUID we create one for them
@@ -32,6 +36,10 @@ public class ActiontypeApiController implements ActiontypeApi {
 			RestPreconditions.assertNoConflict(actionTypeService.findByUuid(body.getUuid()),
 					"Connot create " + body.getClass().getSimpleName() + ": uuid exists allready.");
 		}
+		
+		RestPreconditions.assertSemanticsValid(communityService.findByUuid(body.getCommunityId())!=null,
+					"Connot create " + body.getClass().getSimpleName() + ": Community not found.");
+		
 		actionTypeService.create(body);
 		return new ResponseEntity<ActionType>(body, HttpStatus.OK);
 	}

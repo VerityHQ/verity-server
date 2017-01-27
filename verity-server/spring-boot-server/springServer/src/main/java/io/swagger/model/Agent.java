@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -54,7 +55,7 @@ public class Agent implements Serializable {
 //    @Column(name = "uuid", unique = true)
 //    private String uuid;
 
-    
+	@Lob //varchar(max)
     @Column(name = "PUBLIC_KEY")
 	private String publicKey = null;
 

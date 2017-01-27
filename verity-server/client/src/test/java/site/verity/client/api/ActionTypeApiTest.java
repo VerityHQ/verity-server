@@ -55,9 +55,16 @@ public class ActionTypeApiTest {
     @Test
     public void createActiontypeTest() throws ApiException {
         ActionType body = null;
+        
+        //set request body up
+        body.setActionName("upvote");
+        
+        
         // ActionType response = api.createActiontype(body);
-
+        ActionType responseBody = api.createActiontype(body);
+        
         // TODO: test validations
+        //assert "upvote" == responseBody.getActionName();
     }
     
     /**
