@@ -1,4 +1,4 @@
-package org.baeldung.spring;
+package site.verity.spring;
 
 import java.util.Properties;
 
@@ -22,7 +22,7 @@ import com.google.common.base.Preconditions;
 @Configuration
 @EnableTransactionManagement
 @PropertySource({ "classpath:persistence-mysql.properties" })
-@ComponentScan({ "org.baeldung.persistence" })
+@ComponentScan({ "site.verity.persistence" })
 public class PersistenceConfig {
 
 	@Autowired
@@ -36,7 +36,7 @@ public class PersistenceConfig {
 	public LocalSessionFactoryBean sessionFactory() {
 		final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(restDataSource());
-		sessionFactory.setPackagesToScan(new String[] { "org.baeldung.persistence.model", "io.swagger.model" });
+		sessionFactory.setPackagesToScan(new String[] { "site.verity.persistence.model", "io.swagger.model" });
 		sessionFactory.setHibernateProperties(hibernateProperties());
 
 		return sessionFactory;

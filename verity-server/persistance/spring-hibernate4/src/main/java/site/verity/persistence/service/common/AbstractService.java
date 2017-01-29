@@ -1,9 +1,9 @@
-package org.baeldung.persistence.service.common;
+package site.verity.persistence.service.common;
 
 import java.io.Serializable;
 import java.util.List;
 
-import org.baeldung.persistence.dao.common.IOperations;
+import site.verity.persistence.dao.common.IOperations;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

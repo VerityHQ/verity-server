@@ -12,7 +12,7 @@
         <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan">
 	        <array>
-		         <value>org.baeldung.persistence.model"</value>
+		         <value>site.verity.persistence.model"</value>
 	        </array>
         </property>
         <property name="hibernateProperties">
