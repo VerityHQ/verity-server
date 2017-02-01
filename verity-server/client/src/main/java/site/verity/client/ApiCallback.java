@@ -25,10 +25,10 @@
 
 package site.verity.client;
 
-import java.io.IOException;
-
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
+
+import site.verity.client.ApiException;
 
 /**
  * Callback for asynchronous API call.

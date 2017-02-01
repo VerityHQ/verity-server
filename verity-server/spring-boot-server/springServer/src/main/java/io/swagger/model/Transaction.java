@@ -7,9 +7,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 /**
@@ -45,6 +49,8 @@ public class Transaction implements Serializable {
 	private String targetAgentId = null;
 	
 	@Column(name="TIME_STAMP")
+	//@Temporal(TemporalType.TIMESTAMP) //otherwise will generate just date column without room for time
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime timeStamp = null;
 	
 	@Column(name="VALUE")

@@ -5,6 +5,7 @@
 /target
 /neoDb*
 /data
+/bin
 /src/main/webapp/WEB-INF/classes
 */META-INF/*
 

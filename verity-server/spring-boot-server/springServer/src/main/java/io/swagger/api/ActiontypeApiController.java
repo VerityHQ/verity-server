@@ -5,6 +5,7 @@ import site.verity.web.util.RestPreconditions;
 import io.swagger.annotations.*;
 import io.swagger.model.ActionType;
 import io.swagger.persistence.service.IActionTypeService;
+import io.swagger.persistence.service.ICommunityService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class ActiontypeApiController implements ActiontypeApi {
 	@Autowired
 	private IActionTypeService actionTypeService;
 	@Autowired
-	private IActionTypeService communityService;
+	private ICommunityService communityService;
 
 	public ResponseEntity<ActionType> createActiontype(@ApiParam(value = "") @RequestBody ActionType body) {
 		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
@@ -37,7 +38,7 @@ public class ActiontypeApiController implements ActiontypeApi {
 					"Connot create " + body.getClass().getSimpleName() + ": uuid exists allready.");
 		}
 		
-		RestPreconditions.assertSemanticsValid(communityService.findByUuid(body.getCommunityId())!=null,
+		RestPreconditions.assertSemanticsValid(communityService.findByUuid(body.getCommunityId()) !=null,
 					"Connot create " + body.getClass().getSimpleName() + ": Community not found.");
 		
 		actionTypeService.create(body);
