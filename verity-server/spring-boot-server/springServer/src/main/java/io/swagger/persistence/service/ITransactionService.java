@@ -1,8 +1,7 @@
 package io.swagger.persistence.service;
 
-import org.baeldung.persistence.dao.common.IOperations;
-import io.swagger.model.Transaction;
+import io.swagger.persistence.dao.ITransactionDao;
 
-public interface ITransactionService extends IOperations<Transaction>{
+public interface ITransactionService extends ITransactionDao{
 
 }

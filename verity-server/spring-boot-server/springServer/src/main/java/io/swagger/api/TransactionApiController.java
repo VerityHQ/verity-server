@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
+import javax.validation.Valid;
+
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-28T16:27:10.767-08:00")
 
 @Controller
@@ -40,7 +42,7 @@ public class TransactionApiController implements TransactionApi {
 	
 	
 	public ResponseEntity<Transaction> createTransaction(
-			@ApiParam(value = "") @RequestBody Transaction body) {
+			@ApiParam(value = "") @Valid @RequestBody Transaction body) {
 		//check for required parameters
 		//check for valid parameters
 		//check for collisions
@@ -58,7 +60,8 @@ public class TransactionApiController implements TransactionApi {
 
 	public ResponseEntity<List<Transaction>> getTransactionByTargetAgentId(
 			@ApiParam(value = "", required = true) @PathVariable("targetAgentId") String targetAgentId) {
-		// do some magic!
+		
+		
 		return new ResponseEntity<List<Transaction>>(HttpStatus.OK);
 	}
 

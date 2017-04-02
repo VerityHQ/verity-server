@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -58,6 +59,9 @@ public class Transaction implements Serializable {
 
 	@Id
 	@Column(name="UUID",unique=true, nullable=false )
+	//TODO: notice we are using javax validation that the TransactionApiController will validate via @Valid annotation
+	//TODO: determine the min/max for UUIDs. Maybe there are none, assuming IPFS links or Universial 
+	@Size(min = 20, max = 50) 
 	private String id = null;
 
 	public Transaction valueActionId(String valueActionId) {
@@ -148,7 +152,7 @@ public class Transaction implements Serializable {
 	/**
 	 * value (points) awarded at the time of the transaction. Immutable. Use
 	 * ValueActionId to lookup the 'current' value if you want to calculate
-	 * points based on the latest value as apposed to the value at time
+	 * points based on the latest value as opposed to the value at time
 	 * transaction was created. This allows for 'retroactive' adjustment of
 	 * points.
 	 * 
