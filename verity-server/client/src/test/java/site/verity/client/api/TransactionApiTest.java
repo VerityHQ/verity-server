@@ -114,6 +114,10 @@ public class TransactionApiTest {
 				+ "A general measure of community participation to be encouraged by community norms.",
 				1);
 		
+		contentKarmaValueAction = createValueAction(karmaActionType, "Content Karma Points: UpVote content by " 
+				+ karmaActionType.getDefaultPoints() + " points.");
+		
+		
 		ActionType insightActionType = createActionType(
 				organizationResponse.getData().getCommunity().getUuid(), 
 				"Insight", 
@@ -121,11 +125,8 @@ public class TransactionApiTest {
 				+ "An insight should synthesize existing information and add a new perspective to the discussion.",
 				3);
 		
-		contentKarmaValueAction = createValueAction(karmaActionType, "Content Karma Points: UpVote content by " 
-				+ karmaActionType.getDefaultPoints() + " points.");
-		
 		discussionInsightValueAction = createValueAction(insightActionType, 
-				"Discussion Insight Point: Add points to members account for contributing insight in a post");
+				"Discussion Insight Points: Add points to members account for contributing insight in a post");
 		
     }
 

@@ -46,7 +46,7 @@ import java.util.Arrays;
 public class OrganizationApiTest {
 
 	//TODO:this should be driven from the config, not a constant
-    private static final String API_BASE_PATH = "http://localhost:8080/verity/core";
+    private static final String API_BASE_PATH = "http://springserver.cfapps.io/verity/core"; //"http://localhost:8080/verity/core"; //
 	private static OrganizationApi api;
 	
     @BeforeClass

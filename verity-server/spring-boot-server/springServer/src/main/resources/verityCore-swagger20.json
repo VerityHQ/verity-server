@@ -5,7 +5,7 @@
         "title": "VerityReputation",
         "description": "This is a simple Verity reputation API. You can find out more about Verity at <a href='http://getcrystal.net'>http://getcrystal.net</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md This is a simple Verity reputation API. You can find out more about Verity at <a href='http://getcrystal.net'>http://getcrystal.net</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md"
     },
-    "host": "springserver.cfapps.io",
+    "host": "localhost:8080",
     "basePath": "/verity/core",
     "schemes": [
         "http",
@@ -911,7 +911,7 @@
                         "name": "body",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/ValueType"
+                            "$ref": "#/definitions/ActionType"
                         }
                     }
                 ],
@@ -919,7 +919,7 @@
                     "201": {
                         "description": "Status 200",
                         "schema": {
-                            "$ref": "#/definitions/ValueType"
+                            "$ref": "#/definitions/ActionType"
                         }
                     },
                     "401": {
@@ -966,7 +966,7 @@
                         "name": "body",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/ValueType"
+                            "$ref": "#/definitions/ActionType"
                         }
                     }
                 ],
@@ -1027,7 +1027,7 @@
                     "200": {
                         "description": "Status 200",
                         "schema": {
-                            "$ref": "#/definitions/ValueType"
+                            "$ref": "#/definitions/ActionType"
                         }
                     }
                 },
@@ -1382,6 +1382,76 @@
                     }
                 }
             }
+        },
+        "/reputation/{agentId}/{valueAction}/{reputationType}": {
+            "parameters": [
+                {
+                    "name": "agentId",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "valueAction",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "reputationType",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getReputation",
+                "summary": "get reputation",
+                "tags": [
+                    "Reputation"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "integer",
+                            "description": "The reputation score calculated for the agent-valueType-reputationType"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "getReputation",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            }
         }
     },
     "parameters": {
@@ -1481,18 +1551,18 @@
         }
     },
     "definitions": {
-        "ValueType": {
-            "title": "ValueType",
+        "ActionType": {
+            "title": "ActionType",
             "type": "object",
-            "description": "Represents the community value embodied in the action taken by the agent receiving reputation. A value is an enduring belief that a specific mode of conduct or end-state is socially preferable to alternative modes of conduct or end-states.",
+            "description": "Type of action that results in a transaction. Seen from the POV of the giver - use a verb to describe act of giving or rating, e.g. upvote, give points, tagged, rate.",
             "properties": {
                 "uuid": {
                     "type": "string",
                     "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
                 },
-                "valueName": {
+                "actionName": {
                     "type": "string",
-                    "description": "Can represent any type of reputation as a verb. Use verb to describe act of giving or rating, e.g. upvote, give points, tagged, rate."
+                    "description": "Represents action taken that triggers a transaction of reputation. Use verb to describe act of giving or rating, e.g. upvote, give points, tagged, rate."
                 },
                 "communityId": {
                     "type": "string",
@@ -1510,12 +1580,12 @@
             },
             "required": [
                 "uuid",
-                "valueName",
+                "actionName",
                 "communityId"
             ],
             "x-stoplight": {
-                "id": "ValueType",
-                "name": "ValueType",
+                "id": "ActionType",
+                "name": "ActionType",
                 "public": true
             }
         },
@@ -1525,7 +1595,8 @@
             "properties": {
                 "uuid": {
                     "type": "string",
-                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
+                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object",
+                    "format": "uuid"
                 },
                 "communityName": {
                     "type": "string"
@@ -1542,7 +1613,7 @@
                 "values": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/ValueType"
+                        "$ref": "#/definitions/ActionType"
                     }
                 }
             },
@@ -1654,7 +1725,7 @@
                 "value": {
                     "type": "integer",
                     "format": "int32",
-                    "description": "value (points) awarded at the time of the transaction. Immutable. Use ValueActionId to lookup the 'current' value if you want to calculate points based on the latest value as apposed to the value at time transaction was created. This allows for 'retroactive' adjustment of points."
+                    "description": "value (points) awarded at the time of the transaction. Immutable. Use ValueActionId to lookup the 'current' value if you want to calculate points based on the latest default value as apposed to the value awarded at time of the transaction. This allows for 'retroactive' adjustment of points."
                 }
             },
             "required": [
@@ -1783,11 +1854,11 @@
                 },
                 "description": {
                     "type": "string",
-                    "description": "Describes this action. Formatted as JSON or JSON:LD. Should include a short 'tag' and optionally a longer description or link to more content."
+                    "description": "Describes this action or community value. Formatted as JSON or JSON:LD. Should include a short 'tag' and optionally a longer description or link to more content."
                 },
                 "amount": {
                     "type": "integer",
-                    "description": "The default amount awarded. When creating a transaction the default amount can be used or overridden. If the defalut changes at a later date, new awards can be retroactivly computed based on the new default amount, however the original transaction will remain fixed in value."
+                    "description": "The amount to be awarded. When creating a transaction the default amount can be used or overridden. If the defalut changes at a later date, new awards can be retroactivly computed based on the new default amount, however the original transaction will remain fixed in value."
                 },
                 "actionTypeId": {
                     "type": "string",
@@ -1796,7 +1867,11 @@
                 "archived": {
                     "type": "boolean",
                     "default": false,
-                    "description": "indicates this ValueAction is frozen and read-only. No further changes to 'value' or any other fields can be made."
+                    "description": "indicates this ValueAction is frozen and read-only. No further changes to 'amount' or any other fields can be made."
+                },
+                "communityId": {
+                    "type": "string",
+                    "format": "uuid"
                 }
             },
             "required": [
@@ -1824,7 +1899,7 @@
             }
         },
         "ReputationCalculation": {
-            "title": "ReputationCalculation",
+            "title": "ReputationCalculationParameters",
             "type": "object",
             "properties": {
                 "reputationType": {
@@ -1844,7 +1919,7 @@
             ],
             "x-stoplight": {
                 "id": "ReputationCalculation",
-                "name": "ReputationCalculation",
+                "name": "ReputationCalculationParameters",
                 "public": true
             }
         },
@@ -2020,6 +2095,16 @@
                         "name": "Transaction"
                     },
                     {
+                        "divider": false,
+                        "items": [
+                            {
+                                "_id": "getReputation",
+                                "type": "endpoints"
+                            }
+                        ],
+                        "name": "Reputation"
+                    },
+                    {
                         "items": [
                             {
                                 "type": "schemas",
@@ -2050,16 +2135,12 @@
                                 "_id": "Transaction"
                             },
                             {
-                                "type": "schemas",
-                                "_id": "ValueType"
-                            },
-                            {
                                 "_id": "ValueAction",
                                 "type": "schemas"
                             },
                             {
-                                "_id": "ReputationCalculation",
-                                "type": "schemas"
+                                "type": "schemas",
+                                "_id": "ActionType"
                             },
                             {
                                 "_id": "KeyValuePair",
@@ -2067,6 +2148,10 @@
                             },
                             {
                                 "_id": "uuid",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "ReputationCalculation",
                                 "type": "schemas"
                             }
                         ],

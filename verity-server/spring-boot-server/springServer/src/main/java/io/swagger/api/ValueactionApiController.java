@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiParam;
-import io.swagger.model.Valueaction;
+import io.swagger.model.ValueAction;
 import io.swagger.persistence.service.IValueActionService;
 import site.verity.web.util.RestPreconditions;
 
@@ -20,7 +20,7 @@ public class ValueactionApiController implements ValueactionApi {
 	@Autowired
 	private IValueActionService valueActionService;
 
-	public ResponseEntity<Valueaction> createValueAction(@ApiParam(value = "") @RequestBody Valueaction body) {
+	public ResponseEntity<ValueAction> createValueAction(@ApiParam(value = "") @RequestBody ValueAction body) {
 		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
 				+ " UUID is required. Either set the UUID or send an empty string to create a new uuid.");
 		RestPreconditions.assertRequestElementProvided(body.getActionTypeId(), body.getClass().getSimpleName()
@@ -35,19 +35,19 @@ public class ValueactionApiController implements ValueactionApi {
 					"Cannot create " + body.getClass().getSimpleName() + " - UUID exists allready.");
 		}
 		valueActionService.create(body);
-		return new ResponseEntity<Valueaction>(body, HttpStatus.OK);
+		return new ResponseEntity<ValueAction>(body, HttpStatus.OK);
 	}
 
-	public ResponseEntity<Valueaction> getValueAction( @ApiParam(value = "", required = true) @PathVariable("uuid") String uuid ) {
-		Valueaction valueAction = valueActionService.findByUuid(uuid);
+	public ResponseEntity<ValueAction> getValueAction( @ApiParam(value = "", required = true) @PathVariable("uuid") String uuid ) {
+		ValueAction valueAction = valueActionService.findByUuid(uuid);
 		RestPreconditions.assertResourceFound(valueAction != null);
-		return new ResponseEntity<Valueaction>(valueAction, HttpStatus.OK);
+		return new ResponseEntity<ValueAction>(valueAction, HttpStatus.OK);
 	}
 
-	public ResponseEntity<Void> updateValueAction( @ApiParam(value = "") @RequestBody Valueaction body ) {
+	public ResponseEntity<Void> updateValueAction( @ApiParam(value = "") @RequestBody ValueAction body ) {
 		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
 				+ " UUID is required");
-		Valueaction valueAction = valueActionService.findByUuid(body.getUuid());
+		ValueAction valueAction = valueActionService.findByUuid(body.getUuid());
 		RestPreconditions.assertResourceFound(valueAction);
 		RestPreconditions.assertSemanticsValid(valueAction.getArchived() == false, 
 				body.getClass().getSimpleName() + " is archived and cannot be changed");
@@ -56,7 +56,7 @@ public class ValueactionApiController implements ValueactionApi {
 	}
 
 	public ResponseEntity<Void> archiveValueAction( @ApiParam(value = "", required = true) @PathVariable("uuid") String uuid ) {
-		Valueaction valueAction = valueActionService.findByUuid(uuid);
+		ValueAction valueAction = valueActionService.findByUuid(uuid);
 		RestPreconditions.assertResourceFound(valueAction);
 
 		valueAction.setArchived(true);
