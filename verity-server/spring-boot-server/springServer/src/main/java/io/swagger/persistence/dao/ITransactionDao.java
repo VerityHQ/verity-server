@@ -2,7 +2,7 @@ package io.swagger.persistence.dao;
 
 import java.util.List;
 
-import org.verity.persistence.dao.common.IOperations;
+import site.verity.persistence.dao.common.IOperations;
 
 import io.swagger.model.Transaction;
 

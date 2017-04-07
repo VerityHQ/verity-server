@@ -2,8 +2,7 @@ package io.swagger.persistence.dao.impl;
 
 import java.util.List;
 
-import org.verity.persistence.dao.common.AbstractHibernateDao;
-import org.verity.persistence.model.Foo;
+import site.verity.persistence.dao.common.AbstractHibernateDao;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;

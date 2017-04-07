@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "site.verity.persistence.dao", "site.verity.persistence.service" })
+@ComponentScan({ "site.verity.persistence.dao", "site.verity.persistence.service", "io.swagger.model" })
 @ImportResource({ "classpath:hibernate4Config.xml" })
 public class PersistenceXmlConfig {
 

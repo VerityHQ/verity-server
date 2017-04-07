@@ -1,8 +1,8 @@
 package io.swagger.persistence.service.impl;
 
 
-import org.verity.persistence.dao.common.IOperations;
-import org.verity.persistence.service.common.AbstractService;
+import site.verity.persistence.dao.common.IOperations;
+import site.verity.persistence.service.common.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

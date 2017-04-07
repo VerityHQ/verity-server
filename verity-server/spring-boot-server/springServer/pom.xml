@@ -16,6 +16,44 @@
 		<!-- util -->
 		<guava.version>17.0</guava.version>
 		<tomcat-dbcp.version>8.0.8</tomcat-dbcp.version>
+		
+		
+			<!-- Spring -->
+		<org.springframework.version>4.2.6.RELEASE</org.springframework.version>
+		<org.springframework.security.version>3.2.4.RELEASE</org.springframework.security.version>
+		<javassist.version>3.18.1-GA</javassist.version>
+
+		<!-- persistence -->
+		<hibernate.version>4.3.5.Final</hibernate.version>
+		<mysql-connector-java.version>5.1.30</mysql-connector-java.version>
+		<tomcat-dbcp.version>8.0.8</tomcat-dbcp.version>
+
+		<!-- logging -->
+		<org.slf4j.version>1.7.6</org.slf4j.version>
+		<logback.version>1.1.1</logback.version>
+
+		<!-- various -->
+		<hibernate-validator.version>5.1.1.Final</hibernate-validator.version>
+
+		<!-- util -->
+		<guava.version>17.0</guava.version>
+		<commons-lang3.version>3.3.2</commons-lang3.version>
+
+		<!-- testing -->
+		<org.hamcrest.version>1.3</org.hamcrest.version>
+		<junit.version>4.11</junit.version>
+		<mockito.version>1.9.5</mockito.version>
+
+		<httpcore.version>4.3.2</httpcore.version>
+		<httpclient.version>4.3.3</httpclient.version>
+
+		<rest-assured.version>2.3.1</rest-assured.version>
+
+		<!-- maven plugins -->
+		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+		<maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+		<cargo-maven2-plugin.version>1.4.8</cargo-maven2-plugin.version>
 	</properties>
 
 	<parent>
@@ -58,11 +96,68 @@
 			<artifactId>spring-cloud-heroku-connector</artifactId>
 			</dependency>
 	
-	
 		<dependency>
-			<groupId>org.verity</groupId>
-			<artifactId>spring-hibernate4</artifactId>
-			<version>0.1-SNAPSHOT</version>
+		    <groupId>org.jadira.usertype</groupId>
+		    <artifactId>usertype.core</artifactId>
+		    <version>3.2.0.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>${javassist.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-dbcp</artifactId>
+			<version>${tomcat-dbcp.version}</version>
+		</dependency>
+
+		<!-- validation -->
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+		</dependency>
+		<!-- force hibernate-validator to use 1.3.1 instead of 1.0.1 which conflicts with springfox -->
+		<dependency>
+		    <groupId>com.fasterxml</groupId>
+		    <artifactId>classmate</artifactId>
+		    <version>1.3.1</version>
+		</dependency>
+
+		<!-- utils -->
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+
+		<!-- test scoped -->
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -101,23 +196,13 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-joda</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 		</dependency>
 
 		<!-- utils -->
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.web3j</groupId>
