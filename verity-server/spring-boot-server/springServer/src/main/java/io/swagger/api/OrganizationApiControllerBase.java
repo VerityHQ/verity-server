@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-30T13:41:55.542-08:00")
 
 @Controller
-public class OrganizationApiController implements OrganizationApi {
+public class OrganizationApiControllerBase implements OrganizationApi {
 
 	@Autowired
 	private IOrganizationService organizationService;

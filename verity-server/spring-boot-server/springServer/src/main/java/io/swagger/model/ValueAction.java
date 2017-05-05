@@ -31,10 +31,6 @@ public class ValueAction implements Serializable {
 
 	private static final long serialVersionUID = -3904227431741460230L;
 
-	@Id
-	@Column(name = "UUID", unique = true, nullable = false)
-	private String uuid = null;
-
 	@Column(name = "DESCRIPTION")
 	private String description = null;
 
@@ -49,6 +45,10 @@ public class ValueAction implements Serializable {
 
 	@Column(name = "COMMUNITY_ID")
 	private String communityId = null;
+
+	@Id
+	@Column(name = "UUID", unique = true, nullable = false)
+	private String uuid = null;
 
 	public ValueAction uuid(String uuid) {
 		this.uuid = uuid;

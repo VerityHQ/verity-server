@@ -1,8 +1,8 @@
 package io.swagger.api;
 
+import io.swagger.model.Organization;
 import io.swagger.model.InlineResponse403;
 import io.swagger.model.InlineResponse404;
-import io.swagger.model.Organization;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-01T16:45:12.037-08:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-04-17T18:13:27.632-07:00")
 
 @Api(value = "organization", description = "the organization API")
 public interface OrganizationApi {

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-28T16:27:10.767-08:00")
 
 @Controller
-public class CommunityApiController implements CommunityApi {
+public class CommunityApiControllerBase implements CommunityApi {
 
 	@Autowired
 	private ICommunityService communityService;
