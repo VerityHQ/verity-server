@@ -1,7 +1,5 @@
 package site.verity.web.util;
 
-import org.springframework.http.HttpStatus;
-
 import site.verity.web.exception.BadRequestException;
 import site.verity.web.exception.ConflictException;
 import site.verity.web.exception.ForbiddenException;

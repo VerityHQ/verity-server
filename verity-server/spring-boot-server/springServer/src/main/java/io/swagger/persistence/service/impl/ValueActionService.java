@@ -6,11 +6,8 @@ import site.verity.persistence.service.common.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.swagger.model.Transaction;
 import io.swagger.model.ValueAction;
-import io.swagger.persistence.dao.ITransactionDao;
 import io.swagger.persistence.dao.IValueActionDao;
-import io.swagger.persistence.service.ITransactionService;
 import io.swagger.persistence.service.IValueActionService;
 
 @Service

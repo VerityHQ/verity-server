@@ -38,8 +38,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 
-import site.verity.client.mode.InlineResponse403;
-import site.verity.client.mode.InlineResponse404;
 import site.verity.client.mode.ValueAction;
 
 import java.lang.reflect.Type;

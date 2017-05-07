@@ -27,7 +27,6 @@ package site.verity.client.mode;
 
 import java.util.Objects;
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import site.verity.client.mode.Agent;
 import site.verity.client.mode.Content;

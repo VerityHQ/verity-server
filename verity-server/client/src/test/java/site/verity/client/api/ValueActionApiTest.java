@@ -26,15 +26,8 @@
 package site.verity.client.api;
 
 import site.verity.client.ApiException;
-import site.verity.client.mode.InlineResponse403;
-import site.verity.client.mode.InlineResponse404;
 import site.verity.client.mode.ValueAction;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * API tests for ValueActionApi

@@ -32,24 +32,17 @@ import site.verity.client.mode.ValueAction;
 import site.verity.client.mode.ActionType;
 import site.verity.client.mode.Agent;
 import site.verity.client.mode.Community;
-import site.verity.client.mode.InlineResponse403;
-import site.verity.client.mode.InlineResponse404;
 import site.verity.client.mode.Organization;
 import site.verity.client.mode.Person;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * API tests for TransactionApi

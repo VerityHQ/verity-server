@@ -1,7 +1,5 @@
 package site.verity.web.error;
 
-import java.sql.SQLException;
-
 import javax.persistence.EntityNotFoundException;
 
 import org.apache.commons.lang.exception.ExceptionUtils;

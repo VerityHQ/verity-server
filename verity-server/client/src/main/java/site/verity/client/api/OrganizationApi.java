@@ -39,9 +39,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 import site.verity.client.mode.Organization;
-import site.verity.client.mode.InlineResponse403;
-import site.verity.client.mode.InlineResponse404;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Content;
 import io.swagger.model.Person;
-import io.swagger.model.ReputationRequest;
 import io.swagger.persistence.service.IAgentService;
 import io.swagger.persistence.service.IOrganizationService;
 import io.swagger.persistence.service.IPersonService;
