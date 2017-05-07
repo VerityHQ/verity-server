@@ -3,6 +3,8 @@ package io.swagger.api;
 import io.swagger.model.InlineResponse403;
 import io.swagger.model.Community;
 import io.swagger.model.InlineResponse404;
+import io.swagger.model.Content;
+import io.swagger.model.Person;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-04-17T18:13:27.632-07:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-05-06T07:17:52.900-07:00")
 
 @Api(value = "community", description = "the community API")
 public interface CommunityApi {
@@ -49,6 +51,32 @@ public interface CommunityApi {
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<Community> getCommunity(
+@ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid
+
+
+);
+
+
+    @ApiOperation(value = "get community content", notes = "", response = Content.class, responseContainer = "List", tags={ "Community", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "", response = Content.class) })
+    @RequestMapping(value = "/community/{uuid}/content",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<Content>> getCommunityContent(
+@ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid
+
+
+);
+
+
+    @ApiOperation(value = "get community members", notes = "", response = Person.class, responseContainer = "List", tags={ "Community", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "", response = Person.class) })
+    @RequestMapping(value = "/community/{uuid}/members",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<Person>> getCommunityMembers(
 @ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid
 
 

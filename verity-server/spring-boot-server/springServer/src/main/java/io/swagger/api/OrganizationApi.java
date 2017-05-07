@@ -3,6 +3,7 @@ package io.swagger.api;
 import io.swagger.model.Organization;
 import io.swagger.model.InlineResponse403;
 import io.swagger.model.InlineResponse404;
+import io.swagger.model.Community;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-04-17T18:13:27.632-07:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-05-06T07:17:52.900-07:00")
 
 @Api(value = "organization", description = "the organization API")
 public interface OrganizationApi {
@@ -49,6 +50,19 @@ public interface OrganizationApi {
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<Organization> getOrganization(
+@ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid
+
+
+);
+
+
+    @ApiOperation(value = "get organization communities", notes = "", response = Community.class, responseContainer = "List", tags={ "Organization", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Status 200", response = Community.class) })
+    @RequestMapping(value = "/organization/{uuid}/community",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<Community>> getOrganizationCommunities(
 @ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid
 
 
