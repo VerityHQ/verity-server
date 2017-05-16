@@ -26,8 +26,9 @@
 package site.verity.client.api;
 
 import site.verity.client.ApiException;
-import site.verity.client.mode.Community;
 import org.junit.Test;
+
+import io.swagger.client.model.Community;
 
 /**
  * API tests for CommunityApi

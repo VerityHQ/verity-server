@@ -22,14 +22,13 @@
  * limitations under the License.
  */
 
-
 package site.verity.client.api;
 
 import site.verity.client.ApiException;
 import site.verity.client.ApiResponse;
-import site.verity.client.mode.Organization;
-import site.verity.client.mode.Agent;
-import site.verity.client.mode.Community;
+import io.swagger.client.model.Organization;
+import io.swagger.client.model.Agent;
+import io.swagger.client.model.Community;
 import org.junit.Test;
 import org.junit.Assert;
 //import static org.hamcrest.Matchers.*;
@@ -39,94 +38,99 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 /**
  * API tests for OrganizationApi
  */
 public class OrganizationApiTest {
 
-	//TODO:this should be driven from the config, not a constant
-    private static final String API_BASE_PATH = "http://springserver.cfapps.io/verity/core"; //"http://localhost:8080/verity/core"; //
+	// TODO:this should be driven from the config, not a constant
+	private static final String API_BASE_PATH = "http://localhost:8080/verity/core"; // "http://springserver.cfapps.io/verity/core";
+																						// //
 	private static OrganizationApi api;
-	
-    @BeforeClass
-    public static void runOnceBeforeClass() {
-    	api  = new OrganizationApi();
-        api.getApiClient().setBasePath(API_BASE_PATH);
-        System.out.println("@BeforeClass - runOnceBeforeClass");
-    }
-	
-	
-    /**
-     * createOrganization should throw exception if mandatory
-     * field is not supplied in the request.
-     */
-    @Test
-    public void createOrganizationWithMissingRequiredElement_returnsMessageInErrorResponse() throws ApiException {
-    	boolean threwException = false;
-    	Organization body = generateOrganizationAndCommunity();
-        body.setUuid(null); //simulate failure to send uuid field
-        try{
-        	api.createOrganizationWithHttpInfo(body);
-        }catch(ApiException ex){
-        	String bodyText = ex.getResponseBody();
-        	Assert.assertTrue(bodyText, bodyText.contains("OrganizationUUID is required"));
-        	threwException = true;
-        }
-        assertTrue(threwException);
-    }
 
-    /**
-     * create an Organization
-     *
-     * 
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
+	@BeforeClass
+	public static void runOnceBeforeClass() {
+		api = new OrganizationApi();
+		api.getApiClient().setBasePath(API_BASE_PATH);
+		System.out.println("@BeforeClass - runOnceBeforeClass");
+		System.out.println("Server path: " + API_BASE_PATH);
+	}
+
+	/**
+	 * createOrganization should throw exception if mandatory field is not
+	 * supplied in the request.
+	 */
 	@Test
-	public void createOrganizationWithEmptyIds_returnsOrganizationWithGeneratedIds() throws ApiException {
+	public void createOrganizationWithMissingRequiredElement_returnsMessageInErrorResponse() throws ApiException {
+		boolean threwException = false;
+		Organization body = generateOrganizationAndCommunity();
+		body.setUuid(null); // simulate failure to send uuid field
+		try {
+			api.createOrganizationWithHttpInfo(body);
+		} catch (ApiException ex) {
+			String bodyText = ex.getResponseBody();
+			Assert.assertTrue(bodyText, bodyText.contains("OrganizationUUID is required"));
+			threwException = true;
+		}
+		assertTrue(threwException);
+	}
+
+	/**
+	 * create an Organization
+	 *
+	 * 
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void createOrganizationWithEmptyIds_returnsOrganizationWithGeneratedIds() {
 		Organization body = generateOrganizationAndCommunity();
 		ApiResponse<Organization> response = null;
-		response = api.createOrganizationWithHttpInfo(body);
+		try {
+			response = api.createOrganizationWithHttpInfo(body);
+		} catch (ApiException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getResponseBody().toString());
+		}
 
 		assertEquals(response.getStatusCode(), 200);
-		assertEquals( java.util.UUID.randomUUID().toString().length(), 
-								response.getData().getAgent().getUuid().length());
+		assertEquals(java.util.UUID.randomUUID().toString().length(), response.getData().getAgent().getUuid().length());
 	}
-    
-    
-    /**
-     * get organization
-     *
-     * 
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getOrganizationTest() throws ApiException {
+
+	/**
+	 * get organization
+	 *
+	 * 
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void getOrganizationTest() throws ApiException {
 		Organization body = generateOrganizationAndCommunity();
 		ApiResponse<Organization> response = api.createOrganizationWithHttpInfo(body);
 		assertEquals(response.getStatusCode(), 200);
-		
+
 		Organization orgFromCreateResponse = response.getData();
 		Organization theOrgFromRequest = api.getOrganization(orgFromCreateResponse.getUuid());
-		assertEquals(theOrgFromRequest.getAgent().getUuid(), 
-				orgFromCreateResponse.getAgent().getUuid());
-		assertEquals(theOrgFromRequest.getCommunity().getAgent().getUuid(), 
+		assertEquals(theOrgFromRequest.getAgent().getUuid(), orgFromCreateResponse.getAgent().getUuid());
+		assertEquals(theOrgFromRequest.getCommunity().getAgent().getUuid(),
 				orgFromCreateResponse.getCommunity().getAgent().getUuid());
-    }
-    
-    /**
-     * update Organization
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void updateOrganizationTest() throws ApiException {
-    	//create a new org with community.
-    	String NEW_NAME = "Wiki 2.0";
+	}
+
+	/**
+	 * update Organization
+	 * 
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void updateOrganizationTest() throws ApiException {
+		// create a new org with community.
+		String NEW_NAME = "Wiki 2.0";
 		Organization body = generateOrganizationAndCommunity();
 		ApiResponse<Organization> response = api.createOrganizationWithHttpInfo(body);
 		assertEquals(response.getStatusCode(), 200);
@@ -135,32 +139,32 @@ public class OrganizationApiTest {
 		api.updateOrganization(newOrg);
 		Organization updatedOrg = api.getOrganization(newOrg.getUuid());
 		assertEquals(NEW_NAME, updatedOrg.getOrgName());
-    }
-    
+	}
+
 	private Organization generateOrganizationAndCommunity() {
 		Organization body = new Organization();
 		body.setUuid("");
 		body.setOrgName("Wikipedia");
-		
-        Agent orgAgent = new Agent();
-        orgAgent.setUuid("");
-        orgAgent.setAttestationUrls(Arrays.asList("foo","bar"));
-        orgAgent.setPublicKey("somereallylongpublickeystring129-408-120481-590810235159159058190-589");
+
+		Agent orgAgent = new Agent();
+		orgAgent.setUuid("");
+		orgAgent.setAttestationUrls(Arrays.asList("foo", "bar"));
+		orgAgent.setPublicKey("somereallylongpublickeystring129-408-120481-590810235159159058190-589");
 		body.setAgent(orgAgent);
-        
-        Agent communityAgent = new Agent();
-        communityAgent.setUuid("");
-        communityAgent.setAttestationUrls(Arrays.asList("http://keybase.io/some/key","http://twitter.com/my_pk_encrypedtweet"));
-        communityAgent.setPublicKey("another_publickeystring129-408-120481-590810235159159058190-589");
-		
-        Community community = new Community();
-        community.setAgent(communityAgent);
-        community.setCommunityName("Content Creators");
-        community.setUuid("");
-        
-        body.setCommunity(community);
+
+		Agent communityAgent = new Agent();
+		communityAgent.setUuid("");
+		communityAgent.setAttestationUrls(
+				Arrays.asList("http://keybase.io/some/key", "http://twitter.com/my_pk_encrypedtweet"));
+		communityAgent.setPublicKey("another_publickeystring129-408-120481-590810235159159058190-589");
+
+		Community community = new Community();
+		community.setAgent(communityAgent);
+		community.setCommunityName("Content Creators");
+		community.setUuid("");
+
+		body.setCommunity(community);
 		return body;
 	}
-    
 
 }

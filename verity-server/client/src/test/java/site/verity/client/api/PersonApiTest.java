@@ -26,7 +26,7 @@
 package site.verity.client.api;
 
 import site.verity.client.ApiException;
-import site.verity.client.mode.Person;
+import io.swagger.client.model.Person;
 import org.junit.Test;
 
 /**

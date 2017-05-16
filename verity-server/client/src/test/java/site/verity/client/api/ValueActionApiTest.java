@@ -26,7 +26,7 @@
 package site.verity.client.api;
 
 import site.verity.client.ApiException;
-import site.verity.client.mode.ValueAction;
+import io.swagger.client.model.ValueAction;
 import org.junit.Test;
 
 /**

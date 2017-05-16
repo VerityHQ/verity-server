@@ -27,15 +27,16 @@ package site.verity.client.api;
 
 import site.verity.client.ApiException;
 import site.verity.client.ApiResponse;
-import site.verity.client.mode.Transaction;
-import site.verity.client.mode.ValueAction;
-import site.verity.client.mode.ActionType;
-import site.verity.client.mode.Agent;
-import site.verity.client.mode.Community;
-import site.verity.client.mode.Organization;
-import site.verity.client.mode.Person;
+import io.swagger.client.model.Transaction;
+import io.swagger.client.model.ValueAction;
+import io.swagger.client.model.ActionType;
+import io.swagger.client.model.Agent;
+import io.swagger.client.model.Community;
+import io.swagger.client.model.Organization;
+import io.swagger.client.model.Person;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -135,8 +136,10 @@ public class TransactionApiTest {
         Transaction body = new Transaction();
         body.setSourceAgentId(personA.getAgent().getUuid());
         body.setTargetAgentId(personB.getAgent().getUuid());
-        body.setValue(5);
+        body.setValue("5");
         body.setValueActionId(contentKarmaValueAction.getUuid()); //TODO:
+        body.setTimeStamp(DateTime.now().toString());
+        body.setUuid(""); //TODO: what purpose does the UUID setter have? would we ever use it?
 
         ApiResponse<Transaction> response = transactionApi.createTransactionWithHttpInfo(body);
 		assertEquals(response.getStatusCode(), 200);
@@ -254,7 +257,7 @@ public class TransactionApiTest {
 		ValueAction valueAction = new ValueAction();
 		valueAction.setActionTypeId(actionType.getUuid());
 		valueAction.setArchived(false);
-		valueAction.setValue(actionType.getDefaultPoints());
+		valueAction.setAmount(actionType.getDefaultPoints());
 		valueAction.setDescription(description);
 		valueAction.setUuid("");
 		ApiResponse<ValueAction> response = valueActionApi.createValueActionWithHttpInfo(valueAction);
