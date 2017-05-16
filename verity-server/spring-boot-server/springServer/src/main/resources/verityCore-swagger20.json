@@ -3,7 +3,7 @@
     "info": {
         "version": "1.0.1",
         "title": "VerityReputation",
-        "description": "This is a simple Verity reputation API. You can find out more about Verity at <a href='http://verity.site'>http://verity.site</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md This is a simple Verity reputation API. You can find out more about Verity at <a href='http://getcrystal.net'>http://getcrystal.net</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md"
+        "description": "You can find out more about Verity at <a href='http://verity.site'>http://verity.site</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nThe collaboration layer in Verity is built on the notion of agents, content and communities. Agents are any users, groups, or autonomous actors that can perform actions within the system. A community in Verity is a group of agents that share a common purpose, vision, or goal. Content is anything in the Verity protocol that can be rated or acted upon, but which cannot itself act.\n\nThe purpose of the Verity collaboration layer is to ensure that communities organize talent, resources, and actions around their shared economic and social interest. There are two specific goals: to preserve community intent over time, thus preserving the identity of the community, and to incentivize actions in alignment with that intent.\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\n\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md This is a simple Verity reputation API. You can find out more about Verity at <a href='http://getcrystal.net'>http://getcrystal.net</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md"
     },
     "host": "localhost:8080",
     "basePath": "/verity/core",
@@ -623,6 +623,20 @@
                 "produces": [
                     "application/json"
                 ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/trait:byDateRange:startDate"
+                    },
+                    {
+                        "$ref": "#/parameters/trait:byDateRange:endDate"
+                    },
+                    {
+                        "$ref": "#/parameters/trait:paged:pageNumber"
+                    },
+                    {
+                        "$ref": "#/parameters/trait:paged:pageSize"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Status 200",
@@ -834,6 +848,24 @@
                         "schema": {
                             "$ref": "#/definitions/Content"
                         }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
                     }
                 },
                 "x-stoplight": {
@@ -911,6 +943,24 @@
                             "type": "number",
                             "description": "the result of the reputation calculation as a numerical value"
                         }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
                     }
                 },
                 "x-stoplight": {
@@ -1350,15 +1400,6 @@
                 "produces": [
                     "application/json"
                 ],
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/Transaction"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "",
@@ -1701,8 +1742,7 @@
             "properties": {
                 "uuid": {
                     "type": "string",
-                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object",
-                    "format": "uuid"
+                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
                 },
                 "communityName": {
                     "type": "string"
@@ -1814,33 +1854,30 @@
                 },
                 "valueActionId": {
                     "type": "string",
-                    "description": "Hash link to description of how the score will be derived, or the community feature that affects the way the value will be interpreted. Could be a globally unique link or content addressable graph pointing to a richer source of description or information.",
-                    "format": "uuid"
+                    "description": "Hash link to description of how the score will be derived, or the community feature that affects the way the value will be interpreted. Could be a globally unique link or content addressable graph pointing to a richer source of description or information."
                 },
                 "sourceAgentId": {
-                    "type": "string",
-                    "format": "uuid"
+                    "type": "string"
                 },
                 "targetAgentId": {
-                    "type": "string",
-                    "format": "uuid"
+                    "type": "string"
                 },
                 "timeStamp": {
                     "type": "string",
-                    "description": "timestamp or block height of blockchain at time of creation. Should be self-describing as to format and meaning.",
-                    "format": "date-time"
+                    "description": "timestamp or block height of blockchain at time of creation. Should be self-describing as to format and meaning."
                 },
                 "value": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "value (points) awarded at the time of the transaction. Immutable. Use ValueActionId to lookup the 'current' value if you want to calculate points based on the latest default value as apposed to the value awarded at time of the transaction. This allows for 'retroactive' adjustment of points."
+                    "format": "string",
+                    "description": "value (points) awarded at the time of the transaction. Immutable. Use ValueActionId to lookup the 'current' value if you want to calculate points based on the latest default value as apposed to the value awarded at time of the transaction. This allows for 'retroactive' adjustment of points.",
+                    "type": "string"
                 }
             },
             "required": [
                 "uuid",
                 "valueActionId",
                 "sourceAgentId",
-                "targetAgentId"
+                "targetAgentId",
+                "timeStamp"
             ],
             "x-stoplight": {
                 "id": "Transaction",
@@ -1960,7 +1997,7 @@
         "ValueAction": {
             "title": "ValueAction",
             "type": "object",
-            "description": "Award type with associated award amount (points) . Amount can be changed to allow for 're-distribution' of points after the transaction has been recorded.",
+            "description": "Award with associated award amount (points) . Amount can be changed to allow for 're-distribution' of points after the transaction has been recorded.",
             "properties": {
                 "uuid": {
                     "type": "string",
@@ -1984,8 +2021,7 @@
                     "description": "indicates this ValueAction is frozen and read-only. No further changes to 'amount' or any other fields can be made."
                 },
                 "communityId": {
-                    "type": "string",
-                    "format": "uuid"
+                    "type": "string"
                 }
             },
             "required": [

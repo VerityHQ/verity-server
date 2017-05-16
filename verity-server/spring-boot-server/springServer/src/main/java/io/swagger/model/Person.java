@@ -1,25 +1,30 @@
 package io.swagger.model;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.Entity;
-
+import java.io.Serializable;
+import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Agent;
+import io.swagger.model.Content;
+import javax.validation.constraints.*;
 
 /**
  * Person
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-28T16:27:10.767-08:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T11:27:43.869-07:00")
 
 @Entity
 @Table(name = "person")
@@ -32,32 +37,60 @@ public class Person implements Serializable {
 	@Id
 	@Column(name = "UUID", unique = true, nullable = false)
 	@NotNull
-	private String id = null;
+	@JsonProperty("uuid")
+	private String uuid = null;
 	
-	@Column(name = "FIRST_NAME")
-	private String firstName = null;
-	
-	@Column(name = "LAST_NAME")
-	private String lastName = null;
-	
-	@Column(name = "NICK_NAME")
-
-	@NotNull
-	@Size(min=2, max=50)
-	private String nickName = null;
-	
-	@Column(name = "ORGANIZATION_ID")
-	private String organizationId = null;
-
 	// @OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST,
 	// CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })
 	// @JoinColumn(name = "agent_uuid") //was agent_fk
 	@OneToOne
 	@JoinColumn(name = "AGENT_UUID")
+	@JsonProperty("agent")
 	private Agent agent = null;
 
+	@Column(name = "FIRST_NAME")
+	@JsonProperty("firstName")
+	private String firstName = null;
+
+	@Column(name = "LAST_NAME")
+	@JsonProperty("lastName")
+	private String lastName = null;
+
+	@Column(name = "NICK_NAME")
+	@NotNull
+	@Size(min=2, max=50)
+	@JsonProperty("nickName")
+	private String nickName = null;
+
+	@Column(name = "ORGANIZATION_ID")
+	@JsonProperty("organizationId")
+	private String organizationId = null;
+
+	@JsonProperty("description")
+	private Content description = null;
+
+	public Person agent(Agent agent) {
+		this.agent = agent;
+		return this;
+	}
+
+	/**
+	 * Get agent
+	 * 
+	 * @return agent
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	@NotNull
+	public Agent getAgent() {
+		return agent;
+	}
+
+	public void setAgent(Agent agent) {
+		this.agent = agent;
+	}
+
 	public Person uuid(String uuid) {
-		this.id = uuid;
+		this.uuid = uuid;
 		return this;
 	}
 
@@ -65,15 +98,16 @@ public class Person implements Serializable {
 	 * UUID, GUID, HASH, MultiHash or ProxyContract Address that represents this
 	 * object
 	 * 
-	 * @return id
+	 * @return uuid
 	 **/
 	@ApiModelProperty(required = true, value = "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object")
+	@NotNull
 	public String getUuid() {
-		return id;
+		return uuid;
 	}
 
 	public void setUuid(String uuid) {
-		this.id = uuid;
+		this.uuid = uuid;
 	}
 
 	public Person firstName(String firstName) {
@@ -125,6 +159,7 @@ public class Person implements Serializable {
 	 * @return nickName
 	 **/
 	@ApiModelProperty(required = true, value = "")
+	@NotNull
 	public String getNickName() {
 		return nickName;
 	}
@@ -152,23 +187,23 @@ public class Person implements Serializable {
 		this.organizationId = organizationId;
 	}
 
-	public Person agent(Agent agent) {
-		this.agent = agent;
+	public Person description(Content description) {
+		this.description = description;
 		return this;
 	}
 
 	/**
-	 * Get agent
+	 * Get description
 	 * 
-	 * @return agent
+	 * @return description
 	 **/
-	@ApiModelProperty(required = true, value = "")
-	public Agent getAgent() {
-		return agent;
+	@ApiModelProperty(value = "")
+	public Content getDescription() {
+		return description;
 	}
 
-	public void setAgent(Agent agent) {
-		this.agent = agent;
+	public void setDescription(Content description) {
+		this.description = description;
 	}
 
 	@Override
@@ -180,15 +215,16 @@ public class Person implements Serializable {
 			return false;
 		}
 		Person person = (Person) o;
-		return Objects.equals(this.id, person.id) && Objects.equals(this.firstName, person.firstName)
-				&& Objects.equals(this.lastName, person.lastName) && Objects.equals(this.nickName, person.nickName)
+		return Objects.equals(this.agent, person.agent) && Objects.equals(this.uuid, person.uuid)
+				&& Objects.equals(this.firstName, person.firstName) && Objects.equals(this.lastName, person.lastName)
+				&& Objects.equals(this.nickName, person.nickName)
 				&& Objects.equals(this.organizationId, person.organizationId)
-				&& Objects.equals(this.agent, person.agent);
+				&& Objects.equals(this.description, person.description);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, firstName, lastName, nickName, organizationId, agent);
+		return Objects.hash(agent, uuid, firstName, lastName, nickName, organizationId, description);
 	}
 
 	@Override
@@ -196,12 +232,13 @@ public class Person implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Person {\n");
 
-		sb.append("    id: ").append(toIndentedString(id)).append("\n");
+		sb.append("    agent: ").append(toIndentedString(agent)).append("\n");
+		sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
 		sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
 		sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
 		sb.append("    nickName: ").append(toIndentedString(nickName)).append("\n");
 		sb.append("    organizationId: ").append(toIndentedString(organizationId)).append("\n");
-		sb.append("    agent: ").append(toIndentedString(agent)).append("\n");
+		sb.append("    description: ").append(toIndentedString(description)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

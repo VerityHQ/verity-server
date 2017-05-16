@@ -1,6 +1,7 @@
 package io.swagger.persistence.service.impl;
 
 
+import java.util.Date;
 import java.util.List;
 
 import site.verity.persistence.dao.common.IOperations;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Transaction;
+import io.swagger.model.Transaction.Direction;
 import io.swagger.persistence.dao.ITransactionDao;
 import io.swagger.persistence.service.ITransactionService;
 
@@ -29,13 +31,21 @@ public class TransactionService extends AbstractService<Transaction> implements 
         return dao;
     }
 
-	@Override
-	public List<Transaction> getTransactionsForSourceAgentPaged(String agentUuid, int pageNumber, int pageSize) {
-		return dao.getTransactionsForSourceAgentPaged(agentUuid, pageNumber, pageSize);
-	}
+//	@Override
+//	public List<Transaction> getTransactionsForSourceAgentPaged(String agentUuid, int pageNumber, int pageSize) {
+//		return dao.getTransactionsForSourceAgentPaged(agentUuid, pageNumber, pageSize);
+//	}
+//
+//	@Override
+//	public List<Transaction> getTransactionsForTargetAgentPaged(String agentUuid, int pageNumber, int pageSize) {
+//		return dao.getTransactionsForTargetAgentPaged(agentUuid, pageNumber, pageSize);
+//	}
 
 	@Override
-	public List<Transaction> getTransactionsForTargetAgentPaged(String agentUuid, int pageNumber, int pageSize) {
-		return dao.getTransactionsForTargetAgentPaged(agentUuid, pageNumber, pageSize);
+	public List<Transaction> getTransactionsForAgentPaged(String agentId, Integer pageNumber, Integer pageSize,
+			Date startAsDate, Date endAsDate, Direction direction) {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 }

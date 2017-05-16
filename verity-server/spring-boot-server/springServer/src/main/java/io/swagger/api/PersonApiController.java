@@ -117,7 +117,8 @@ public class PersonApiController implements PersonApi {
 	}
 
 	@Override
-	public ResponseEntity<List<Content>> getPersonContent(String uuid) {
+	public ResponseEntity<List<Content>> getPersonContent(String uuid, String startDate, String endDate,
+			Integer pageNumber, Integer pageSize) {
 		// TODO Auto-generated method stub
 		return null;
 	}

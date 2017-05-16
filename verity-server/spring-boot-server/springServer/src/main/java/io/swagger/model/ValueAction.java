@@ -1,27 +1,28 @@
 package io.swagger.model;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.*;
 
 /**
- * Award type with associated award amount (points) . Amount can be changed to allow for &#39;re-distribution&#39; of points after the transaction has been recorded.
- **/
-
-/**
- * Award type with associated award amount (points) . Amount can be changed to
- * allow for &#39;re-distribution&#39; of points after the transaction has been
+ * Award with associated award amount (points) . Amount can be changed to allow
+ * for &#39;re-distribution&#39; of points after the transaction has been
  * recorded.
  */
-@ApiModel(description = "Award type with associated award amount (points) . Amount can be changed to allow for 're-distribution' of points after the transaction has been recorded.")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-04-02T18:25:03.524-07:00")
+@ApiModel(description = "Award with associated award amount (points) . Amount can be changed to allow for 're-distribution' of points after the transaction has been recorded.")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T11:27:43.869-07:00")
 
 @Entity
 @Table(name = "value_action")
@@ -29,24 +30,30 @@ public class ValueAction implements Serializable {
 
 	private static final long serialVersionUID = -3904227431741460230L;
 
+	@Id
+	@Column(name = "UUID", unique = true, nullable = false)
+	@JsonProperty("uuid")
+	private String uuid = null;
+
 	@Column(name = "DESCRIPTION")
+	@JsonProperty("description")
 	private String description = null;
 
 	@Column(name = "AMOUNT")
+	@JsonProperty("amount")
 	private Integer amount = null;
 
 	@Column(name = "ACTION_TYPE_ID")
+	@JsonProperty("actionTypeId")
 	private String actionTypeId = null;
 
 	@Column(name = "ARCHIVED")
+	@JsonProperty("archived")
 	private Boolean archived = false;
 
 	@Column(name = "COMMUNITY_ID")
+	@JsonProperty("communityId")
 	private String communityId = null;
-
-	@Id
-	@Column(name = "UUID", unique = true, nullable = false)
-	private String uuid = null;
 
 	public ValueAction uuid(String uuid) {
 		this.uuid = uuid;
@@ -60,6 +67,7 @@ public class ValueAction implements Serializable {
 	 * @return uuid
 	 **/
 	@ApiModelProperty(required = true, value = "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object")
+	@NotNull
 	public String getUuid() {
 		return uuid;
 	}
@@ -81,6 +89,7 @@ public class ValueAction implements Serializable {
 	 * @return description
 	 **/
 	@ApiModelProperty(required = true, value = "Describes this action or community value. Formatted as JSON or JSON:LD. Should include a short 'tag' and optionally a longer description or link to more content.")
+	@NotNull
 	public String getDescription() {
 		return description;
 	}
@@ -122,6 +131,7 @@ public class ValueAction implements Serializable {
 	 * @return actionTypeId
 	 **/
 	@ApiModelProperty(required = true, value = "the  UUID of the actionType")
+	@NotNull
 	public String getActionTypeId() {
 		return actionTypeId;
 	}
@@ -142,6 +152,7 @@ public class ValueAction implements Serializable {
 	 * @return archived
 	 **/
 	@ApiModelProperty(required = true, value = "indicates this ValueAction is frozen and read-only. No further changes to 'amount' or any other fields can be made.")
+	@NotNull
 	public Boolean getArchived() {
 		return archived;
 	}

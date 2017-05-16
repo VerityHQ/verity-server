@@ -1,19 +1,21 @@
 package io.swagger.model;
 
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-
-
-
+import javax.validation.constraints.*;
 /**
  * InlineResponse404
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T11:27:43.869-07:00")
 
 public class InlineResponse404   {
+  @JsonProperty("status")
   private String status = null;
 
+  @JsonProperty("error")
   private String error = null;
 
   public InlineResponse404 status(String status) {
@@ -26,6 +28,7 @@ public class InlineResponse404   {
    * @return status
   **/
   @ApiModelProperty(required = true, value = "")
+  @NotNull
   public String getStatus() {
     return status;
   }
@@ -44,6 +47,7 @@ public class InlineResponse404   {
    * @return error
   **/
   @ApiModelProperty(required = true, value = "")
+  @NotNull
   public String getError() {
     return error;
   }

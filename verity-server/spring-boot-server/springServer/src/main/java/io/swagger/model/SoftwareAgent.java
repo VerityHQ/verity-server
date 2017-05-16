@@ -1,20 +1,22 @@
 package io.swagger.model;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Agent;
-
-/**
- * Bot, smart contract, or software that has agency in the reputation ecosystem (can give and receive reputation) and like other agents has a public key that can sign attestations. One such use would be for a crawler that pulls in attestations (ratings) from sites such as IMDB and as an agent of a well known organization, signs the attestations and moves them into the Verity system, vouching for their authenticity.
- **/
+import javax.validation.constraints.*;
 
 /**
  * Bot, smart contract, or software that has agency in the reputation ecosystem
@@ -25,7 +27,7 @@ import io.swagger.model.Agent;
  * system, vouching for their authenticity.
  */
 @ApiModel(description = "Bot, smart contract, or software that has agency in the reputation ecosystem (can give and receive reputation) and like other agents has a public key that can sign attestations. One such use would be for a crawler that pulls in attestations (ratings) from sites such as IMDB and as an agent of a well known organization, signs the attestations and moves them into the Verity system, vouching for their authenticity.")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-30T13:41:55.542-08:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T11:27:43.869-07:00")
 
 @Entity
 @Table(name="software_agent")
@@ -38,19 +40,23 @@ public class SoftwareAgent implements Serializable {
 
 	@Id
 	@Column(name="UUID",unique=true, nullable=false )
-	private String id = null;
+	@JsonProperty("uuid")
+	private String uuid = null;
+
+	@JsonProperty("apiUrl")
 	@Column(name="API_URL")
 	private String apiUrl = null;
+
+	@JsonProperty("name")
 	@Column(name="NAME")
 	private String name = null;
 
-//	@ManyToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
-//			CascadeType.DETACH })
-//	@JoinColumn(name = "owned_by_agent_uuid")
+	//TODO: how should this be represented in DB?
+	@JsonProperty("ownedBy")
 	private Agent ownedBy = null;
 
 	public SoftwareAgent uuid(String uuid) {
-		this.id = uuid;
+		this.uuid = uuid;
 		return this;
 	}
 
@@ -58,15 +64,16 @@ public class SoftwareAgent implements Serializable {
 	 * UUID, GUID, HASH, MultiHash or ProxyContract Address that represents this
 	 * object
 	 * 
-	 * @return id
+	 * @return uuid
 	 **/
 	@ApiModelProperty(required = true, value = "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object")
+	@NotNull
 	public String getUuid() {
-		return id;
+		return uuid;
 	}
 
 	public void setUuid(String uuid) {
-		this.id = uuid;
+		this.uuid = uuid;
 	}
 
 	public SoftwareAgent apiUrl(String apiUrl) {
@@ -80,6 +87,7 @@ public class SoftwareAgent implements Serializable {
 	 * @return apiUrl
 	 **/
 	@ApiModelProperty(required = true, value = "")
+	@NotNull
 	public String getApiUrl() {
 		return apiUrl;
 	}
@@ -99,6 +107,7 @@ public class SoftwareAgent implements Serializable {
 	 * @return name
 	 **/
 	@ApiModelProperty(required = true, value = "")
+	@NotNull
 	public String getName() {
 		return name;
 	}
@@ -135,13 +144,13 @@ public class SoftwareAgent implements Serializable {
 			return false;
 		}
 		SoftwareAgent softwareAgent = (SoftwareAgent) o;
-		return Objects.equals(this.id, softwareAgent.id) && Objects.equals(this.apiUrl, softwareAgent.apiUrl)
+		return Objects.equals(this.uuid, softwareAgent.uuid) && Objects.equals(this.apiUrl, softwareAgent.apiUrl)
 				&& Objects.equals(this.name, softwareAgent.name) && Objects.equals(this.ownedBy, softwareAgent.ownedBy);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, apiUrl, name, ownedBy);
+		return Objects.hash(uuid, apiUrl, name, ownedBy);
 	}
 
 	@Override
@@ -149,7 +158,7 @@ public class SoftwareAgent implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class SoftwareAgent {\n");
 
-		sb.append("    id: ").append(toIndentedString(id)).append("\n");
+		sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
 		sb.append("    apiUrl: ").append(toIndentedString(apiUrl)).append("\n");
 		sb.append("    name: ").append(toIndentedString(name)).append("\n");
 		sb.append("    ownedBy: ").append(toIndentedString(ownedBy)).append("\n");

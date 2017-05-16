@@ -16,10 +16,10 @@
 
   <logger name="org.hibernate.tool.hbm2ddl" level="DEBUG"/>
 
-  <!-- supress Returning cached instance of singleton bean 'resourceHandlerMapping' -->
+  <!-- supress Returning cached instance of singleton bean 'resourceHandlerMapping'. Activity from  -->
   <logger name="org.springframework.beans.factory.support" level="WARN"/>
 
-  <root level="DEBUG">
+  <root level="INFO">
     <appender-ref ref="STDOUT"/>
   </root>
 </configuration>

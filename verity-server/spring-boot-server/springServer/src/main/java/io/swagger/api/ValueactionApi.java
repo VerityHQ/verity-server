@@ -1,15 +1,23 @@
 package io.swagger.api;
 
+import io.swagger.model.InlineResponse403;
+import io.swagger.model.InlineResponse404;
 import io.swagger.model.ValueAction;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-05-06T07:17:52.900-07:00")
+import java.util.List;
+import javax.validation.constraints.*;
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T11:27:43.869-07:00")
 
 @Api(value = "valueaction", description = "the valueaction API")
 public interface ValueactionApi {
@@ -25,11 +33,7 @@ public interface ValueactionApi {
         @ApiResponse(code = 500, message = "", response = Void.class) })
     @RequestMapping(value = "/valueaction/{uuid}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> archiveValueAction(
-@ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid
-
-
-);
+    ResponseEntity<Void> archiveValueAction(@ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid);
 
 
     @ApiOperation(value = "create ValueAction", notes = "", response = ValueAction.class, tags={ "ValueAction", })
@@ -45,11 +49,7 @@ public interface ValueactionApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ValueAction> createValueAction(
-
-@ApiParam(value = ""  ) @RequestBody ValueAction body
-
-);
+    ResponseEntity<ValueAction> createValueAction(@ApiParam(value = ""  ) @RequestBody ValueAction body);
 
 
     @ApiOperation(value = "get ValueAction", notes = "", response = ValueAction.class, tags={ "ValueAction", })
@@ -58,11 +58,7 @@ public interface ValueactionApi {
     @RequestMapping(value = "/valueaction/{uuid}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ValueAction> getValueAction(
-@ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid
-
-
-);
+    ResponseEntity<ValueAction> getValueAction(@ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid);
 
 
     @ApiOperation(value = "update ValueAction", notes = "Updating the value of the ValueAction will cause any calculations in the future to use this new value, changing the rewards retroactivly. If you want to prohibit these types of retroactive changes, set the archived bit to true and create a new ValueAction and use it going forward.", response = Void.class, tags={ "ValueAction", })
@@ -77,10 +73,6 @@ public interface ValueactionApi {
     @RequestMapping(value = "/valueaction",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateValueAction(
-
-@ApiParam(value = ""  ) @RequestBody ValueAction body
-
-);
+    ResponseEntity<Void> updateValueAction(@ApiParam(value = ""  ) @RequestBody ValueAction body);
 
 }

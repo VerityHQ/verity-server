@@ -11,6 +11,9 @@ We are building a swagger-enabled server in Java using the SpringBoot framework.
 You can run the codegen tool locally on your swagger file to get the SpringBoot code scaffolded up by doing something like this:
 swagger-codegen generate -i mySwaggerApiFile.json -l spring
 
+By changing the -l (language) parameter to java you can generate a java client library
+swagger-codegen generate -i verityCore-swagger20.json -l java  -o clients/java/
+
 The underlying library integrating swagger to SpringBoot is [springfox](https://github.com/springfox/springfox)  
 
 Start your server as an simple java application (with maven) mvn spring-boot:run

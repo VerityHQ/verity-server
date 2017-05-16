@@ -1,66 +1,109 @@
 package io.swagger.model;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
+import javax.validation.constraints.*;
 
 /**
- * A fundamental unit of reputation transfer. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.  Similar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md
- **/
-
-/**
- * A fundamental unit of reputation transfer. Represents a singular event that
- * transfers or bestows reputation to the target/recipient. The sender/source
- * can be a person, software agent, organization or the like. Intended to be
- * independent of database or blockchain so all IDs should be globally
- * identifiable hashes in multi-hash format pointing to the canonical
- * representation or permanent public store. Similar to and should map to
- * TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md
+ * A fundamental unit of reputation value transfer, attestation or claim.
+ * Represents a singular event that transfers or bestows reputation to the
+ * target/recipient. The sender/source can be a person, software agent,
+ * organization or the like. Intended to be independent of database or
+ * blockchain so all IDs should be globally identifiable hashes in multi-hash
+ * format pointing to the canonical representation or permanent public store.
+ * Similar to and should map to TrustAtom
+ * https://github.com/CoMakery/trust-exchange/blob/master/README.md
  */
-@ApiModel(description = "A fundamental unit of reputation transfer. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.  Similar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-26T19:52:26.921-08:00")
+@ApiModel(description = "A fundamental unit of reputation value transfer, attestation or claim. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.  Similar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T11:27:43.869-07:00")
 
 @Entity
 @Table(name="transaction")
 public class Transaction implements Serializable {
+
 	/**
-	 * 
+	 * Indicates which side of the transaction
+	 * we are interested.
+	 * Either the agent is the source or the target
+	 * of the transaction.
 	 */
+	static public enum Direction {
+		SOURCE("source"), 
+		TARGET("target");
+		//valueOf() method is case sensitive and doesn't tolerate extraneous whitespace
+		private String value;
+		 
+		private Direction(String value) {
+			this.value = value;
+		}
+	}
+	
 	private static final long serialVersionUID = 524431549164105537L;
+	
+	@Id
+	@Column(name="UUID", unique=true, nullable=false )
+	//TODO: the TransactionApiController will validate via @Valid annotation
+	// any javax validation that are applied to the private fields
+	//TODO: determine the min/max for UUIDs. 
+	// Maybe there are none, assuming IPFS links or Universial 
+	//@Size(min = 20, max = 50) 
+	@JsonProperty("uuid")
+	private String uuid = null;
+
 	@Column(name="VALUE_ACTION_UUID")
+	@JsonProperty("valueActionId")
 	private String valueActionId = null;
-	
+
 	@Column(name="SOURCE_AGENT_UUID")
+	@JsonProperty("sourceAgentId")
 	private String sourceAgentId = null;
-	
+
 	@Column(name="TARGET_AGENT_UUID")
+	@JsonProperty("targetAgentId")
 	private String targetAgentId = null;
 	
 	@Column(name="TIME_STAMP")
 	//@Temporal(TemporalType.TIMESTAMP) //otherwise will generate just date column without room for time
-	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime timeStamp = null;
-	
-	@Column(name="VALUE")
-	private Integer value = null;
+	//@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@JsonProperty("timeStamp")
+	private String timeStamp = null; //may be a block height number
 
-	@Id
-	@Column(name="UUID",unique=true, nullable=false )
-	//TODO: notice we are using javax validation that the TransactionApiController will validate via @Valid annotation
-	//TODO: determine the min/max for UUIDs. Maybe there are none, assuming IPFS links or Universial 
-	@Size(min = 20, max = 50) 
-	private String id = null;
+	@Column(name="VALUE")
+	@JsonProperty("value")
+	private String value = null;
+
+	public Transaction uuid(String uuid) {
+		this.uuid = uuid;
+		return this;
+	}
+
+	/**
+	 * UUID, GUID, HASH, MultiHash or ProxyContract Address that represents this
+	 * object
+	 * 
+	 * @return uuid
+	 **/
+	@ApiModelProperty(value = "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object")
+	@NotNull
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
 	public Transaction valueActionId(String valueActionId) {
 		this.valueActionId = valueActionId;
@@ -68,14 +111,15 @@ public class Transaction implements Serializable {
 	}
 
 	/**
-	 * link that describes the way this score was derived, or the community
-	 * feature that affects the way the value will be interpreted. Could be a
-	 * link or content addressable graph pointing to a richer source of
-	 * description or information.
+	 * Hash link to description of how the score will be derived, or the
+	 * community feature that affects the way the value will be interpreted.
+	 * Could be a globally unique link or content addressable graph pointing to
+	 * a richer source of description or information.
 	 * 
 	 * @return valueActionId
 	 **/
-	@ApiModelProperty(required = true, value = "link that describes the way this score was derived, or the community feature that affects the way the value will be interpreted. Could be a link or content addressable graph pointing to a richer source of description or information.")
+	@ApiModelProperty(required = true, value = "Hash link to description of how the score will be derived, or the community feature that affects the way the value will be interpreted. Could be a globally unique link or content addressable graph pointing to a richer source of description or information.")
+	@NotNull
 	public String getValueActionId() {
 		return valueActionId;
 	}
@@ -95,6 +139,7 @@ public class Transaction implements Serializable {
 	 * @return sourceAgentId
 	 **/
 	@ApiModelProperty(required = true, value = "")
+	@NotNull
 	public String getSourceAgentId() {
 		return sourceAgentId;
 	}
@@ -114,6 +159,7 @@ public class Transaction implements Serializable {
 	 * @return targetAgentId
 	 **/
 	@ApiModelProperty(required = true, value = "")
+	@NotNull
 	public String getTargetAgentId() {
 		return targetAgentId;
 	}
@@ -122,7 +168,7 @@ public class Transaction implements Serializable {
 		this.targetAgentId = targetAgentId;
 	}
 
-	public Transaction timeStamp(DateTime timeStamp) {
+	public Transaction timeStamp(String timeStamp) {
 		this.timeStamp = timeStamp;
 		return this;
 	}
@@ -133,16 +179,17 @@ public class Transaction implements Serializable {
 	 * 
 	 * @return timeStamp
 	 **/
-	@ApiModelProperty(value = "timestamp or block height of blockchain at time of creation. Should be self-describing as to format and meaning.")
-	public DateTime getTimeStamp() {
+	@ApiModelProperty(required = true, value = "timestamp or block height of blockchain at time of creation. Should be self-describing as to format and meaning.")
+	@NotNull
+	public String getTimeStamp() {
 		return timeStamp;
 	}
 
-	public void setTimeStamp(DateTime timeStamp) {
+	public void setTimeStamp(String timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 
-	public Transaction value(Integer value) {
+	public Transaction value(String value) {
 		this.value = value;
 		return this;
 	}
@@ -150,38 +197,19 @@ public class Transaction implements Serializable {
 	/**
 	 * value (points) awarded at the time of the transaction. Immutable. Use
 	 * ValueActionId to lookup the 'current' value if you want to calculate
-	 * points based on the latest value as opposed to the value at time
-	 * transaction was created. This allows for 'retroactive' adjustment of
+	 * points based on the latest default value as apposed to the value awarded
+	 * at time of the transaction. This allows for 'retroactive' adjustment of
 	 * points.
 	 * 
 	 * @return value
 	 **/
-	@ApiModelProperty(value = "value (points) awarded at the time of the transaction. Immutable. Use ValueActionId to lookup the 'current' value if you want to calculate points based on the latest value as apposed to the value at time transaction was created. This allows for 'retroactive' adjustment of points.")
-	public Integer getValue() {
+	@ApiModelProperty(value = "value (points) awarded at the time of the transaction. Immutable. Use ValueActionId to lookup the 'current' value if you want to calculate points based on the latest default value as apposed to the value awarded at time of the transaction. This allows for 'retroactive' adjustment of points.")
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(Integer value) {
+	public void setValue(String value) {
 		this.value = value;
-	}
-
-	public Transaction uuid(String uuid) {
-		this.id = uuid;
-		return this;
-	}
-
-	/**
-	 * UUID, GUID, HASH or MultiHash that represents this object
-	 * 
-	 * @return id
-	 **/
-	@ApiModelProperty(value = "UUID, GUID, HASH or MultiHash that represents this object")
-	public String getUuid() {
-		return id;
-	}
-
-	public void setUuid(String uuid) {
-		this.id = uuid;
 	}
 
 	@Override
@@ -193,16 +221,17 @@ public class Transaction implements Serializable {
 			return false;
 		}
 		Transaction transaction = (Transaction) o;
-		return Objects.equals(this.valueActionId, transaction.valueActionId)
+		return Objects.equals(this.uuid, transaction.uuid)
+				&& Objects.equals(this.valueActionId, transaction.valueActionId)
 				&& Objects.equals(this.sourceAgentId, transaction.sourceAgentId)
 				&& Objects.equals(this.targetAgentId, transaction.targetAgentId)
 				&& Objects.equals(this.timeStamp, transaction.timeStamp)
-				&& Objects.equals(this.value, transaction.value) && Objects.equals(this.id, transaction.id);
+				&& Objects.equals(this.value, transaction.value);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(valueActionId, sourceAgentId, targetAgentId, timeStamp, value, id);
+		return Objects.hash(uuid, valueActionId, sourceAgentId, targetAgentId, timeStamp, value);
 	}
 
 	@Override
@@ -210,12 +239,12 @@ public class Transaction implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Transaction {\n");
 
+		sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
 		sb.append("    valueActionId: ").append(toIndentedString(valueActionId)).append("\n");
 		sb.append("    sourceAgentId: ").append(toIndentedString(sourceAgentId)).append("\n");
 		sb.append("    targetAgentId: ").append(toIndentedString(targetAgentId)).append("\n");
 		sb.append("    timeStamp: ").append(toIndentedString(timeStamp)).append("\n");
 		sb.append("    value: ").append(toIndentedString(value)).append("\n");
-		sb.append("    id: ").append(toIndentedString(id)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

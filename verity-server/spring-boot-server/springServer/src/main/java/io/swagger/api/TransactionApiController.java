@@ -1,5 +1,6 @@
 package io.swagger.api;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Transaction;
+import io.swagger.model.Transaction.Direction;
 import io.swagger.persistence.service.ITransactionService;
 import io.swagger.persistence.service.IValueActionService;
 import site.verity.web.util.RestPreconditions;
@@ -31,6 +33,29 @@ public class TransactionApiController implements TransactionApi {
 	private IValueActionService valueActionService;	
 
 	@Override
+	public ResponseEntity<Transaction> getTransaction(String uuid) {
+		Transaction transaction = transactionService.findByUuid(uuid);
+		return new ResponseEntity<Transaction>(transaction, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<List<Transaction>> getTransactionsByAgent(String agentId, Integer pageNumber,
+			Integer pageSize, String startDate, String endDate, String direction) {
+		DateTime startAsDate = DateTime.parse(startDate);
+		DateTime endAsDate = DateTime.parse(endDate);
+		//TODO: check dates are valid and in order
+		
+		RestPreconditions.assertSemanticsValid(Direction.valueOf(direction) != Direction.SOURCE || Direction.valueOf(direction) != Direction.TARGET);
+		Direction directionEnum = Direction.valueOf(direction);
+		
+		//TODO: dates don't work, either create specific API method without dates or add to service 
+		List<Transaction> transactionList = transactionService.getTransactionsForAgentPaged(agentId, pageNumber, pageSize, 
+				startAsDate.toDate(), endAsDate.toDate(), directionEnum);
+		
+		return new ResponseEntity<List<Transaction>>(transactionList, HttpStatus.OK);
+	}
+
+	@Override
 	public ResponseEntity<Transaction> createTransaction(
 			@ApiParam(value = "") @Valid @RequestBody Transaction body) {
 		//check for required parameters
@@ -44,32 +69,11 @@ public class TransactionApiController implements TransactionApi {
 		RestPreconditions.assertSemanticsValid(valueActionService.findByUuid(body.getValueActionId())!=null,
 				"Could not find the ValueAction using the ValueActionId provided");
 		body.setUuid(java.util.UUID.randomUUID().toString());
-		body.setTimeStamp(DateTime.now(gmtTimeZone)); //TODO: ensure this is global time and precise enough
+		body.setTimeStamp(DateTime.now(gmtTimeZone).toString()); //TODO: ensure this is global time and precise enough
 		transactionService.create(body);
 		return new ResponseEntity<Transaction>(HttpStatus.OK);
 	}
-	
-	public ResponseEntity<List<Transaction>> getTransactionByTargetAgentId(
-			@ApiParam(value = "", required = true) @PathVariable("targetAgentId") String targetAgentId) {
-		
-		return new ResponseEntity<List<Transaction>>(HttpStatus.OK);
-	}
 
-	public ResponseEntity<Transaction> getTransaction(String uuid, Transaction body) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public ResponseEntity<List<Transaction>> getTransactions(String startDate, String endDate, Integer pageNumber,
-			Integer pageSize, String sourceAgentId, String targetAgentId, String valueActionId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public ResponseEntity<List<Transaction>> getTransactionsByAgent(String agentId, Integer pageNumber,
-			Integer pageSize, String startDate, String endDate, String direction) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

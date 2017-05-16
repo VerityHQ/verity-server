@@ -1,14 +1,23 @@
 package io.swagger.api;
 
 import io.swagger.model.ActionType;
+import io.swagger.model.InlineResponse403;
+import io.swagger.model.InlineResponse404;
+
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-05-06T07:17:52.900-07:00")
+import java.util.List;
+import javax.validation.constraints.*;
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T11:27:43.869-07:00")
 
 @Api(value = "actiontype", description = "the actiontype API")
 public interface ActiontypeApi {
@@ -26,11 +35,7 @@ public interface ActiontypeApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ActionType> createActiontype(
-
-@ApiParam(value = ""  ) @RequestBody ActionType body
-
-);
+    ResponseEntity<ActionType> createActiontype(@ApiParam(value = ""  ) @RequestBody ActionType body);
 
 
     @ApiOperation(value = "get ActionType", notes = "", response = ActionType.class, tags={ "ActionType", })
@@ -39,11 +44,7 @@ public interface ActiontypeApi {
     @RequestMapping(value = "/actiontype/{uuid}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ActionType> getActiontype(
-@ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid
-
-
-);
+    ResponseEntity<ActionType> getActiontype(@ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid);
 
 
     @ApiOperation(value = "update ActionType", notes = "", response = Void.class, tags={ "ActionType", })
@@ -58,10 +59,6 @@ public interface ActiontypeApi {
     @RequestMapping(value = "/actiontype",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateActiontype(
-
-@ApiParam(value = ""  ) @RequestBody ActionType body
-
-);
+    ResponseEntity<Void> updateActiontype(@ApiParam(value = ""  ) @RequestBody ActionType body);
 
 }
