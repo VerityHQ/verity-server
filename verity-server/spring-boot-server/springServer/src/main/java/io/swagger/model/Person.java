@@ -44,7 +44,7 @@ public class Person implements Serializable {
 	// CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })
 	// @JoinColumn(name = "agent_uuid") //was agent_fk
 	@OneToOne
-	@JoinColumn(name = "AGENT_UUID")
+	@JoinColumn(name = "AGENT_UUID",  unique = true)
 	@JsonProperty("agent")
 	private Agent agent = null;
 
@@ -56,7 +56,7 @@ public class Person implements Serializable {
 	@JsonProperty("lastName")
 	private String lastName = null;
 
-	@Column(name = "NICK_NAME")
+	@Column(name = "NICK_NAME",  unique = true)
 	@NotNull
 	@Size(min=2, max=50)
 	@JsonProperty("nickName")

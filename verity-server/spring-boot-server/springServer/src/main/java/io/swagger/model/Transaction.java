@@ -17,11 +17,11 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 
 /**
- * A fundamental unit of reputation value transfer, attestation or claim.
- * Represents a singular event that transfers or bestows reputation to the
+ * A fundamental unit of reputation value transfer, attestation or verifiable claim.
+ * Represents a singular event that transfers or bestows a reputation claim to the
  * target/recipient. The sender/source can be a person, software agent,
  * organization or the like. Intended to be independent of database or
- * blockchain so all IDs should be globally identifiable hashes in multi-hash
+ * blockchain. Therefore all IDs should be globally identifiable hashes in multi-hash
  * format pointing to the canonical representation or permanent public store.
  * Similar to and should map to TrustAtom
  * https://github.com/CoMakery/trust-exchange/blob/master/README.md
@@ -82,7 +82,7 @@ public class Transaction implements Serializable {
 
 	@Column(name="VALUE")
 	@JsonProperty("value")
-	private String value = null;
+	private Integer value = null;
 
 	public Transaction uuid(String uuid) {
 		this.uuid = uuid;
@@ -189,7 +189,7 @@ public class Transaction implements Serializable {
 		this.timeStamp = timeStamp;
 	}
 
-	public Transaction value(String value) {
+	public Transaction value(Integer value) {
 		this.value = value;
 		return this;
 	}
@@ -204,11 +204,11 @@ public class Transaction implements Serializable {
 	 * @return value
 	 **/
 	@ApiModelProperty(value = "value (points) awarded at the time of the transaction. Immutable. Use ValueActionId to lookup the 'current' value if you want to calculate points based on the latest default value as apposed to the value awarded at time of the transaction. This allows for 'retroactive' adjustment of points.")
-	public String getValue() {
+	public Integer getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(Integer value) {
 		this.value = value;
 	}
 

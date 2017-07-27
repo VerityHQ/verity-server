@@ -42,7 +42,7 @@ public class Organization implements Serializable {
 	@JsonProperty("uuid")
 	private String uuid = null;
 
-	@Column(name="NAME")
+	@Column(name="NAME", unique = true, nullable = false)
 	@JsonProperty("orgName")
 	private String orgName = null;
 	

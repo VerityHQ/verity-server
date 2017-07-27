@@ -40,11 +40,11 @@ public class Community implements Serializable {
 	// @JoinColumn(name = "agent_uuid") // was agent_fk
 
 	@Id
-	@Column(name="UUID",unique=true, nullable=false )
+	@Column(name = "UUID", unique = true, nullable = false)
 	@JsonProperty("uuid")
 	private String uuid = null;
 
-	@Column(name="COMMUNITY_NAME")
+	@Column(name = "COMMUNITY_NAME",  unique = true, nullable = false)
 	@JsonProperty("communityName")
 	private String communityName = null;
 
@@ -53,18 +53,20 @@ public class Community implements Serializable {
 	@ElementCollection(targetClass = String.class)
 	@JsonProperty("subCommunities")
 	private List<String> subCommunities = new ArrayList<String>();
-	
+
 	@OneToOne
 	@JoinColumn(name = "AGENT_UUID")
 	@JsonProperty("agent")
 	private Agent agent = null;
-	
-    //following shows how to use collections of simple types with hibernate
-    //The collection will be created as a table of string values with keys back to parent
-    //The @LazyCollection attribute is needed. See SO  //http://stackoverflow.com/questions/30465748/jackson-confused-with-bidirectional-one-to-many-relationship-failed-to-lazily
-    @Column(name = "ACTION_TYPES")
-    @LazyCollection(LazyCollectionOption.FALSE) 
-    @ElementCollection(targetClass=String.class)
+
+	// following shows how to use collections of simple types with hibernate
+	// The collection will be created as a table of string values with keys back to
+	// parent
+	// The @LazyCollection attribute is needed. See SO
+	// //http://stackoverflow.com/questions/30465748/jackson-confused-with-bidirectional-one-to-many-relationship-failed-to-lazily
+	@Column(name = "ACTION_TYPES",  unique = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ElementCollection(targetClass = ActionType.class)
 	@JsonProperty("values")
 	private List<ActionType> values = new ArrayList<ActionType>();
 

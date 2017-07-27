@@ -22,7 +22,6 @@
  * limitations under the License.
  */
 
-
 package site.verity.client.api;
 
 import site.verity.client.ApiException;
@@ -42,6 +41,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
 
@@ -49,200 +49,236 @@ import java.util.Arrays;
  * API tests for TransactionApi
  */
 public class TransactionApiTest {
-	//TODO: extract general purpose setup helper methods into a commont static class
-    
-	//TODO:this should be driven from the config, not a constant
-    private static final String API_BASE_PATH = "http://localhost:8080/verity/core";
-    private final static TransactionApi transactionApi = new TransactionApi();
-    private final static OrganizationApi organizationApi = new OrganizationApi();
-    private final static PersonApi personApi = new PersonApi();
-    private final static ValueActionApi valueActionApi = new ValueActionApi();
-    private final static ActionTypeApi actionTypeApi = new ActionTypeApi();
-    
-    //TODO: refactor to get rid of these fields
-    private static Person personA = new Person();
-    private static Person personB = new Person();
-    private static ValueAction contentKarmaValueAction;
+	// TODO: extract general purpose setup helper methods into a common static
+	// class
+
+	// TODO:this should be driven from the config, not a constant
+	
+	private static final String API_BASE_PATH = "https://springserver.cfapps.io/verity/core"; //"http://localhost:8080/verity/core"; // 
+	private final static TransactionApi transactionApi = new TransactionApi();
+	private final static OrganizationApi organizationApi = new OrganizationApi();
+	private final static PersonApi personApi = new PersonApi();
+	private final static ValueActionApi valueActionApi = new ValueActionApi();
+	private final static ActionTypeApi actionTypeApi = new ActionTypeApi();
+	private final static CommunityApi communityApi = new CommunityApi();
+
+	// TODO: refactor to get rid of these fields
+	private static Person personA = new Person();
+	private static Person personB = new Person();
+	private static ValueAction contentKarmaValueAction;
 	private static ValueAction discussionInsightValueAction;
-    
-    @BeforeClass
-    public static void runOnceBeforeClass() throws ApiException {
-    	transactionApi.getApiClient().setBasePath(API_BASE_PATH);
-    	organizationApi.getApiClient().setBasePath(API_BASE_PATH);
-    	personApi.getApiClient().setBasePath(API_BASE_PATH);
-    	valueActionApi.getApiClient().setBasePath(API_BASE_PATH);
-    	actionTypeApi.getApiClient().setBasePath(API_BASE_PATH);
-        setupForTransactionTest();
-    }
-    
-    /*
-     * shows how to create all the things needed before you can
-     * create a transaction
-     */
-    public static void setupForTransactionTest() throws ApiException{
-    	//create org, person, actionType
-    	Organization organization = buildOrganizationAndCommunity();
+	private static ValueAction goodContentValueAction;
+
+	@BeforeClass
+	public static void runOnceBeforeClass() throws ApiException {
+		communityApi.getApiClient().setBasePath(API_BASE_PATH);
+		transactionApi.getApiClient().setBasePath(API_BASE_PATH);
+		organizationApi.getApiClient().setBasePath(API_BASE_PATH);
+		personApi.getApiClient().setBasePath(API_BASE_PATH);
+		valueActionApi.getApiClient().setBasePath(API_BASE_PATH);
+		actionTypeApi.getApiClient().setBasePath(API_BASE_PATH);
+		setupForTransactionTest();
+	}
+
+	/*
+	 * shows how to create all the things needed before you can create a transaction
+	 */
+	public static void setupForTransactionTest() throws ApiException {
+		// create org, person, actionType
+		Organization organization = buildOrganizationAndCommunity();
 		ApiResponse<Organization> organizationResponse = organizationApi.createOrganizationWithHttpInfo(organization);
 		assertEquals(organizationResponse.getStatusCode(), 200);
-		String orgId = organizationResponse.getData().getUuid();
+		Organization newOrg = organizationResponse.getData();
 		
-    	personA = buildPerson(orgId);
-    	personB = buildPerson(orgId);
+		assertNotNull(newOrg.getUuid());
 		
-    	ApiResponse<Person> personResponseA = personApi.createPersonWithHttpInfo(personA);
+
+		Community studentCommunity = new Community();
+		studentCommunity.setAgent(buildAgent());
+		studentCommunity.setCommunityName("Teachur Online University : Students_" + RandomStringUtils.randomAlphabetic(6));
+		studentCommunity.setUuid("");
+
+		ApiResponse<Community> students = communityApi.createCommunityWithHttpInfo(studentCommunity);
+		String studentsUuid = students.getData().getUuid();
+
+		Community teachersCommunity = new Community();
+		teachersCommunity.setAgent(buildAgent());
+		teachersCommunity.setCommunityName("Teachur Online University : Teachers_" + RandomStringUtils.randomAlphabetic(6));
+		teachersCommunity.setUuid("");
+
+		ApiResponse<Community> teachers = communityApi.createCommunityWithHttpInfo(teachersCommunity);
+		String teachersUuid = teachers.getData().getUuid();
+		
+		//now get the newly created org and update it with sub communities
+		Community rootCommunity = newOrg.getCommunity();
+		rootCommunity.addSubCommunitiesItem(studentsUuid);
+		rootCommunity.addSubCommunitiesItem(teachersUuid);
+		organizationApi.updateOrganizationWithHttpInfo(newOrg);
+		
+		personA = buildPerson(newOrg.getUuid());
+		personB = buildPerson(newOrg.getUuid());
+
+		ApiResponse<Person> personResponseA = personApi.createPersonWithHttpInfo(personA);
 		assertEquals(personResponseA.getStatusCode(), 200);
-		personA = personResponseA.getData(); //we have the newly create person with the newly generated ids
+		personA = personResponseA.getData(); // we have the newly create person with the newly generated ids
 		assertNotEquals("", personA.getUuid());
 		assertNotEquals("", personA.getAgent().getUuid());
-		
+
 		ApiResponse<Person> personResponseB = personApi.createPersonWithHttpInfo(personB);
 		assertEquals(personResponseB.getStatusCode(), 200);
 		personB = personResponseB.getData();
 		assertNotEquals("", personB.getUuid());
 		assertNotEquals("", personB.getAgent().getUuid());
 
-		ActionType karmaActionType = createActionType(
-				organizationResponse.getData().getCommunity().getUuid(), 
-				"Karma", 
+		ActionType karmaActionType = createActionType(organizationResponse.getData().getCommunity().getUuid(), "Karma",
 				"Represents good behavior for any actions this community deems worthy in it's charter. "
-				+ "A general measure of community participation to be encouraged by community norms.",
+						+ "A general measure of community participation to be encouraged by community norms.",
 				1);
-		
-		contentKarmaValueAction = createValueAction(karmaActionType, "Content Karma Points: UpVote content by " 
-				+ karmaActionType.getDefaultPoints() + " points.");
-		
-		
-		ActionType insightActionType = createActionType(
-				organizationResponse.getData().getCommunity().getUuid(), 
-				"Insight", 
-				"Represents insight expressed in response to topic under discussion."
-				+ "An insight should synthesize existing information and add a new perspective to the discussion.",
-				3);
-		
-		discussionInsightValueAction = createValueAction(insightActionType, 
-				"Discussion Insight Points: Add points to members account for contributing insight in a post");
-		
-    }
 
+		contentKarmaValueAction = createValueAction(karmaActionType,
+				"Content Karma Points: UpVote content by " + karmaActionType.getDefaultPoints() + " points.");
+
+		ActionType insightActionType = createActionType(organizationResponse.getData().getCommunity().getUuid(),
+				"Insight",
+				"Represents insight expressed in response to topic under discussion."
+						+ "An insight should synthesize existing information and add a new perspective to the discussion.",
+				3);
+
+		discussionInsightValueAction = createValueAction(insightActionType,
+				"Discussion Insight Points: Add points to members account for contributing insight in a post");
+
+		// assign goodContent value action to all communities (example of re-using an action type / value action
+		ActionType goodContentActionType = createActionType(organizationResponse.getData().getCommunity().getUuid(),
+				"Good Content",
+				"Content is valuable, easy to follow, gramatically correct and relevant.",
+				1);
+
+		ValueAction goodContentValueAction = createValueAction(goodContentActionType,
+				"Good Content Points: Upvote content");
+		
+		Community c = null;
+		for(String uuid : rootCommunity.getSubCommunities()) {
+			c = communityApi.getCommunity(uuid);
+			if(! c.getValues().contains(goodContentActionType)) {
+				c.addValuesItem(goodContentActionType); //TODO: bug? shouldn't we be adding a ValueAction ?
+			}
+		}
+		communityApi.updateCommunity(c);
+	}
 
 	/**
-     * create transaction
-     * 
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void createTransactionTest() throws ApiException {
-        Transaction body = new Transaction();
-        body.setSourceAgentId(personA.getAgent().getUuid());
-        body.setTargetAgentId(personB.getAgent().getUuid());
-        body.setValue("5");
-        body.setValueActionId(contentKarmaValueAction.getUuid()); //TODO:
-        body.setTimeStamp(DateTime.now().toString());
-        body.setUuid(""); //TODO: what purpose does the UUID setter have? would we ever use it?
+	 * create transaction
+	 * 
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void createTransactionTest() throws ApiException {
+		Transaction body = new Transaction();
+		body.setSourceAgentId(personA.getAgent().getUuid());
+		body.setTargetAgentId(personB.getAgent().getUuid());
+		body.setValue("5");
+		body.setValueActionId(contentKarmaValueAction.getUuid()); // TODO:
+		body.setTimeStamp(DateTime.now().toString());
+		body.setUuid("");
 
-        ApiResponse<Transaction> response = transactionApi.createTransactionWithHttpInfo(body);
+		ApiResponse<Transaction> response = transactionApi.createTransactionWithHttpInfo(body);
 		assertEquals(response.getStatusCode(), 200);
-        // TODO: test validations
-    }
-    
-    /**
-     * get Transactions by targetAgentId
-     *
-     * TODO:consider paginating results in similar way to reddit API https://www.reddit.com/dev/api/
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getTransactionByTargetAgentIdTest() throws ApiException {
-        String targetAgentId = null;
-        // List<Transaction> response = api.getTransactionByTargetAgentId(targetAgentId);
+		// TODO: test validations
+	}
 
-        // TODO: test validations
-    }
-    
-    /**
-     * get transactions by targetAgent and contentKarmaValueAction
-     *
-     * 
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getTransactionByTargetAgentIdByValueActionIdTest() throws ApiException {
-        String targetAgentId = null;
-        String valueActionId = null;
-        // api.getTransactionByTargetAgentIdByValueActionId(targetAgentId, contentKarmaValueAction);
+	/**
+	 * get Transactions by targetAgentId
+	 *
+	 * TODO:consider paginating results in similar way to reddit API
+	 * https://www.reddit.com/dev/api/
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void getTransactionByTargetAgentIdTest() throws ApiException {
+		String targetAgentId = null;
+		// List<Transaction> response =
+		// api.getTransactionByTargetAgentId(targetAgentId);
 
-        // TODO: test validations
-    }
-    
-    /**
-     * get Transactions by Dates
-     *
-     * 
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getTransactionsByDatesTest() throws ApiException {
-        String targetAgentId = null;
-        String fromdate = null;
-        String todate = null;
-        // List<Transaction> response = api.getTransactionsByDates(targetAgentId, fromdate, todate);
+		// TODO: test validations
+	}
 
-        // TODO: test validations
-    }
-    
-    
-	private static Organization buildOrganizationAndCommunity() {
+	/**
+	 * get transactions by targetAgent and contentKarmaValueAction
+	 *
+	 * 
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void getTransactionByTargetAgentIdByValueActionIdTest() throws ApiException {
+		String targetAgentId = null;
+		String valueActionId = null;
+		// api.getTransactionByTargetAgentIdByValueActionId(targetAgentId,
+		// contentKarmaValueAction);
+
+		// TODO: test validations
+	}
+
+	/**
+	 * get Transactions by Dates
+	 *
+	 * 
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void getTransactionsByDatesTest() throws ApiException {
+		String targetAgentId = null;
+		String fromdate = null;
+		String todate = null;
+		// List<Transaction> response = api.getTransactionsByDates(targetAgentId,
+		// fromdate, todate);
+
+		// TODO: test validations
+	}
+
+	private static Organization buildOrganizationAndCommunity() throws ApiException {
 		Organization body = new Organization();
 		body.setUuid("");
-		body.setOrgName("Wikipedia");
-		
-        Agent orgAgent = new Agent();
-        orgAgent.setUuid("");
-        orgAgent.setAttestationUrls(Arrays.asList("foo","bar"));
-        orgAgent.setPublicKey("somereallylongpublickeystring129-408-120481-590810235159159058190-589");
-		body.setAgent(orgAgent);
-        
-        Agent communityAgent = new Agent();
-        communityAgent.setUuid("");
-        communityAgent.setAttestationUrls(Arrays.asList("http://keybase.io/some/key","http://twitter.com/my_pk_encrypedtweet"));
-        communityAgent.setPublicKey("another_publickeystring129-408-120481-590810235159159058190-589");
-		
-        Community community = new Community();
-        community.setAgent(communityAgent);
-        community.setCommunityName("Content Creators");
-        community.setUuid("");
-        
-        body.setCommunity(community);
+		body.setOrgName("Teachur_" + RandomStringUtils.randomAlphabetic(6));
+		body.setAgent(buildAgent());
+
+		Community rootCommunity = new Community();
+		rootCommunity.setAgent(buildAgent());
+		rootCommunity.setCommunityName("Teachur Online University_" + RandomStringUtils.randomAlphabetic(6));
+		rootCommunity.setUuid("");
+		body.setCommunity(rootCommunity);
 		return body;
 	}
-	
-    private static Person buildPerson(String orgId) {
-    	Person person = new Person();
-    	person.setUuid("");
-    	person.setOrganizationId(orgId);
-    	person.setFirstName(RandomStringUtils.randomAlphabetic(10));
-    	person.setLastName(RandomStringUtils.randomAlphabetic(10));
-    	person.setNickName(RandomStringUtils.randomAlphabetic(6));
-    	
-        Agent orgAgent = new Agent();
-        orgAgent.setUuid("");
-        orgAgent.setAttestationUrls(Arrays.asList(
-        		"http://keybase.io/keys/" + RandomStringUtils.randomAlphabetic(20).toLowerCase(),
-        		"http://keybase.io/keys/" + RandomStringUtils.randomAlphabetic(20).toLowerCase())
-        		);
-        orgAgent.setPublicKey(RandomStringUtils.randomAlphanumeric(50));
-		person.setAgent(orgAgent);
+
+	private static Person buildPerson(String orgId) {
+		Person person = new Person();
+		person.setUuid("");
+		person.setOrganizationId(orgId);
+		person.setFirstName(RandomStringUtils.randomAlphabetic(10));
+		person.setLastName(RandomStringUtils.randomAlphabetic(10));
+		person.setNickName(RandomStringUtils.randomAlphabetic(6));
+		person.setAgent(buildAgent());
 		return person;
 	}
 
-	private static ActionType createActionType(String communityId, String name, String content, int points) throws ApiException {
+	private static Agent buildAgent() {
+		Agent agent = new Agent();
+		agent.setUuid("");
+		agent.setAttestationUrls(
+				Arrays.asList("http://keybase.io/keys/" + RandomStringUtils.randomAlphabetic(20).toLowerCase(),
+						"http://keybase.io/keys/" + RandomStringUtils.randomAlphabetic(20).toLowerCase()));
+		agent.setPublicKey(RandomStringUtils.randomAlphanumeric(50));
+		return agent;
+	}
+
+	private static ActionType createActionType(String communityId, String name, String content, int points)
+			throws ApiException {
 		ActionType actionType = new ActionType();
 		actionType.setActionName(name);
 		actionType.setCommunityId(communityId);

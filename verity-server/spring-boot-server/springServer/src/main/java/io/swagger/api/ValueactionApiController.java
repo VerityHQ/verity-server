@@ -35,7 +35,7 @@ public class ValueactionApiController implements ValueactionApi {
 					"Cannot create " + body.getClass().getSimpleName() + " - UUID exists allready.");
 		}
 		valueActionService.create(body);
-		return new ResponseEntity<ValueAction>(body, HttpStatus.OK);
+		return new ResponseEntity<ValueAction>(body, HttpStatus.CREATED);
 	}
 
 	public ResponseEntity<ValueAction> getValueAction( @ApiParam(value = "", required = true) @PathVariable("uuid") String uuid ) {

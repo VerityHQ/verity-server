@@ -1,6 +1,7 @@
 package io.swagger.persistence.service.impl;
 
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -44,8 +45,13 @@ public class TransactionService extends AbstractService<Transaction> implements 
 	@Override
 	public List<Transaction> getTransactionsForAgentPaged(String agentId, Integer pageNumber, Integer pageSize,
 			Date startAsDate, Date endAsDate, Direction direction) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO test
+		return dao.getTransactionsForAgentPaged(agentId, pageNumber, pageSize, startAsDate, endAsDate, direction);
+	}
+
+	@Override
+	public List<Transaction> getTransactionForContent(String contentId, String valueActionId) {
+		return dao.getTransactionForContent(contentId, valueActionId);
 	}
 
 }

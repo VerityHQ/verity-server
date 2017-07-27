@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.model.Content;
 import io.swagger.model.Person;
 import io.swagger.persistence.service.IAgentService;
+import io.swagger.persistence.service.IContentService;
 import io.swagger.persistence.service.IOrganizationService;
 import io.swagger.persistence.service.IPersonService;
 import site.verity.web.util.RestPreconditions;
@@ -31,6 +32,9 @@ public class PersonApiController implements PersonApi {
 	
 	@Autowired
 	private IOrganizationService organizationService;
+	
+	@Autowired
+	private IContentService contentService;
 
 	/*
 	 * UUIDs - allow caller to create UUIDs or let Verity generate them. If UUID
@@ -77,7 +81,7 @@ public class PersonApiController implements PersonApi {
 		
 		agentService.create(body.getAgent());
 		personService.create(body);
-		return new ResponseEntity<Person>(body, HttpStatus.OK);
+		return new ResponseEntity<Person>(body, HttpStatus.CREATED);
 	}
 
 	public ResponseEntity<Person> getPerson(
@@ -117,8 +121,20 @@ public class PersonApiController implements PersonApi {
 	}
 
 	@Override
-	public ResponseEntity<List<Content>> getPersonContent(String uuid, String startDate, String endDate,
+	public ResponseEntity<List<Content>> getPersonContent(String personUuid, String startDate, String endDate,
 			Integer pageNumber, Integer pageSize) {
+
+		Person person = personService.findByUuid(personUuid);
+		RestPreconditions.assertResourceFound(person);
+		
+		
+		List<Content> content = null;  //TODO: contentService.findAllByAuthor(String personUuid);
+		
+		return new ResponseEntity<List<Content>>(content, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<List<Person>> gETPerson(String firstname, String lastname, String nickname) {
 		// TODO Auto-generated method stub
 		return null;
 	}

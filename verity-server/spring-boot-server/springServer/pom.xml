@@ -5,6 +5,7 @@
 	<packaging>jar</packaging>
 	<name>spring-server</name>
 	<version>1.0.0</version>
+	<artifactId>verity-api</artifactId>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -94,7 +95,14 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-heroku-connector</artifactId>
-			</dependency>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons-core -->
+		<dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-commons-core</artifactId>
+		    <version>1.4.1.RELEASE</version>
+		</dependency>
+	
 	
 		<dependency>
 		    <groupId>org.jadira.usertype</groupId>
@@ -207,9 +215,17 @@
 		<dependency>
 			<groupId>org.web3j</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0.9</version>
+			<version>2.2.2</version>
 		</dependency>
-
+		
+		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
+		<dependency>
+		    <groupId>org.bouncycastle</groupId>
+		    <artifactId>bcprov-jdk15on</artifactId>
+		    <!-- WARNING: do not use any other version than 1.50 or the SHA3 hash may be incorrect for Ethereum compatabiltiy -->
+		    <version>1.50</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
@@ -245,5 +261,4 @@
 			<url>https://repo.spring.io/libs-release</url>
 		</pluginRepository>
 	</pluginRepositories>
-	<artifactId>verity-api</artifactId>
 </project>

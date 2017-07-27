@@ -1,8 +1,6 @@
 package io.swagger.api;
 
-import java.util.Date;
 import java.util.List;
-
 import javax.validation.Valid;
 
 import org.joda.time.DateTime;
@@ -11,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Transaction;
 import io.swagger.model.Transaction.Direction;
@@ -25,6 +21,7 @@ import site.verity.web.util.RestPreconditions;
 public class TransactionApiController implements TransactionApi {
 
 	private static final DateTimeZone gmtTimeZone = DateTimeZone.forOffsetHours(0);
+	//private static final String infuraMainNet =  //TODO: get from properties file
 	
 	@Autowired
 	private ITransactionService transactionService;	
@@ -52,7 +49,7 @@ public class TransactionApiController implements TransactionApi {
 		List<Transaction> transactionList = transactionService.getTransactionsForAgentPaged(agentId, pageNumber, pageSize, 
 				startAsDate.toDate(), endAsDate.toDate(), directionEnum);
 		
-		return new ResponseEntity<List<Transaction>>(transactionList, HttpStatus.OK);
+		return new ResponseEntity<List<Transaction>>(transactionList, HttpStatus.CREATED);
 	}
 
 	@Override
@@ -71,6 +68,22 @@ public class TransactionApiController implements TransactionApi {
 		body.setUuid(java.util.UUID.randomUUID().toString());
 		body.setTimeStamp(DateTime.now(gmtTimeZone).toString()); //TODO: ensure this is global time and precise enough
 		transactionService.create(body);
+		
+		//now commit to blockchain and return hash / token for checking status
+		
+//		Web3j web3 = Web3j.build(new HttpService(infuraMainNet));
+//		Web3ClientVersion web3ClientVersion = null;
+//		EthBlockNumber blockNumber = null;
+//		try {
+//			web3ClientVersion = web3.web3ClientVersion().sendAsync().get();
+//			blockNumber = web3.ethBlockNumber().sendAsync().get();
+//		} catch (InterruptedException | ExecutionException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println(web3ClientVersion.getWeb3ClientVersion());
+//		System.out.println(blockNumber.getResult());
+		
 		return new ResponseEntity<Transaction>(HttpStatus.OK);
 	}
 

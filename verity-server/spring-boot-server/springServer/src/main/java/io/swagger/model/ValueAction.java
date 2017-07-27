@@ -31,11 +31,14 @@ public class ValueAction implements Serializable {
 	private static final long serialVersionUID = -3904227431741460230L;
 
 	@Id
-	@Column(name = "UUID", unique = true, nullable = false)
+	@Column(name = "UUID", unique = true, nullable
+	
+	
+	= false)
 	@JsonProperty("uuid")
 	private String uuid = null;
 
-	@Column(name = "DESCRIPTION")
+	@Column(name = "DESCRIPTION",  unique = true)
 	@JsonProperty("description")
 	private String description = null;
 

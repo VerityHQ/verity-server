@@ -27,4 +27,7 @@ public class OrganizationService extends AbstractService<Organization> implement
         return dao;
     }
 
+    //TODO: implement specific find methods (by name, etc.)
+    
+    
 }
