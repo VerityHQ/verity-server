@@ -15,17 +15,13 @@ import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-18T22:08:06.013-07:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-27T15:39:32.532-07:00")
 
 @Api(value = "person", description = "the person API")
 public interface PersonApi {
@@ -58,8 +54,9 @@ public interface PersonApi {
         @ApiResponse(code = 500, message = "", response = Object.class) })
     
     @RequestMapping(value = "/person",
+        produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Person>> gETPerson(@ApiParam(value = "") @RequestParam(value = "firstname", required = false) String firstname,@ApiParam(value = "") @RequestParam(value = "lastname", required = false) String lastname,@ApiParam(value = "") @RequestParam(value = "nickname", required = false) String nickname);
+    ResponseEntity<List<Person>> getPersonByQueryParameters(@ApiParam(value = "") @RequestParam(value = "firstname", required = false) String firstname,@ApiParam(value = "") @RequestParam(value = "lastname", required = false) String lastname,@ApiParam(value = "") @RequestParam(value = "nickname", required = false) String nickname);
 
 
     @ApiOperation(value = "get person reputation", notes = "Get the reputation as calculated by the algorithm requested in the reputationtype parameter.", response = BigDecimal.class, tags={ "Person", })
@@ -103,6 +100,7 @@ public interface PersonApi {
         @ApiResponse(code = 500, message = "", response = Object.class) })
     
     @RequestMapping(value = "/person",
+        produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
     ResponseEntity<Void> updatePerson(@ApiParam(value = ""  )  @Valid @RequestBody Person body);

@@ -1,21 +1,14 @@
 package io.swagger.model;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import java.io.Serializable;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Agent;
 import io.swagger.model.Content;
@@ -56,6 +49,8 @@ public class Person implements Serializable {
 	@JsonProperty("lastName")
 	private String lastName = null;
 
+	//TODO: currently this is globally unique in the db. Needs to be org.nickname unique.
+	// ORGS will be responsible for curating identity
 	@Column(name = "NICK_NAME",  unique = true)
 	@NotNull
 	@Size(min=2, max=50)

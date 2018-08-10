@@ -5,7 +5,6 @@ import java.util.List;
 
 import site.verity.persistence.dao.common.AbstractHibernateDao;
 import org.hibernate.Query;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 
 import io.swagger.model.Transaction;

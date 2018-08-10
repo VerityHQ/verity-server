@@ -12,7 +12,17 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @ComponentScan(basePackages = {"io.swagger", "site.verity"})
 public class Swagger2SpringBoot implements CommandLineRunner {
-
+    
+	//Needed if deploying as a war file to tomcat on AWS. override for SpringBootServletInitializer
+	//see: https://mtdevuk.com/2015/07/16/how-to-make-a-spring-boot-jar-into-a-war-to-deploy-on-tomcat/
+	//and: https://www.mkyong.com/spring-boot/spring-boot-deploy-war-file-to-tomcat/
+	
+	//extends SpringBootServletInitializer (add to class def )
+//	@Override
+//    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+//        return application.sources(Swagger2SpringBoot.class);
+//    }
+    
 	@Override
 	public void run(String... arg0) throws Exception {
 		if (arg0.length > 0 && arg0[0].equals("exitcode")) {

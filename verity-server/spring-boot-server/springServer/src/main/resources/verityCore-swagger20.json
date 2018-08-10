@@ -3,26 +3,28 @@
     "info": {
         "version": "1.0.2",
         "title": "VerityReputation",
-        "description": "You can find out more about Verity at <a href='http://verity.site'>http://verity.site</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nThe collaboration layer in Verity is built on the notion of agents, content and communities. Agents are any users, groups, or autonomous actors that can perform actions within the system. A community in Verity is a group of agents that share a common purpose, vision, or goal. Content is anything in the Verity protocol that can be rated or acted upon, but which cannot itself act.\n\nThe purpose of the Verity collaboration layer is to ensure that communities organize talent, resources, and actions around their shared economic and social interest. There are two specific goals: to preserve community intent over time, thus preserving the identity of the community, and to incentivize actions in alignment with that intent.\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\n\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md This is a simple Verity reputation API. You can find out more about Verity at <a href='http://getcrystal.net'>http://getcrystal.net</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md"
+        "description": "You can find out more about Verity at <a href='http://verity.site'>http://verity.site</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nThe collaboration layer in Verity is built on the notion of agents, content and communities. Agents are any users, groups, or autonomous actors that can perform actions within the system. A community in Verity is a group of agents that share a common purpose, vision, or goal. Content is anything in the Verity protocol that can be rated or acted upon, but which cannot itself act.\n\nThe purpose of the Verity collaboration layer is to ensure that communities organize talent, resources, and actions around their shared economic and social interest. There are two specific goals: to preserve community intent over time, thus preserving the identity of the community, and to incentivize actions in alignment with that intent.\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\n\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md"
     },
     "host": "springserver.cfapps.io",
-    "basePath": "/verity/core",
+    "basePath": "/v1",
     "schemes": [
         "http",
         "https"
+    ],
+    "consumes": [
+        "application/json"
     ],
     "produces": [
         "application/json"
     ],
     "securityDefinitions": {
-        "Basic Auth": {
-            "type": "basic",
-            "description": "Basic Authentication for now while we build and test the api"
-        },
-        "verity_auth_token": {
-            "name": "verity_auth_token",
+        "Authorization": {
+            "name": "Authorization",
             "type": "apiKey",
-            "in": "query"
+            "in": "header"
+        },
+        "demo": {
+            "type": "basic"
         }
     },
     "paths": {
@@ -32,9 +34,6 @@
                 "summary": "create an Organization",
                 "tags": [
                     "Organization"
-                ],
-                "consumes": [
-                    "application/json"
                 ],
                 "parameters": [
                     {
@@ -77,9 +76,6 @@
                 "summary": "update Organization",
                 "tags": [
                     "Organization"
-                ],
-                "consumes": [
-                    "application/json"
                 ],
                 "parameters": [
                     {
@@ -198,9 +194,6 @@
                 "tags": [
                     "Community"
                 ],
-                "consumes": [
-                    "application/json"
-                ],
                 "parameters": [
                     {
                         "name": "body",
@@ -242,9 +235,6 @@
                 "summary": "update a community",
                 "tags": [
                     "Community"
-                ],
-                "consumes": [
-                    "application/json"
                 ],
                 "parameters": [
                     {
@@ -317,20 +307,38 @@
                                 "$ref": "#/definitions/Community"
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
                     }
                 }
             }
         },
-        "/community/{communityuuid}/members/{personuuid}": {
+        "/community/{community_uuid}/members/{person_uuid}": {
             "parameters": [
                 {
-                    "name": "communityuuid",
+                    "name": "community_uuid",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 },
                 {
-                    "name": "personuuid",
+                    "name": "person_uuid",
                     "in": "path",
                     "required": true,
                     "type": "string"
@@ -496,15 +504,174 @@
                 }
             }
         },
+        "/community/{uuid}/ethic": {
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getCommunityEthics",
+                "summary": "get community ethics",
+                "tags": [
+                    "Community"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/trait:paged:pageNumber"
+                    },
+                    {
+                        "$ref": "#/parameters/trait:paged:pageSize"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Ethic"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                }
+            }
+        },
+        "/community/{uuid}/proposal": {
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getCommunityProposals",
+                "summary": "get community proposals",
+                "tags": [
+                    "Community"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/trait:paged:pageNumber"
+                    },
+                    {
+                        "$ref": "#/parameters/trait:paged:pageSize"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/proposal"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                }
+            }
+        },
+        "/community/{uuid}/contest": {
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getCommunityContests",
+                "summary": "get community contests",
+                "tags": [
+                    "Community"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/trait:paged:pageNumber"
+                    },
+                    {
+                        "$ref": "#/parameters/trait:paged:pageSize"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contest"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                }
+            }
+        },
         "/person": {
             "post": {
                 "operationId": "createPerson",
                 "summary": "create person",
                 "tags": [
                     "Person"
-                ],
-                "consumes": [
-                    "application/json"
                 ],
                 "parameters": [
                     {
@@ -548,9 +715,6 @@
                 "tags": [
                     "Person"
                 ],
-                "consumes": [
-                    "application/json"
-                ],
                 "parameters": [
                     {
                         "name": "body",
@@ -585,7 +749,7 @@
                 }
             },
             "get": {
-                "operationId": "GET_person",
+                "operationId": "getPersonByQueryParameters",
                 "summary": "get Person by qeury parameters",
                 "tags": [
                     "Person"
@@ -665,50 +829,6 @@
                 }
             }
         },
-        "/person/{uuid}/content": {
-            "parameters": [
-                {
-                    "name": "uuid",
-                    "in": "path",
-                    "description": "multi-hash id of person record on the blockchain",
-                    "required": true,
-                    "type": "string"
-                }
-            ],
-            "get": {
-                "operationId": "getPersonContent",
-                "summary": "get Person Content",
-                "tags": [
-                    "Person"
-                ],
-                "description": "Get all the content this person has authored or co-authored",
-                "parameters": [
-                    {
-                        "$ref": "#/parameters/trait:byDateRange:startDate"
-                    },
-                    {
-                        "$ref": "#/parameters/trait:byDateRange:endDate"
-                    },
-                    {
-                        "$ref": "#/parameters/trait:paged:pageNumber"
-                    },
-                    {
-                        "$ref": "#/parameters/trait:paged:pageSize"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Status 200",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Content"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/person/{uuid}/reputation/{communityid}/{valuetypeid}/{reputationtype}": {
             "parameters": [
                 {
@@ -754,15 +874,56 @@
                 }
             }
         },
+        "/person/{uuid}/content": {
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "description": "multi-hash id of person record on the blockchain",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getPersonContent",
+                "summary": "get Person Content",
+                "tags": [
+                    "Person"
+                ],
+                "description": "Get all the content this person has authored or co-authored",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/trait:byDateRange:startDate"
+                    },
+                    {
+                        "$ref": "#/parameters/trait:byDateRange:endDate"
+                    },
+                    {
+                        "$ref": "#/parameters/trait:paged:pageNumber"
+                    },
+                    {
+                        "$ref": "#/parameters/trait:paged:pageSize"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status 200",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Content"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/content": {
             "post": {
                 "operationId": "createContent",
                 "summary": "create Content",
                 "tags": [
                     "Content"
-                ],
-                "consumes": [
-                    "application/json"
                 ],
                 "parameters": [
                     {
@@ -805,9 +966,6 @@
                 "summary": "update Content",
                 "tags": [
                     "Content"
-                ],
-                "consumes": [
-                    "application/json"
                 ],
                 "parameters": [
                     {
@@ -964,15 +1122,148 @@
                 }
             }
         },
+        "/ethic": {
+            "post": {
+                "operationId": "createEthic",
+                "summary": "create ethic",
+                "tags": [
+                    "Ethic"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Ethic"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Ethic"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                }
+            },
+            "get": {
+                "operationId": "getEthicsByQuery",
+                "summary": "get ethics by query parameters",
+                "tags": [
+                    "Ethic"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "$ref": "#/parameters/trait:paged:pageNumber"
+                    },
+                    {
+                        "$ref": "#/parameters/trait:paged:pageSize"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Ethic"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                }
+            }
+        },
+        "/ethic/{uuid}": {
+            "parameters": [
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "getEthic",
+                "summary": "get ethic",
+                "tags": [
+                    "Ethic"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Ethic"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "409": {
+                        "$ref": "#/responses/trait:standardErrors:409"
+                    },
+                    "422": {
+                        "$ref": "#/responses/trait:standardErrors:422"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                }
+            }
+        },
         "/valueaction": {
             "post": {
                 "operationId": "createValueAction",
                 "summary": "create ValueAction",
                 "tags": [
                     "ValueAction"
-                ],
-                "consumes": [
-                    "application/json"
                 ],
                 "parameters": [
                     {
@@ -1017,9 +1308,6 @@
                     "ValueAction"
                 ],
                 "description": "Updating the value of the ValueAction will cause any calculations in the future to use this new value, changing the rewards retroactivly. If you want to prohibit these types of retroactive changes, set the archived bit to true and create a new ValueAction and use it going forward.",
-                "consumes": [
-                    "application/json"
-                ],
                 "parameters": [
                     {
                         "name": "body",
@@ -1116,9 +1404,6 @@
                 "tags": [
                     "ActionType"
                 ],
-                "consumes": [
-                    "application/json"
-                ],
                 "parameters": [
                     {
                         "name": "body",
@@ -1160,9 +1445,6 @@
                 "summary": "update ActionType",
                 "tags": [
                     "ActionType"
-                ],
-                "consumes": [
-                    "application/json"
                 ],
                 "parameters": [
                     {
@@ -1229,9 +1511,6 @@
                 "summary": "create transaction",
                 "tags": [
                     "Transaction"
-                ],
-                "consumes": [
-                    "application/json"
                 ],
                 "parameters": [
                     {
@@ -1446,6 +1725,471 @@
                     }
                 }
             }
+        },
+        "/contest/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "GET-contest",
+                "summary": "Get Contest",
+                "tags": [
+                    "Contest"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/contest-input"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "PUT-contest",
+                "summary": "Update Contest",
+                "tags": [
+                    "Contest"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/contest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/contest-input"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "DELETE-contest",
+                "summary": "Delete Contest",
+                "tags": [
+                    "Contest"
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/contest": {
+            "get": {
+                "operationId": "LIST-contests",
+                "summary": "List Contests",
+                "tags": [
+                    "Contest"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "array",
+                            "description": "array of contest ids",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contest-input"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "POST-contest",
+                "summary": "Create Contest",
+                "tags": [
+                    "Contest"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/contestentry"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/contest-input"
+                        }
+                    }
+                }
+            }
+        },
+        "/contest/entry/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "GET-contestentry",
+                "summary": "Get ContestEntry",
+                "tags": [
+                    "ContestEntry"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/contestentry-input"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "PUT-contestentry",
+                "summary": "Update ContestEntry",
+                "tags": [
+                    "ContestEntry"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/contestentry"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/contestentry-input"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "DELETE-contestentry",
+                "summary": "Delete ContestEntry",
+                "tags": [
+                    "ContestEntry"
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/contest/{id}/entry": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "LIST-contestentries",
+                "summary": "List ContestEntries",
+                "tags": [
+                    "ContestEntry"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contestentry"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/contest/entry": {
+            "post": {
+                "operationId": "POST-contestentry",
+                "summary": "Create ContestEntry",
+                "tags": [
+                    "ContestEntry"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/contestentry"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/contestentry-input"
+                        }
+                    }
+                }
+            }
+        },
+        "/contest/contestant/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "GET-contestant",
+                "summary": "Get Contestant",
+                "tags": [
+                    "Contestant"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/contestants-input"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "PUT-contestant",
+                "summary": "Update Contestant",
+                "tags": [
+                    "Contestant"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/contestant"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/contestants-input"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "DELETE-contestant",
+                "summary": "Delete Contestant",
+                "tags": [
+                    "Contestant"
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/contest/{id}/contestant": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "LIST-contestants",
+                "summary": "List Contestants",
+                "tags": [
+                    "Contestant"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contestant"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/contest/contestant": {
+            "post": {
+                "operationId": "POST-contestant",
+                "summary": "Create Contestant",
+                "tags": [
+                    "Contestant"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/contestants-input"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/contestants-input"
+                        }
+                    }
+                }
+            }
+        },
+        "/proposal/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "GET-proposal",
+                "summary": "Get Proposal",
+                "tags": [
+                    "Proposal"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/proposal-input"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "PUT-proposal",
+                "summary": "Update Proposal",
+                "tags": [
+                    "Proposal"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/proposal-input"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/proposal-input"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "DELETE-proposal",
+                "summary": "Delete Proposal",
+                "tags": [
+                    "Proposal"
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/proposal": {
+            "get": {
+                "operationId": "LIST-proposals",
+                "summary": "List Proposals",
+                "tags": [
+                    "Proposal"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/proposal-input"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "POST-proposal",
+                "summary": "Create Proposal",
+                "tags": [
+                    "Proposal"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/proposal-input"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/proposal-input"
+                        }
+                    }
+                }
+            }
         }
     },
     "parameters": {
@@ -1557,8 +2301,8 @@
                 "orgName": {
                     "type": "string"
                 },
-                "agent": {
-                    "$ref": "#/definitions/Agent"
+                "identity": {
+                    "$ref": "#/definitions/Identity"
                 },
                 "community": {
                     "$ref": "#/definitions/Community"
@@ -1571,7 +2315,7 @@
             "required": [
                 "uuid",
                 "orgName",
-                "agent",
+                "identity",
                 "community"
             ]
         },
@@ -1586,20 +2330,15 @@
                 },
                 "actionName": {
                     "type": "string",
-                    "description": "Represents action taken that triggers a transaction of reputation. Use verb to describe act of giving or rating, e.g. upvote, give points, tagged, rate."
+                    "description": "Represents action taken that triggers a claim to be recorded as a transaction. Use verb to describe act of giving or rating, e.g. upvote, give points, tagged, rate."
                 },
                 "description": {
                     "type": "string",
-                    "description": "Describes this value in detail. Formatted as JSON or JSON:LD. Should include the ValueName along with a longer description or link to more content."
+                    "description": "Describes this action in detail. Formatted as JSON or JSON:LD. Should include the ActionName along with a longer description or link to more content."
                 },
                 "communityId": {
                     "type": "string",
-                    "description": "Community that defined this ActionType. Multi-hash or JSON-LD"
-                },
-                "defaultPoints": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "points to award in default case"
+                    "description": "Community that registered this ActionType. Multi-hash or JSON-LD format."
                 }
             },
             "required": [
@@ -1612,8 +2351,8 @@
             "title": "Person",
             "type": "object",
             "properties": {
-                "agent": {
-                    "$ref": "#/definitions/Agent"
+                "identity": {
+                    "$ref": "#/definitions/Identity"
                 },
                 "uuid": {
                     "type": "string",
@@ -1636,7 +2375,7 @@
                 }
             },
             "required": [
-                "agent",
+                "identity",
                 "uuid",
                 "nickName"
             ]
@@ -1644,21 +2383,27 @@
         "Transaction": {
             "title": "Transaction",
             "type": "object",
-            "description": "A fundamental unit of reputation value transfer, attestation or claim. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.\n\nSimilar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md",
+            "description": "An attestation or claim, with potential numeric value attached, made by one identity about another identity as the result of an event. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.\n\nSimilar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md or Ethereum Claim https://github.com/ethereum/EIPs/issues/780",
             "properties": {
                 "uuid": {
                     "type": "string",
-                    "description": "UUID, GUID, HASH,  MultiHash or ProxyContract Address that represents this object"
+                    "description": "registry key, UUID, GUID, HASH,  MultiHash or Transaction Hash that represents this object"
+                },
+                "claim": {
+                    "type": "string",
+                    "description": "If this transaction record is an attestation or claim, the claim data goes here. e.g. json web token (JWT) with structured data."
                 },
                 "valueActionId": {
                     "type": "string",
                     "description": "Hash link to description of how the score will be derived, or the community feature that affects the way the value will be interpreted. Could be a globally unique link or content addressable graph pointing to a richer source of description or information."
                 },
                 "sourceAgentId": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Claim Issuer"
                 },
                 "targetAgentId": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Target or Subject Identity. Can be anything with a unique id, including IOT devices, people, things, content, and even another Transaction. The last case would be usefull for validating an attestation (Transaction) by third parties, establishing a web of trust."
                 },
                 "timeStamp": {
                     "type": "string",
@@ -1678,10 +2423,10 @@
                 "timeStamp"
             ]
         },
-        "Agent": {
-            "title": "Agent",
+        "Identity": {
+            "title": "Identity",
             "type": "object",
-            "description": "Agent is something that bears some form of responsibility for changing state in the Verity system. An Agent could be a smart contract, person, organization, device, or anything the owns the Private Key half of the publicKey of the Agent and controlls the accounts used for attestationURLs.\n\nMaps to  https://www.w3.org/TR/prov-o/#Agent  prov:Agent",
+            "description": "An identity is something that bears some form of responsibility for changing state in the Verity system. Identities have agency and could be a smart contract, person, organization, device, or anything that controlls the private key of the account used to make claims and attestation.\n\nShoul be easily transformed to or from w3c DIDs  https://w3c-ccg.github.io/did-spec/",
             "properties": {
                 "uuid": {
                     "type": "string",
@@ -1718,7 +2463,7 @@
                 },
                 "body": {
                     "type": "string",
-                    "description": "content as text or JSON"
+                    "description": "content as text, JSON or HTML. Body is required, but if external content is being represented, the multi-hash or permalink sould be put here. "
                 },
                 "nodes": {
                     "type": "array",
@@ -1738,6 +2483,11 @@
                 "communityId": {
                     "type": "string",
                     "description": "The community from which the content originated."
+                },
+                "mimeType": {
+                    "type": "string",
+                    "description": "MIME Type. Assumed to be text/plain if not specified.",
+                    "default": "text/plain"
                 }
             },
             "required": [
@@ -1765,19 +2515,32 @@
                         "type": "string"
                     }
                 },
-                "agent": {
-                    "$ref": "#/definitions/Agent"
+                "identity": {
+                    "$ref": "#/definitions/Identity"
                 },
-                "values": {
+                "ethics": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/ActionType"
+                        "type": "string"
+                    }
+                },
+                "valueActions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "members": {
+                    "type": "array",
+                    "description": "Community member list",
+                    "items": {
+                        "type": "string"
                     }
                 }
             },
             "required": [
                 "communityName",
-                "agent"
+                "identity"
             ]
         },
         "SoftwareAgent": {
@@ -1795,8 +2558,8 @@
                 "name": {
                     "type": "string"
                 },
-                "ownedBy": {
-                    "$ref": "#/definitions/Agent"
+                "ownedByIdentity": {
+                    "$ref": "#/definitions/Identity"
                 }
             },
             "required": [
@@ -1823,28 +2586,62 @@
                 },
                 "amount": {
                     "type": "integer",
-                    "description": "The amount to be awarded. When creating a transaction the default amount can be used or overridden. If the defalut changes at a later date, new awards can be retroactivly computed based on the new default amount, however the original transaction will remain fixed in value."
+                    "description": "Default amount to be awarded. When creating a transaction the default amount can be used or overridden. If the defalut changes at a later date, new awards can be retroactivly computed based on the new default amount, however the original transaction will remain fixed in value."
                 },
                 "actionTypeId": {
                     "type": "string",
                     "description": "the  UUID of the actionType"
                 },
+                "ethicId": {
+                    "type": "string",
+                    "description": "Community ethic. This will effectivly become the 'claim' in the transaction."
+                },
+                "communityId": {
+                    "type": "string"
+                },
+                "awardMin": {
+                    "type": "integer"
+                },
+                "awardMax": {
+                    "type": "integer"
+                },
+                "awardScale": {
+                    "type": "string",
+                    "enum": [
+                        "int",
+                        "decimal",
+                        "bool"
+                    ],
+                    "default": "int",
+                    "description": ""
+                },
                 "archived": {
                     "type": "boolean",
                     "default": false,
                     "description": "indicates this ValueAction is frozen and read-only. No further changes to 'amount' or any other fields can be made."
-                },
-                "communityId": {
-                    "type": "string"
                 }
             },
             "required": [
                 "uuid",
+                "name",
                 "description",
                 "actionTypeId",
-                "archived",
-                "name"
-            ]
+                "ethicId",
+                "archived"
+            ],
+            "example": {
+                "uuid": "",
+                "name": "5 star rating",
+                "description": "Rate from 1-5 stars",
+                "amount": 3,
+                "actionTypeId": "c8ed-4ad7-9846-96b648c8",
+                "ethicId": "7d6e3823-14c8ed-4ad7",
+                "communityId": "1496b648c8c9d714",
+                "awardMin": 1,
+                "awardMax": 5,
+                "awardScale": "int",
+                "archived": false
+            }
         },
         "KeyValuePair": {
             "title": "KeyValuePair",
@@ -1888,12 +2685,14 @@
                 },
                 "scheme": {
                     "type": "string",
-                    "description": "The type of govenance scheme, e.g. delegate voting, arbitration, DemocracyOS or anything you want to call it."
+                    "description": "The type of govenance scheme, e.g. delegate voting, PLCR voting, arbitration, DemocracyOS or anything you want to call it."
                 },
                 "contractRegistry": {
                     "type": "array",
-                    "description": "An arry of Ethereum (for now) addresses that mange the govenance structure. These can be mulit-sig wallets or more sophisticated contracts.",
-                    "items": {}
+                    "description": "An array of Ethereum (for now) smart contract addresses that manage the govenance structure. These can be mulit-sig wallets or more sophisticated contracts.",
+                    "items": {
+                        "$ref": "#/definitions/KeyValuePair"
+                    }
                 },
                 "constitution": {
                     "$ref": "#/definitions/Content"
@@ -1904,6 +2703,150 @@
                 "scheme",
                 "contractRegistry"
             ]
+        },
+        "Ethic": {
+            "title": "Ethic",
+            "type": "object",
+            "description": "An Ethic is a community value that the community should aspire to. An Ethic combined with ActionType (upvote, rank, rate, etc.) results in a ValueAction. A ValueAction will determine the min, max and scale for awards when a community member creates a reputation transaction.",
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name or Tag for this Ethic (Community Value)"
+                },
+                "definition": {
+                    "type": "string",
+                    "description": "Longform description for this Ethic (Community Value)"
+                },
+                "communityId": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "uuid",
+                "name",
+                "definition",
+                "communityId"
+            ]
+        },
+        "proposal": {
+            "title": "Proposal",
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                },
+                "communityId": {
+                    "type": "string"
+                },
+                "content": {
+                    "$ref": "#/definitions/Content"
+                }
+            }
+        },
+        "contest": {
+            "title": "Contest",
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Contest name"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "stakingModel": {
+                    "type": "string"
+                },
+                "redeemModel": {
+                    "type": "string"
+                },
+                "poolValue": {
+                    "type": [
+                        "string",
+                        "number"
+                    ]
+                },
+                "poolAge": {
+                    "type": "string"
+                },
+                "directive": {
+                    "$ref": "#/definitions/ValueAction"
+                },
+                "contestEntries": {
+                    "type": "array",
+                    "description": "registered entries in a token curated registry",
+                    "items": {
+                        "$ref": "#/definitions/contestentry"
+                    }
+                }
+            },
+            "required": [
+                "uuid"
+            ]
+        },
+        "contestant": {
+            "title": "Contestant",
+            "type": "object",
+            "properties": {
+                "agentId": {
+                    "type": "string"
+                },
+                "contestId": {
+                    "type": "string"
+                },
+                "stakeTokenUnit": {
+                    "type": "string"
+                },
+                "stakeAmount": {
+                    "type": "number"
+                },
+                "stakeTime": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "agentId",
+                "contestId",
+                "stakeTokenUnit",
+                "stakeAmount"
+            ]
+        },
+        "contestentry": {
+            "title": "ContestEntry",
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                },
+                "entryName": {
+                    "type": "string"
+                },
+                "contestId": {
+                    "type": "string"
+                },
+                "content": {
+                    "$ref": "#/definitions/Content"
+                }
+            },
+            "required": [
+                "uuid",
+                "entryName",
+                "contestId"
+            ]
+        },
+        "contestants-input": {
+            "title": "Contestants Input",
+            "$ref": "#/definitions/contestant"
+        },
+        "proposal-input": {
+            "title": "Proposal Input",
+            "$ref": "#/definitions/proposal"
         }
     }
 }

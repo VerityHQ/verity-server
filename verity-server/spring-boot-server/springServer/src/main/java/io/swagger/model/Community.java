@@ -5,7 +5,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.LazyCollection;
@@ -14,19 +13,18 @@ import org.hibernate.annotations.LazyCollectionOption;
 import java.io.Serializable;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.ActionType;
 import io.swagger.model.Agent;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Community
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T11:27:43.869-07:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-27T15:39:32.532-07:00")
 
 @Entity
 @Table(name = "community")
@@ -43,8 +41,12 @@ public class Community implements Serializable {
 	@Column(name = "UUID", unique = true, nullable = false)
 	@JsonProperty("uuid")
 	private String uuid = null;
+	
+	@Column(name = "PARENT_COMMUNITY_ID", nullable = true)
+	@JsonProperty("parentCommunityId")
+	private String parentCommunityId = null;
 
-	@Column(name = "COMMUNITY_NAME",  unique = true, nullable = false)
+	@Column(name = "COMMUNITY_NAME", unique = true, nullable = false)
 	@JsonProperty("communityName")
 	private String communityName = null;
 
@@ -64,17 +66,44 @@ public class Community implements Serializable {
 	// parent
 	// The @LazyCollection attribute is needed. See SO
 	// //http://stackoverflow.com/questions/30465748/jackson-confused-with-bidirectional-one-to-many-relationship-failed-to-lazily
-	@Column(name = "ACTION_TYPES",  unique = true)
+//	@Column(name = "ACTION_TYPES", unique = true)
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@ElementCollection(targetClass = ActionType.class)
+//	@JsonProperty("values")
+//	private List<ActionType> values = new ArrayList<ActionType>();
+
+
+	@Column(name="ETHICS")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@ElementCollection(targetClass = ActionType.class)
-	@JsonProperty("values")
-	private List<ActionType> values = new ArrayList<ActionType>();
+	@ElementCollection(targetClass = String.class)
+	@JsonProperty("ethics")
+	private List<String> ethics = null;
+
+	@Column(name="VALUE_ACTIONS")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ElementCollection(targetClass = String.class)
+	@JsonProperty("valueActions")
+	private List<String> valueActions = null;
+	
+	@Column(name = "MEMBERS")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ElementCollection(targetClass = String.class)
+	@JsonProperty("members")
+	private List<String> members = new ArrayList<String>();
 
 	public Community uuid(String uuid) {
 		this.uuid = uuid;
 		return this;
 	}
 
+	public List<String> getMembers() {
+		return members;
+	}
+	
+	public void setMembers(List<String> members) {
+		this.members = members;
+	}
+	
 	/**
 	 * UUID, GUID, HASH, MultiHash or ProxyContract Address that represents this
 	 * object
@@ -90,6 +119,14 @@ public class Community implements Serializable {
 		this.uuid = uuid;
 	}
 
+	public String getParentCommunityId() {
+		return parentCommunityId;
+	}
+	
+	public void setParentCommunityId(String parentCommunityId) {
+		this.parentCommunityId = parentCommunityId;
+	}
+	
 	public Community communityName(String communityName) {
 		this.communityName = communityName;
 		return this;
@@ -116,6 +153,9 @@ public class Community implements Serializable {
 	}
 
 	public Community addSubCommunitiesItem(String subCommunitiesItem) {
+		if (this.subCommunities == null) {
+			this.subCommunities = new ArrayList<String>();
+		}
 		this.subCommunities.add(subCommunitiesItem);
 		return this;
 	}
@@ -146,6 +186,7 @@ public class Community implements Serializable {
 	 **/
 	@ApiModelProperty(required = true, value = "")
 	@NotNull
+	@Valid
 	public Agent getAgent() {
 		return agent;
 	}
@@ -154,28 +195,58 @@ public class Community implements Serializable {
 		this.agent = agent;
 	}
 
-	public Community values(List<ActionType> values) {
-		this.values = values;
+	public Community ethics(List<String> ethics) {
+		this.ethics = ethics;
 		return this;
 	}
 
-	public Community addValuesItem(ActionType valuesItem) {
-		this.values.add(valuesItem);
+	public Community addEthicsItem(String ethicsItem) {
+		if (this.ethics == null) {
+			this.ethics = new ArrayList<String>();
+		}
+		this.ethics.add(ethicsItem);
 		return this;
 	}
 
 	/**
-	 * Get values
+	 * Get ethics
 	 * 
-	 * @return values
+	 * @return list of ethics ids for this community
 	 **/
 	@ApiModelProperty(value = "")
-	public List<ActionType> getValues() {
-		return values;
+	public List<String> getEthics() {
+		return ethics;
 	}
 
-	public void setValues(List<ActionType> values) {
-		this.values = values;
+	public void setEthics(List<String> ethics) {
+		this.ethics = ethics;
+	}
+
+	public Community valueActions(List<String> valueActions) {
+		this.valueActions = valueActions;
+		return this;
+	}
+
+	public Community addValueActionsItem(String valueActionsItem) {
+		if (this.valueActions == null) {
+			this.valueActions = new ArrayList<String>();
+		}
+		this.valueActions.add(valueActionsItem);
+		return this;
+	}
+
+	/**
+	 * Get valueActions
+	 * 
+	 * @return valueActions
+	 **/
+	@ApiModelProperty(value = "")
+	public List<String> getValueActions() {
+		return valueActions;
+	}
+
+	public void setValueActions(List<String> valueActions) {
+		this.valueActions = valueActions;
 	}
 
 	@Override
@@ -189,12 +260,13 @@ public class Community implements Serializable {
 		Community community = (Community) o;
 		return Objects.equals(this.uuid, community.uuid) && Objects.equals(this.communityName, community.communityName)
 				&& Objects.equals(this.subCommunities, community.subCommunities)
-				&& Objects.equals(this.agent, community.agent) && Objects.equals(this.values, community.values);
+				&& Objects.equals(this.agent, community.agent) && Objects.equals(this.ethics, community.ethics)
+				&& Objects.equals(this.valueActions, community.valueActions);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(uuid, communityName, subCommunities, agent, values);
+		return Objects.hash(uuid, communityName, subCommunities, agent, ethics, valueActions);
 	}
 
 	@Override
@@ -206,7 +278,9 @@ public class Community implements Serializable {
 		sb.append("    communityName: ").append(toIndentedString(communityName)).append("\n");
 		sb.append("    subCommunities: ").append(toIndentedString(subCommunities)).append("\n");
 		sb.append("    agent: ").append(toIndentedString(agent)).append("\n");
-		sb.append("    values: ").append(toIndentedString(values)).append("\n");
+		sb.append("    ethics: ").append(toIndentedString(ethics)).append("\n");
+		sb.append("    valueActions: ").append(toIndentedString(valueActions)).append("\n");
+		sb.append("    members: ").append(toIndentedString(members)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

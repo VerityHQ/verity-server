@@ -10,7 +10,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -40,30 +39,34 @@ public class Content implements Serializable {
 	@JsonProperty("uuid")
 	private String uuid = null;
 
-	@Column(name="NAME")
+	@Column(name = "NAME")
 	@JsonProperty("name")
 	private String name = null;
 
-	@Lob  //larger than varchar(max)
-	@Column(name="BODY")
+	@Lob // larger than varchar(max)
+	@Column(name = "BODY")
 	@JsonProperty("body")
 	private String body = null;
 
-	@Column(name="NODES")
+	@Column(name = "NODES")
 	@JsonProperty("nodes")
-    @LazyCollection(LazyCollectionOption.FALSE) 
-    @ElementCollection(targetClass=String.class)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ElementCollection(targetClass = String.class)
 	private List<String> nodes = new ArrayList<String>();
 
-	@Column(name="AUTHORS")
+	@Column(name = "AUTHORS")
 	@JsonProperty("authors")
-    @LazyCollection(LazyCollectionOption.FALSE) 
-    @ElementCollection(targetClass=String.class)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ElementCollection(targetClass = String.class)
 	private List<String> authors = new ArrayList<String>();
 
-	@Column(name="COMMUNITY")
+	@Column(name = "COMMUNITY")
 	@JsonProperty("communityId")
 	private String communityId = null;
+
+	@Column(name = "MIME_TYPE")
+	@JsonProperty("mimeType")
+	private String mimeType = "text/plain";
 
 	public Content uuid(String uuid) {
 		this.uuid = uuid;
@@ -78,6 +81,7 @@ public class Content implements Serializable {
 	 **/
 	@ApiModelProperty(required = true, value = "UUID, GUID, HASH or MultiHash that represents this object. For example a GitHub commit hash or IPFS address.")
 	@NotNull
+
 	public String getUuid() {
 		return uuid;
 	}
@@ -98,6 +102,7 @@ public class Content implements Serializable {
 	 **/
 	@ApiModelProperty(required = true, value = "name or tag")
 	@NotNull
+
 	public String getName() {
 		return name;
 	}
@@ -112,12 +117,14 @@ public class Content implements Serializable {
 	}
 
 	/**
-	 * content as text or JSON
+	 * content as text, JSON or HTML. Body is required, but if external content is
+	 * being represented, the multi-hash or permalink sould be put here.
 	 * 
 	 * @return body
 	 **/
-	@ApiModelProperty(required = true, value = "content as text or JSON")
+	@ApiModelProperty(required = true, value = "content as text, JSON or HTML. Body is required, but if external content is being represented, the multi-hash or permalink sould be put here. ")
 	@NotNull
+
 	public String getBody() {
 		return body;
 	}
@@ -132,6 +139,9 @@ public class Content implements Serializable {
 	}
 
 	public Content addNodesItem(String nodesItem) {
+		if (this.nodes == null) {
+			this.nodes = new ArrayList<String>();
+		}
 		this.nodes.add(nodesItem);
 		return this;
 	}
@@ -142,6 +152,7 @@ public class Content implements Serializable {
 	 * @return nodes
 	 **/
 	@ApiModelProperty(value = "child node ids")
+
 	public List<String> getNodes() {
 		return nodes;
 	}
@@ -156,6 +167,9 @@ public class Content implements Serializable {
 	}
 
 	public Content addAuthorsItem(String authorsItem) {
+		if (this.authors == null) {
+			this.authors = new ArrayList<String>();
+		}
 		this.authors.add(authorsItem);
 		return this;
 	}
@@ -166,6 +180,7 @@ public class Content implements Serializable {
 	 * @return authors
 	 **/
 	@ApiModelProperty(value = "one or more uuids of the creating agent(s)")
+
 	public List<String> getAuthors() {
 		return authors;
 	}
@@ -185,12 +200,33 @@ public class Content implements Serializable {
 	 * @return communityId
 	 **/
 	@ApiModelProperty(value = "The community from which the content originated.")
+
 	public String getCommunityId() {
 		return communityId;
 	}
 
 	public void setCommunityId(String communityId) {
 		this.communityId = communityId;
+	}
+
+	public Content mimeType(String mimeType) {
+		this.mimeType = mimeType;
+		return this;
+	}
+
+	/**
+	 * MIME Type. Assumed to be text/plain if not specified.
+	 * 
+	 * @return mimeType
+	 **/
+	@ApiModelProperty(value = "MIME Type. Assumed to be text/plain if not specified.")
+
+	public String getMimeType() {
+		return mimeType;
+	}
+
+	public void setMimeType(String mimeType) {
+		this.mimeType = mimeType;
 	}
 
 	@Override
@@ -205,12 +241,13 @@ public class Content implements Serializable {
 		return Objects.equals(this.uuid, content.uuid) && Objects.equals(this.name, content.name)
 				&& Objects.equals(this.body, content.body) && Objects.equals(this.nodes, content.nodes)
 				&& Objects.equals(this.authors, content.authors)
-				&& Objects.equals(this.communityId, content.communityId);
+				&& Objects.equals(this.communityId, content.communityId)
+				&& Objects.equals(this.mimeType, content.mimeType);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(uuid, name, body, nodes, authors, communityId);
+		return Objects.hash(uuid, name, body, nodes, authors, communityId, mimeType);
 	}
 
 	@Override
@@ -224,6 +261,7 @@ public class Content implements Serializable {
 		sb.append("    nodes: ").append(toIndentedString(nodes)).append("\n");
 		sb.append("    authors: ").append(toIndentedString(authors)).append("\n");
 		sb.append("    communityId: ").append(toIndentedString(communityId)).append("\n");
+		sb.append("    mimeType: ").append(toIndentedString(mimeType)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

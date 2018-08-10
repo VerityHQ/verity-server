@@ -6,15 +6,19 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Content;
+import io.swagger.model.Organization;
 import io.swagger.model.Person;
 import io.swagger.persistence.service.IAgentService;
 import io.swagger.persistence.service.IContentService;
@@ -22,6 +26,7 @@ import io.swagger.persistence.service.IOrganizationService;
 import io.swagger.persistence.service.IPersonService;
 import site.verity.web.util.RestPreconditions;
 
+@CrossOrigin(maxAge = 3600)  //origins = "localhost", to limit to a domain
 @Controller
 public class PersonApiController implements PersonApi {
 	@Autowired
@@ -35,6 +40,7 @@ public class PersonApiController implements PersonApi {
 	
 	@Autowired
 	private IContentService contentService;
+	
 
 	/*
 	 * UUIDs - allow caller to create UUIDs or let Verity generate them. If UUID
@@ -48,6 +54,15 @@ public class PersonApiController implements PersonApi {
 	//TODO: fill out person dto with validation annotations
 	public ResponseEntity<Person> createPerson(@ApiParam(value = "") @RequestBody @Valid Person body) {
 		Assert.notNull(body);
+		
+		// Person is an agent + identity (has claims) + multi-key holder, 
+		// but we would like person to be globally unique in Verity namespace as Identity.Organization
+		// and also be sybil resistant. Upon creation we have no way to know
+		// if our pseudo-person is controlled by an entity that is controlling 
+		// multiple person identities (sybils)
+		// so we will need other means to eliminate or weaken sybil accounts.
+		// We could enforce some claims be attested to, or bonded links be created as well.
+		
 		RestPreconditions.assertRequestElementProvided(body.getUuid(), body.getClass().getSimpleName()
 				+ "UUID is required. Either set the UUID or send an empty string to create a new uuid.");
 		RestPreconditions.assertRequestElementProvided(body.getNickName(),
@@ -58,7 +73,8 @@ public class PersonApiController implements PersonApi {
 
 		//ensure we have an existing organization
 		RestPreconditions.assertRequestElementProvided(body.getOrganizationId());
-		RestPreconditions.assertSemanticsValid(organizationService.findByUuid(body.getOrganizationId())!=null,
+		Organization organization = organizationService.findByUuid(body.getOrganizationId());
+		RestPreconditions.assertSemanticsValid(organization != null,
 				"Could not find an existing Organization using the organizationId provided");
 
 		if (body.getUuid().isEmpty()) {
@@ -81,6 +97,8 @@ public class PersonApiController implements PersonApi {
 		
 		agentService.create(body.getAgent());
 		personService.create(body);
+		organization.addIdentitiesItem(body.getUuid());
+		organizationService.update(organization);
 		return new ResponseEntity<Person>(body, HttpStatus.CREATED);
 	}
 
@@ -103,12 +121,14 @@ public class PersonApiController implements PersonApi {
 		// but this was not easy to understand and figure out so leaving it here.
 		// see 3.3 Merge at
 		// http://www.baeldung.com/hibernate-save-persist-update-merge-saveorupdate
-		// body is a transient instance of person, AbstractHibernateDao.update
+		// body is a transient instance of person. AbstractHibernateDao.update
 		// will do a merge. Because we are using db ids in the background 
 		// and our JSON from our API has no db id field, we need to 
 		// fill it in before we do the update, or else hibernate merge
 		// will try to create a new person
 
+		//TODO: some fields should not be updatable
+		
 		personService.update(body);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT); //OK
 	}
@@ -123,19 +143,20 @@ public class PersonApiController implements PersonApi {
 	@Override
 	public ResponseEntity<List<Content>> getPersonContent(String personUuid, String startDate, String endDate,
 			Integer pageNumber, Integer pageSize) {
-
+		//paging and date range are optional query parameters
+		
 		Person person = personService.findByUuid(personUuid);
 		RestPreconditions.assertResourceFound(person);
 		
-		
-		List<Content> content = null;  //TODO: contentService.findAllByAuthor(String personUuid);
+		List<Content> content = contentService.findAllByAuthor(personUuid);
 		
 		return new ResponseEntity<List<Content>>(content, HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<List<Person>> gETPerson(String firstname, String lastname, String nickname) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<List<Person>> getPersonByQueryParameters(String firstname, String lastname, String nickname) {
+		Pageable p = new PageRequest(0, 1000);
+		List<Person> persons = personService.findAllLike("nickname", nickname, p);
+		return new ResponseEntity<List<Person>>(persons, HttpStatus.OK);
 	}
 }

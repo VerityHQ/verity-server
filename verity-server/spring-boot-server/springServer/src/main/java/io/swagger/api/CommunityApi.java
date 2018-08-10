@@ -7,6 +7,7 @@ package io.swagger.api;
 
 import io.swagger.model.Community;
 import io.swagger.model.Content;
+import io.swagger.model.Ethic;
 import io.swagger.model.InlineResponse403;
 import io.swagger.model.InlineResponse404;
 import io.swagger.model.Person;
@@ -15,17 +16,13 @@ import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-24T19:39:37.078-07:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-27T15:39:32.532-07:00")
 
 @Api(value = "community", description = "the community API")
 public interface CommunityApi {
@@ -43,7 +40,7 @@ public interface CommunityApi {
     @RequestMapping(value = "/community/{community_uuid}/members/{person_uuid}",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Void> addCommunityMember(@ApiParam(value = "",required=true ) @PathVariable("community_uuid") String community_uuid,@ApiParam(value = "",required=true ) @PathVariable("person_uuid") String person_uuid);
+    ResponseEntity<Void> addCommunityMember(@ApiParam(value = "",required=true ) @PathVariable("community_uuid") String communityUuid,@ApiParam(value = "",required=true ) @PathVariable("person_uuid") String personUuid);
 
 
     @ApiOperation(value = "create a Community", notes = "", response = Community.class, tags={ "Community", })
@@ -65,7 +62,13 @@ public interface CommunityApi {
 
     @ApiOperation(value = "get communities by query parameters", notes = "", response = Community.class, responseContainer = "List", tags={ "Community", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "", response = Community.class, responseContainer = "List") })
+        @ApiResponse(code = 200, message = "", response = Community.class, responseContainer = "List"),
+        @ApiResponse(code = 401, message = "", response = Object.class),
+        @ApiResponse(code = 403, message = "", response = InlineResponse403.class),
+        @ApiResponse(code = 404, message = "", response = InlineResponse404.class),
+        @ApiResponse(code = 409, message = "", response = Object.class),
+        @ApiResponse(code = 422, message = "", response = Object.class),
+        @ApiResponse(code = 500, message = "", response = Object.class) })
     
     @RequestMapping(value = "/community",
         produces = { "application/json" }, 
@@ -91,6 +94,27 @@ public interface CommunityApi {
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<List<Content>> getCommunityContent(@ApiParam(value = "",required=true ) @PathVariable("uuid") String uuid);
+
+
+    @ApiOperation(value = "get community ethics", notes = "", response = Ethic.class, responseContainer = "List", tags={ "Community", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "", response = Ethic.class, responseContainer = "List"),
+        @ApiResponse(code = 401, message = "", response = Object.class),
+        @ApiResponse(code = 403, message = "", response = InlineResponse403.class),
+        @ApiResponse(code = 404, message = "", response = InlineResponse404.class),
+        @ApiResponse(code = 409, message = "", response = Object.class),
+        @ApiResponse(code = 422, message = "", response = Object.class),
+        @ApiResponse(code = 500, message = "", response = Object.class) })
+    
+    @RequestMapping(value = "/community/{uuid}/ethic",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<Ethic>> getCommunityEthics(@ApiParam(value = "",required=true ) 
+    	@PathVariable("uuid") String uuid, @NotNull @Min(1)
+    	@ApiParam(value = "starting page number. Must be > 0.", required = true) 
+    	@RequestParam(value = "pageNumber", required = true) Integer pageNumber, @NotNull @Min(1) @Max(1000) 
+    	@ApiParam(value = "number of records to return per page.", required = true) 
+    	@RequestParam(value = "pageSize", required = true) Integer pageSize);
 
 
     @ApiOperation(value = "get community members", notes = "", response = Person.class, responseContainer = "List", tags={ "Community", })

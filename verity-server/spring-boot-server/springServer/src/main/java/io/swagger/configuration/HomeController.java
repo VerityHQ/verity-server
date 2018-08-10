@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Home redirection to swagger api documentation 
+ * hosted at /swagger-ui.html
  */
 @Controller
 public class HomeController {

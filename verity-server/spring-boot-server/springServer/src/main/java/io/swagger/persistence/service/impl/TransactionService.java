@@ -1,7 +1,6 @@
 package io.swagger.persistence.service.impl;
 
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 

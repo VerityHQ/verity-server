@@ -1,17 +1,12 @@
 package io.swagger.model;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
@@ -78,7 +73,7 @@ public class Transaction implements Serializable {
 	//@Temporal(TemporalType.TIMESTAMP) //otherwise will generate just date column without room for time
 	//@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@JsonProperty("timeStamp")
-	private String timeStamp = null; //may be a block height number
+	private String timeStamp = Long.toString(Instant.now().toEpochMilli()); //may be a block height number
 
 	@Column(name="VALUE")
 	@JsonProperty("value")
